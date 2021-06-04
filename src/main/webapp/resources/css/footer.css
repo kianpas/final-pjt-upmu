@@ -35,22 +35,6 @@
 .social-icon:active {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset;
 }
-/* instagram */
-.social-icon--instagram {
-  background-image: url(https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png);
-  color: #fff;
-}
-.social-icon--instagram .tooltip {
-  background: #527fa6;
-  color: currentColor;
-}
-.social-icon--instagram .tooltip:after {
-  border-top-color: #527fa6;
-}
-.social-icon i {
-  position: relative;
-  top: 1px;
-}
 
 /* Tooltips */
 .tooltip {
