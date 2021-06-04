@@ -6,7 +6,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="Level with you" name="title"/>
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/index.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <body>
 <main class="responsive-wrapper">
   <div class="page-title">
