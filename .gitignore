@@ -1,6 +1,7 @@
 /WebContent/META-INF/
 .project
 .classpath
+/sql
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,windows,maven,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,windows,maven,eclipse
