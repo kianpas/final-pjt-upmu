@@ -1,6 +1,7 @@
 package com.fpjt.upmu.document.model.vo;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
