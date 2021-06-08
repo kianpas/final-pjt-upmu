@@ -3,12 +3,46 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="document">
-	<!-- <select id="selectDocList" resultMap="docMap"> -->
-	<select id="selectDocList" resultType="document">
+	<!-- <select id="selectDocList" resultType="docMap">
 		select *
 		from document
 	</select>
-<!-- <resultMap type="document" id="docMap">
 	
-</resultMap> -->
+	<resultMap type="document" id="docMap">
+		<id column="doc_no" property="docNo"/>
+		<result column="title" property="title"/>
+		<result column="writer" property="writer"/>
+		<result column="content" property="content"/>
+		<result column="request_date" property="requestDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="status" property="status"/>
+		<collection property="docLine"
+					javaType="arraylist" 
+					ofType="docLine"
+					column="id"
+					select="selectDocLineList" />
+	</resultMap>
+	<select id="selectDocLineList" resultType="docLine">
+		select *
+		from docline
+		where
+			approver = #{id}
+	</select> -->
+	<select id="selectDocList" resultType="document">
+		select 
+		    d.doc_no,
+		    d.title,
+		    d.writer,
+		    d.content,
+		    d.request_date,
+		    d.end_date,
+		    d.status
+		from
+		    document d left join docline dl
+		        on d.doc_no = dl.doc_no
+		where
+		    approver = #{id}
+		and approver_type = #{approverType}
+	</select>
+	
 </mapper>

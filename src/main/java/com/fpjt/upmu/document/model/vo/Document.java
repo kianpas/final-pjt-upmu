@@ -21,5 +21,5 @@ public class Document {
 	private Date endDate;
 	private String status;
 	
-	private List<DocLine> docLine;
+	private List<DocLine> docLineList;
 }
