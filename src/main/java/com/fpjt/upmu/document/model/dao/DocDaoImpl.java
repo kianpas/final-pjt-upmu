@@ -25,4 +25,9 @@ public class DocDaoImpl implements DocDao {
 		return session.selectList("document.selectDocLineList",id);
 	}
 
+	@Override
+	public Document selectOneDocument(String docNo) {
+		return session.selectOne("document.selectOneDocument", docNo);
+	}
+
 }

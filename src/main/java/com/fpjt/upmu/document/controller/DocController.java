@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fpjt.upmu.document.model.service.DocService;
 import com.fpjt.upmu.document.model.vo.Document;
@@ -36,7 +37,7 @@ public class DocController {
 	}
 	
 	@GetMapping("/{approverType}")
-	public String approval(@PathVariable String approverType, Model model) {
+	public String docList(@PathVariable String approverType, Model model) {
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
 		int id = 1;
 		//String approverType = "approver";
@@ -49,6 +50,17 @@ public class DocController {
 		model.addAttribute("docList", docList);
 		
 		return "document/docList";
+	}
+	
+	@GetMapping("/docDetail")
+	public String docDetail(@RequestParam String docNo, Model model) {
+		
+		Document document = docService.selectOneDocument(docNo);
+		log.debug("document = {}",document);
+
+		model.addAttribute("document", document);
+		
+		return "document/docDetail";
 	}
 
 	

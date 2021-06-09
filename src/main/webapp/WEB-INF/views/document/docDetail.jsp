@@ -12,23 +12,38 @@
 	<article>
 		<table>
 			<tr>
-				<th>문서번호</th>
-				<th>제목</th>
-				<th>기안자</th>
-				<th>기안일</th>
-				<th>문서상태</th>
+				<td>여기뭘넣지</td><td></td><td>기안자(임시:사번)</td><td>${document.writer }</td>
 			</tr>
-			
-			<c:forEach items="${docList}" var="document">
-			<tr onclick="location.href=`${pageContext.request.contextPath}/document/docDetail?docNo=${document.docNo }`">
-				<td>${document.docNo }</td>
-				<td>${document.title }</td>
-				<td>${document.writer }</td>
-				<td>${document.requestDate }</td>
-				<td>${document.status }</td>
+			<tr>
+				<td>문서번호</td><td>${document.docNo }</td><td>기안일</td><td>${document.requestDate }</td>
 			</tr>
-			</c:forEach>
+			<tr>
+				<td>결재</td>
+			</tr>
+			<tr>
+				<td>협의</td>
+			</tr>
+			<tr>
+				<td>시행</td>
+			</tr>
+			<tr>
+				<td>수신참조</td>
+			</tr>
 		</table>
+		
+		<p>
+			<label for="title">문서제목</label>
+			<input type="text" id="title" value="${document.title}">
+		</p>
+		<p>
+			<label for="content">세부내용</label>
+			<textarea rows="" cols="" id="content">${document.content}</textarea>
+		</p>
+		<p>
+			첨부파일
+		</p>
+
+
 	</article>
 </section>
 

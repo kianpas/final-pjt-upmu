@@ -11,4 +11,6 @@ public interface DocService {
 
 	List<Document> selectDocLineList(int id);
 
+	Document selectOneDocument(String docNo);
+
 }

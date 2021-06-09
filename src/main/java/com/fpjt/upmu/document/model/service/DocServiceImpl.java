@@ -27,4 +27,10 @@ public class DocServiceImpl implements DocService {
 		return docDao.selectDocList(param);
 	}
 
+
+	@Override
+	public Document selectOneDocument(String docNo) {
+		return docDao.selectOneDocument(docNo);
+	}
+
 }

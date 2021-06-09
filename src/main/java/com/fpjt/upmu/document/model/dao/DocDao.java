@@ -11,4 +11,6 @@ public interface DocDao {
 
 	List<Document> selectDocLineList(int id);
 
+	Document selectOneDocument(String docNo);
+
 }
