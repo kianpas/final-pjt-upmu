@@ -13,5 +13,8 @@ public class DocLine {
 	private int approver;
 	private String approverType;
 	private int lv;
+	private String status;
 	
+	private String empName;
+	private String jobName;
 }

@@ -13,4 +13,6 @@ public interface DocDao {
 
 	Document selectOneDocument(String docNo);
 
+	int updateDocument(Map<String, Object> param);
+
 }

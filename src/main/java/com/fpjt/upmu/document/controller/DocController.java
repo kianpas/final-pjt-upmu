@@ -15,6 +15,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -63,7 +66,27 @@ public class DocController {
 		return "document/docDetail";
 	}
 
-	
+
+	@PostMapping("/docDetail")
+	public String updateMenu(
+			@RequestParam String docNo,
+			@RequestParam int approver, 
+			@RequestParam String status, 
+			Model model){
+		try {
+			Map<String, Object> param = new HashMap<>();
+			param.put("docNo", docNo);
+			param.put("approver", approver);
+			param.put("status", status);
+			
+			int result = docService.updateDocument(param);
+			
+			return "redirect:/document/docDetail?docNo="+docNo;
+		} catch (Exception e) {
+			log.error("수정 실패!",e);
+			throw e;
+		}
+	}
 	/**
 	 * java.sql.Date, java.util.Date 필드에 값 대입시
 	 * 사용자 입력값이 ""인 경우, null로 처리될 수 있도록 설정.08

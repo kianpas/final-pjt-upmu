@@ -30,4 +30,9 @@ public class DocDaoImpl implements DocDao {
 		return session.selectOne("document.selectOneDocument", docNo);
 	}
 
+	@Override
+	public int updateDocument(Map<String, Object> param) {
+		return session.update("document.updateDocument", param);
+	}
+
 }

@@ -33,4 +33,10 @@ public class DocServiceImpl implements DocService {
 		return docDao.selectOneDocument(docNo);
 	}
 
+
+	@Override
+	public int updateDocument(Map<String, Object> param) {
+		return docDao.updateDocument(param);
+	}
+
 }

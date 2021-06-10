@@ -34,16 +34,35 @@
 		<result column="request_date" property="requestDate"/>
 		<result column="end_date" property="endDate"/>
 		<result column="status" property="status"/>
-		<!-- <collection property="docLine"
+		<collection property="docLine"
 					javaType="arraylist" 
 					ofType="docLine"
-					column="id"
-					select="selectDocLineList" /> -->
+					column="doc_no"
+					select="selectDocLineList" />
 	</resultMap>
-	<!-- <select id="selectDocLineList" resultType="docLine">
-		select *
-		from docline
+	<select id="selectDocLineList" resultType="docLine">
+		select
+			dl.*,
+        	e.emp_name,
+        	j.job_name
+		from
+		    docline dl left join employee e
+		        on dl.approver = e.emp_no
+		            left join jobtitle j
+                on e.emp_job = j.job_no
 		where
-			approver = #{id}
-	</select> -->
+			doc_no = #{doc_no}
+		order by
+			lv
+	</select>
+	
+	<update id="updateDocument">
+		update
+			docline
+		set status = #{status}
+		where
+			doc_no = #{docNo}
+		and
+			approver=#{approver}
+	</update>
 </mapper>
