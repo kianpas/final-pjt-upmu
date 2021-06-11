@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.chat.model.dao.ChatDao;
+import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
+import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -20,4 +22,42 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.chatRoomList();
 	}
 
+	@Override
+	public int insertChatRoom(ChatRoom chatRoom) {
+		
+		return chatDao.insertChatRoom(chatRoom);
+	}
+
+	@Override
+	public List<ChatMsg> selectedRoomChatList(int chatroomNo) {
+		
+		return chatDao.selectedRoomChatList(chatroomNo);
+	}
+
+	@Override
+	public int deleteChatRoom(int chatroomNo) {
+		
+		return chatDao.deleteChatRoom(chatroomNo);
+	}
+
+	@Override
+	public int insertChatMsg(ChatMsg chatMsg) {
+		
+		return chatDao.insertChatMsg(chatMsg);
+	}
+
+	@Override
+	public int joinChatRoom(ChatRoomJoin chatroomJoin) {
+		
+		return chatDao.joinChatRoom(chatroomJoin);
+	}
+
+	@Override
+	public int disconnectChatRoom(ChatRoomJoin chatroomJoin) {
+		
+		return chatDao.disconnectChatRoom(chatroomJoin);
+	}
+
+	
+	
 }

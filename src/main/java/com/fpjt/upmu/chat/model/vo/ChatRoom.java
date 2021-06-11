@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ChatRoom {
 
-	private int chatRoomNo;
+	private int chatroomNo;
 	private String title;
 	private int empCreate;
 	private Date regDate;

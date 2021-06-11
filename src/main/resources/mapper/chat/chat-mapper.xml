@@ -7,5 +7,36 @@
 	<select id="chatRoomList" resultType="chatroom">
 		select *
 		from chatroom
+		order by reg_date
 	</select>
+	
+	<insert id="insertChatRoom">
+		insert into chatroom 
+		values (seq_chatroom_no.nextval, #{title}, #{empCreate}, sysdate)
+	</insert>
+	
+	<select id="selectedRoomChatList" resultType="chatmsg">
+		select *
+		from chatmsg
+		where chatroom_no = #{chatroomNo}
+	</select>
+	
+	<delete id="deleteChatRoom">
+		delete from chatroom
+		where chatroom_no  = #{chatroomNo}
+	</delete>
+	
+	<insert id="insertChatMsg">
+		insert into chatmsg
+		values (seq_chatmsg_no.nextval, #{chatroomNo}, #{writerNo}, #{msg}, sysdate)
+	</insert>
+	
+	<insert id="joinChatRoom">
+		insert into chatroomjoin
+		values (seq_chatroomjoin_no.nextval, #{empNo}, #{chatroomNo})
+	</insert>
+	<delete id="disconnectChatRoom">
+		delete from chatroomjoin
+		where emp_no = #{empNo} and chatroom_no = #{chatroomNo}
+	</delete>
 </mapper>
