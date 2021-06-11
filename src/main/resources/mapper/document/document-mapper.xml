@@ -65,4 +65,29 @@
 		and
 			approver=#{approver}
 	</update>
+	<update id="updateMyDocLineStatus">
+		update
+			docline
+		set status = #{status}
+		where
+			doc_no = #{docNo}
+		and
+			approver=#{approver}
+	</update>
+	<update id="updateOthersDocLineStatus">
+		update
+			docline
+		set status = 'afterview'
+		<where>
+			doc_no = #{docNo}
+		and
+			approver != #{approver}
+		and
+			status = 'notdecided'
+		<!-- 일반 결재자는 승인시 상급자의 status를 바꾸면 안됨 -->
+		<if test='maxAuthority eq "N" and status eq "approved"'>
+			and lv &lt; #{lv}
+		</if>
+		</where>
+	</update>
 </mapper>

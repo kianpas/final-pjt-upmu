@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.document.model.dao.DocDao;
+import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
 @Service
@@ -38,5 +39,19 @@ public class DocServiceImpl implements DocService {
 	public int updateDocument(Map<String, Object> param) {
 		return docDao.updateDocument(param);
 	}
+
+
+	@Override
+	public int updateMyDocLineStatus(DocLine docLine) {
+		return docDao.updateMyDocLineStatus(docLine);
+	}
+
+
+	@Override
+	public int updateOthersDocLineStatus(DocLine docLine) {
+		return docDao.updateOthersDocLineStatus(docLine);
+	}
+
+
 
 }

@@ -53,6 +53,8 @@
 							--%>
 							<c:if test="${docLine.approver == '1' }">
 							<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button></td>
+							<td><input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/></td>
+							<td><input type="hidden" id="lv" value="${docLine.lv}"/></td>
 							</c:if>
 							<c:if test="${docLine.approver != '1' }">
 							<td>미결재</td>
@@ -63,6 +65,9 @@
 						</c:when>
 						<c:when test="${docLine.status eq 'rejected' }">
 							<td>반려</td>
+						</c:when>
+						<c:when test="${docLine.status eq 'afterview' }">
+							<td>후열</td>
 						</c:when>
 					</c:choose>
 					
@@ -115,7 +120,16 @@ $(document).ready(function(){
     $('#approvalModal').on('hidden.bs.modal', function () {
         console.log("숨겨짐");
     });
- 
+
+	$("#save").click(function(event){
+		//event.preventDefault();
+		var maxAuthority = $("#maxAuthority").val();
+		var lv = $("#lv").val();
+
+		$("#docLineFrm").find("[name=maxAuthority]").val(maxAuthority);
+		$("#docLineFrm").find("[name=lv]").val(lv);
+
+	});
 });
  
 
@@ -133,7 +147,9 @@ $(document).ready(function(){
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="${pageContext.request.contextPath}/document/docDetail"
+      <form 
+      		id="docLineFrm"
+      		action="${pageContext.request.contextPath}/document/docDetail"
 			method="POST">
       <div class="modal-body">
       <input type="radio" name="status" value="approved"/>승인
@@ -147,8 +163,10 @@ $(document).ready(function(){
         <button type="submit" class="btn btn-primary" id="save">Save changes</button>
       </div>
       <input type="hidden" name="docNo" value="${document.docNo}"/>
-      <%--원래 로그인한 사람 사번 제출 --%>
+      <%--원래 로그인한 사람 사번 제출. 여기선 홍길동=1 --%>
       <input type="hidden" name="approver" value="1"/>
+      <input type="hidden" name="maxAuthority" value=""/>
+      <input type="hidden" name="lv" value=""/>
       </form>
     </div>
   </div>

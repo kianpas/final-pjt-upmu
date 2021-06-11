@@ -14,6 +14,7 @@ public class DocLine {
 	private String approverType;
 	private int lv;
 	private String status;
+	private String maxAuthority;
 	
 	private String empName;
 	private String jobName;

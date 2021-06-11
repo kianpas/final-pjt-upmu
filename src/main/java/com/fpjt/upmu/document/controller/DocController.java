@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fpjt.upmu.document.model.service.DocService;
+import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
 import lombok.extern.slf4j.Slf4j;
@@ -69,19 +71,16 @@ public class DocController {
 
 	@PostMapping("/docDetail")
 	public String updateMenu(
-			@RequestParam String docNo,
-			@RequestParam int approver, 
-			@RequestParam String status, 
+			@ModelAttribute DocLine docLine,
 			Model model){
 		try {
-			Map<String, Object> param = new HashMap<>();
-			param.put("docNo", docNo);
-			param.put("approver", approver);
-			param.put("status", status);
-			
-			int result = docService.updateDocument(param);
-			
-			return "redirect:/document/docDetail?docNo="+docNo;
+			int result = 0;
+			//result = docService.updateDocument(param);
+
+			result = docService.updateMyDocLineStatus(docLine);
+			result = docService.updateOthersDocLineStatus(docLine);
+
+			return "redirect:/document/docDetail?docNo="+docLine.getDocNo();
 		} catch (Exception e) {
 			log.error("수정 실패!",e);
 			throw e;

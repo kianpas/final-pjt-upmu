@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
 @Repository
@@ -34,5 +35,17 @@ public class DocDaoImpl implements DocDao {
 	public int updateDocument(Map<String, Object> param) {
 		return session.update("document.updateDocument", param);
 	}
+
+	@Override
+	public int updateMyDocLineStatus(DocLine docLine) {
+		return session.update("document.updateMyDocLineStatus", docLine);
+	}
+
+	@Override
+	public int updateOthersDocLineStatus(DocLine docLine) {
+		return session.update("document.updateOthersDocLineStatus", docLine);
+	}
+
+	
 
 }
