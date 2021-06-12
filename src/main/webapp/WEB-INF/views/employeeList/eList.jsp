@@ -58,8 +58,8 @@ label {
 	display: block;
 }
 table {
-          border: 1px solid black;
-          border-collapse: collapse; /*경계선 설정*/
+    border: 1px solid black;
+    border-collapse: collapse; /*경계선 설정*/
 }
 th, td {
     border: 1px solid black;
@@ -73,6 +73,21 @@ th, td {
 }
 .search-form label {
 	margin-right: 5px; 
+}
+#context-menu{
+	border: 1px solid #c8c8c8;
+	background-color: white;
+	margin: 0px;
+	z-index: 9999;
+}
+#context-menu ul li{
+	padding-left: 14px;
+	padding-right: 8px;
+	cursor: default;
+	font-size: 14px;
+}
+#context-menu ul li:hover{
+	background-color: #dcdcdc;
 }
 </style>
 <body>
@@ -89,13 +104,19 @@ th, td {
 	    <input id="search-submit" type="submit" value="검색" onclick="search();">
 </div>
 <div class="list-form">
+	<div id="context-menu" class="" style="display: none;">
+	      <ul style="margin: 0px; padding: 0px; list-style: none;">
+	        <li onclick="deleteDept()">부서삭제</li>
+	        <li onclick="modifyDept()">부서수정</li>
+	      </ul>
+   	</div>
 	<div class="depart-list list">
 		<details>
 	        <summary class="dList-all">
-	        	전체 목록
+	        	부서 목록
 	        </summary>
 		    <c:forEach items="${dList}" var="dept">
-				<p class="${dept.depNo} dept" onclick="empShow();">${dept.depName}</p>
+				<p class="${dept.depNo} dept">${dept.depName}</p>
 			</c:forEach>
     	</details>
     	<div id="depart-enroll">
@@ -114,8 +135,9 @@ th, td {
 </div>
 
 <script>
-	var getClass;
 	//목록에서 employee불러오기
+	var getClass;
+	
 	$(".dept").click((e) => {
 		getClass = {"depNo" : ($(e.target).attr('class').split(' '))[0]};
 
@@ -150,22 +172,8 @@ th, td {
 			error: console.log
 		})
 	}
-	
-/* 	$("#search-submit").click((e)=> {
-		getKeyword = {"getKeyword" : $("#keyword").val(), "getSearch" : '%' + $("#search").val() + '%'};
-		console.log(getKeyword);
-		$.ajax({
-			url: "${pageContext.request.contextPath}/employeeList/selectSearch.do",
-			method: "GET",
-			data: getKeyword,
-			success(data){
-				console.log(data);
-				displayTable(data.eList);
-			},
-			error: console.log
-		})
-	}); */
-	
+
+	//DB에서 불러온 데이터 테이블에 추가하는 함수
 	function displayTable(data) {
 		let html = "<table><tr><th>사번</th><th>이름</th><th>직급</th><th>부서</th><th>연락처</th><th>이메일</th></tr>";
 		if(data.length > 0){
@@ -189,7 +197,39 @@ th, td {
 		$(".employee-list").html(html);
 	}
 
+	//부서삭제
+	
+	//마우스 오른쪽 버튼 끄기
+	$(".dept").on('contextmenu', () => {
+  		return false;
+	});
+	
+	var delDeptClass;
+	$(".dept").on('mousedown', (e) => {
+		if(e.button == 2 || e.which==3){
+			const ctxMenu = document.getElementById('context-menu');
+	        delDeptClass = $(e.target).attr('class').split(' ')[0];
+	        // 노출 설정
+	        ctxMenu.style.display = 'inline';
+	        ctxMenu.style.position = 'absolute';
+	        // 위치 설정
+	        ctxMenu.style.top = e.pageY + 'px' ;
+	        ctxMenu.style.left = e.pageX + 'px';
+		}
+	});
 
+	//context-menu 끄기
+	$(document).click(e =>{
+		$("#context-menu").hide();
+	})
+	
+	//부서삭제
+	function deleteDept() {
+		var yn = confirm("정말 삭제하시겠습니까?");
+		if(yn==true) {
+			location.href="${pageContext.request.contextPath}/employeeList/deleteDept.do?depNo=" + delDeptClass
+		}
+	}
 </script>
 </body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

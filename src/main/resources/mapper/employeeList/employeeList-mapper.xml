@@ -33,6 +33,12 @@
 		WHERE
 			${getKeyword} LIKE #{getSearch}
 	</select>
+	<delete id="deleteDept">
+		DELETE FROM
+			DEPARTMENT
+		WHERE
+			DEP_NO = #{param}
+	</delete>
 	<resultMap type="employee" id="empResultMap">
 		 <result column="EMP_NO" property="empNo" />
 		 <result column="EMP_NAME" property="empName" />

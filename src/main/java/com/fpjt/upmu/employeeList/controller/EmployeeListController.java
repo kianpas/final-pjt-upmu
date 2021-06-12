@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,13 +40,13 @@ public class EmployeeListController {
 	}
 	
 	@PostMapping("/departEnroll.do")
-	public String departEnroll(Department dept, RedirectAttributes redirectAttr) {
+	public String departEnroll(Department dept) {
 		try {			
 			int result = elService.insertDept(dept);
 		} catch (Exception e) {
 			log.error("부서등록 오류!");
 		}
-		return "redirect:eList";
+		return "redirect:/employeeList/eList";
 	}
 	
 	@GetMapping("/selectOneDeptEmp.do")
@@ -74,7 +73,12 @@ public class EmployeeListController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			Map<String, String> keyword = param;
-
+			
+			if(keyword.get("getSearch") == "") {
+					
+				
+				return map; 
+			}
 			List<Employee> eList = elService.selectSearchList(keyword);
 			log.debug("eList={}",eList);
 			
@@ -84,5 +88,16 @@ public class EmployeeListController {
 			log.error("SearchEmp목록 오류!");
 		}
 		return map;
+	}
+	
+	@GetMapping("/deleteDept.do")
+	public String deleteDept(@RequestParam(value = "depNo") String param) {
+		try {			
+			log.debug(param);
+			int result = elService.deleteDept(param);
+		} catch (Exception e) {
+			log.error("부서삭제 오류!");
+		}
+		return "redirect:/employeeList/eList";
 	}
 }

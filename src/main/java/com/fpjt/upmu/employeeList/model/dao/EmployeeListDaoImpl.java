@@ -44,8 +44,8 @@ public class EmployeeListDaoImpl implements EmployeeListDao {
 		return session.selectList("employeeList.selectSearchList", keyword);
 	}
 
-	
-
-	
-	
+	@Override
+	public int deleteDept(String param) {
+		return session.delete("employeeList.deleteDept", param);
+	}
 }

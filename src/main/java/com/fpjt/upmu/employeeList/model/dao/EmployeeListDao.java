@@ -18,5 +18,7 @@ public interface EmployeeListDao {
 
 	List<Employee> selectSearchList(Map<String, String> keyword);
 
+	int deleteDept(String param);
+
 
 }
