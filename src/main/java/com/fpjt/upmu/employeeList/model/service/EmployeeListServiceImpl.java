@@ -45,7 +45,8 @@ public class EmployeeListServiceImpl implements EmployeeListService {
 		return elDao.selectSearchList(keyword);
 	}
 
-
-	
-	
+	@Override
+	public int deleteDept(String param) {
+		return elDao.deleteDept(param);
+	}
 }

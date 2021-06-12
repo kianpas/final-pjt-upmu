@@ -18,6 +18,6 @@ public interface EmployeeListService {
 
 	List<Employee> selectSearchList(Map<String, String> keyword);
 
-
+	int deleteDept(String param);
 
 }
