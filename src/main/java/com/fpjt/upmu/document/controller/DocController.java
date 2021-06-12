@@ -3,7 +3,9 @@ package com.fpjt.upmu.document.controller;
 import java.beans.PropertyEditor;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,19 +43,25 @@ public class DocController {
 		return "document/docMain";
 	}
 	
-	@GetMapping("/{approverType}")
-	public String docList(@PathVariable String approverType, Model model) {
+
+	
+	@GetMapping("/docList")
+	public String docList(@RequestParam String type, Model model) {
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
 		int id = 1;
-		//String approverType = "approver";
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
-		param.put("approverType", approverType);
+		param.put("status", type);
 		
-		List<Document> docList = docService.selectDocList(param);
-		log.debug("docList = {}",docList);
+		List<String> docNoList = docService.selectDocNo(param);
+		List<Document> docList = new ArrayList<>();
+		
+		for (String docNo : docNoList) {
+			param.put("docNo", docNo);
+			docList.add(docService.selectOneDocumentByParam(param));
+		}
 		model.addAttribute("docList", docList);
-		
 		return "document/docList";
 	}
 	

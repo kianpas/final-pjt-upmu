@@ -24,12 +24,6 @@ public class DocServiceImpl implements DocService {
 
 
 	@Override
-	public List<Document> selectDocList(Map<String, Object> param) {
-		return docDao.selectDocList(param);
-	}
-
-
-	@Override
 	public Document selectOneDocument(String docNo) {
 		return docDao.selectOneDocument(docNo);
 	}
@@ -50,6 +44,18 @@ public class DocServiceImpl implements DocService {
 	@Override
 	public int updateOthersDocLineStatus(DocLine docLine) {
 		return docDao.updateOthersDocLineStatus(docLine);
+	}
+
+
+	@Override
+	public List<String> selectDocNo(Map<String, Object> param) {
+		return docDao.selectDocNo(param);
+	}
+
+
+	@Override
+	public Document selectOneDocumentByParam(Map<String, Object> param) {
+		return docDao.selectOneDocumentByParam(param);
 	}
 
 

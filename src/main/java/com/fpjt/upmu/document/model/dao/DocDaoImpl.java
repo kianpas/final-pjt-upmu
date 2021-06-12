@@ -16,10 +16,6 @@ public class DocDaoImpl implements DocDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	@Override
-	public List<Document> selectDocList(Map<String, Object> param) {
-		return session.selectList("document.selectDocList",param);
-	}
 
 	@Override
 	public List<Document> selectDocLineList(int id) {
@@ -44,6 +40,16 @@ public class DocDaoImpl implements DocDao {
 	@Override
 	public int updateOthersDocLineStatus(DocLine docLine) {
 		return session.update("document.updateOthersDocLineStatus", docLine);
+	}
+
+	@Override
+	public List<String> selectDocNo(Map<String, Object> param) {
+		return session.selectList("document.selectDocNo", param);
+	}
+
+	@Override
+	public Document selectOneDocumentByParam(Map<String, Object> param) {
+		return session.selectOne("document.selectOneDocumentByParam", param);
 	}
 
 	

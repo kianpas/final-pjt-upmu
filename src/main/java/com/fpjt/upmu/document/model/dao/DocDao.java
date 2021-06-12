@@ -8,8 +8,6 @@ import com.fpjt.upmu.document.model.vo.Document;
 
 public interface DocDao {
 
-	List<Document> selectDocList(Map<String, Object> param);
-
 	List<Document> selectDocLineList(int id);
 
 	Document selectOneDocument(String docNo);
@@ -19,5 +17,9 @@ public interface DocDao {
 	int updateMyDocLineStatus(DocLine docLine);
 
 	int updateOthersDocLineStatus(DocLine docLine);
+
+	List<String> selectDocNo(Map<String, Object> param);
+
+	Document selectOneDocumentByParam(Map<String, Object> param);
 
 }

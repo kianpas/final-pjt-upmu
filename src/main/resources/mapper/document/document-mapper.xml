@@ -3,22 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="document">
-	<select id="selectDocList" resultType="document">
-		select 
-		    d.doc_no,
-		    d.title,
-		    d.writer,
-		    d.content,
-		    d.request_date,
-		    d.end_date,
-		    d.status
-		from
-		    document d left join docline dl
-		        on d.doc_no = dl.doc_no
-		where
-		    approver = #{id}
-		and approver_type = #{approverType}
-	</select>
 	
 	<select id="selectOneDocument" resultMap="docMap">
 		select *
@@ -55,6 +39,25 @@
 		order by
 			lv
 	</select>
+
+	<select id="selectOneDocumentByParam" resultType="document">
+		select 
+		    d.doc_no,
+		    d.title,
+		    e.emp_name writer_name,
+		    d.request_date,
+		    d.end_date,
+		    d.status
+		from
+		    document d left join docline dl
+		        on d.doc_no = dl.doc_no
+	                   left join employee e
+		        on dl.approver = e.emp_no
+		where
+		    approver = #{id}
+		and d.doc_no = #{docNo}
+	
+	</select>
 	
 	<update id="updateDocument">
 		update
@@ -90,4 +93,37 @@
 		</if>
 		</where>
 	</update>
+	
+	<select id="selectDocNo" resultType="string">
+		select doc_no from docline
+		<where>
+		    approver = #{id}
+		<if test="status == 'afterview'">
+			and approver_type in ('enforcer', 'referer')
+		</if>
+		<if test="status == 'notdecided'">
+			and approver_type in ('approver', 'agreer')
+		</if>
+		<if test="status == 'approved'">
+			and approver_type in ('approver', 'agreer')
+			and status = #{status}
+		</if>
+		</where>
+		<if test="status != 'afterview'">
+		intersect
+		select doc_no from docline
+		<where>
+			<if test="status == 'rejected' or status == 'notdecided'">
+		    status = #{status}
+			</if>
+			<if test="status == 'completed'">
+			max_authority = 'Y' and status = 'approved'
+			</if>
+			<if test="status == 'approved'">
+			max_authority = 'Y' and status = 'notdecided'
+			</if>
+			
+		</where>
+		</if>
+	</select>
 </mapper>
