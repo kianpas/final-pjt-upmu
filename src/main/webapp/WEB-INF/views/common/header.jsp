@@ -16,7 +16,7 @@
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
 <%-- <c:if test="${not empty msg}">
-<script>
+<script>							
 	alert("${msg}");
 </script> 
 </c:if>--%>
