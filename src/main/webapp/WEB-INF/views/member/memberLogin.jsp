@@ -12,11 +12,11 @@
 <div class="login-wrap">
     <div class="login-html">
       <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab" onclick="location.href=`${pageContext.request.contextPath}/member/memberLogin.do">Sign In</label>
-      <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do'">Sign Up</label>
+      <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab" onclick="location.href='${pageContext.request.contextPath}">Sign Up</label>
       <div class="login-form">
         <div class="sign-in-htm">
           <div class="group">
-            <label for="user" class="label">사원아이디</label>
+            <label for="user" class="label" id="emp_no">사원아이디</label>
             <input id="user" type="text" class="input">
           </div>
           <div class="group">
@@ -37,16 +37,19 @@
         </div>
         <div class="sign-up-htm">
           <div class="group">
-            <label for="user" class="label">사번</label>
+            <label for="user" class="label" id="emp_no">사번</label>
             <input id="emp_no" type="text" class="input">
+            <span class="guide ok">이 사번은 가능합니다.</span>
+            <span class="guide error">사번이 중복됩니다.</span>
+            
           </div>
           <div class="group">
             <label for="pass" class="label">사원비밀번호</label>
-            <input id="emp_pw" type="password" class="input" data-type="password">
+            <input id="password" type="password" class="input" data-type="password">
           </div>
           <div class="group">
             <label for="pass" class="label">비밀번호 재입력</label>
-            <input id="re_emp_pw" type="password" class="input" data-type="password">
+            <input id="passwordCheck" type="password" class="input" data-type="password">
           </div>
           <div class="group">
             <label for="pass" class="label">사원이름</label>
@@ -123,5 +126,47 @@
   </div>
   <br /><br /><br />
 </body>
-
+<script>
+$("#emp_no1").keyup(e => {
+	const emp_no = $(e.target).val();
+	const $error = $(".guide.error");
+	const $ok = $(".guide.ok");
+	const $emp_noValid = $("#emp_noValid");
+	
+	if(emp_no.length <4) {
+		$(".guide").hide();
+		$emp_noValid.val(0);
+		return;
+	}
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/member/checkemp_noDuplicate3.do",
+		data: {emp_no},
+		success: (data) => {
+			console.log(data);
+			const {available} = data;
+			if(available){
+				$ok.show();
+				$error.hide();
+				$emp_idValid.val(1);
+			}
+			else {
+				$ok.hide();
+				$error.show();
+				$emp_idValid.val(0);
+			}
+		},
+		error: (xhr, statusText, err) => {
+			console.log(xhr, statusText, err);
+		}
+	});
+});
+$("#passwordCheck").blur(function() {
+	var $password = $("#password"), $passwordCheck = $("#passwordCheck");
+	if($password.val() != $passwordCheck.val()){
+		alert("비밀번호가 일치하지 않습니다.");
+		$password.select();
+	}
+});
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

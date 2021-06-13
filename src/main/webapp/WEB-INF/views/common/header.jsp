@@ -24,7 +24,7 @@
 <body>
 	<header class="header responsive-wrapper">
   <a class="header-left" href="${pageContext.request.contextPath}">
-  <img alt="logo" src="./resources/images/logo1.png"  width="200" height="100">
+  <img alt="logo" src="./resources/images/logo1.png"  width="200" height="150">
   </a>
   <div class="header-right">
     <nav class="header-nav">

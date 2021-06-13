@@ -123,7 +123,6 @@ public class MemberController {
 		
 		
 		//2. 로그인여부 분기처리
-		// boolean org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.matches(CharSequence rawPassword, String encodedPassword)
 		if(member != null && bcryptPasswordEncoder.matches(password, member.getEmp_pw())) {
 			// 로그인 성공
 			// loginMember 세션속성으로 저장하려면, class에 @SessionAttributes로 등록
@@ -216,8 +215,8 @@ public class MemberController {
 		return map;
 	}
 
-	@GetMapping("/checkIdDuplicate3.do")
-	public ResponseEntity<Map<String, Object>> checkIdDuplicate3(@RequestParam int emp_no) {
+	@GetMapping("/checkemp_noDuplicate3.do")
+	public ResponseEntity<Map<String, Object>> checkemp_noDuplicate3(@RequestParam int emp_no) {
 		//1. 업무로직
 		Member member = memberService.selectOneMember(emp_no);
 		boolean available = (member == null);
