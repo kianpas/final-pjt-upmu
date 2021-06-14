@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <body>
 <a href="${pageContext.request.contextPath}/employeeList/eList">조직도</a>	
+<a href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
 <main class="responsive-wrapper">
   <div class="page-title">
     <h1>Latest Updates</h1>
