@@ -3,7 +3,9 @@ package com.fpjt.upmu.document.controller;
 import java.beans.PropertyEditor;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +16,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fpjt.upmu.document.model.service.DocService;
+import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,19 +43,25 @@ public class DocController {
 		return "document/docMain";
 	}
 	
-	@GetMapping("/{approverType}")
-	public String docList(@PathVariable String approverType, Model model) {
+
+	
+	@GetMapping("/docList")
+	public String docList(@RequestParam String type, Model model) {
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
 		int id = 1;
-		//String approverType = "approver";
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
-		param.put("approverType", approverType);
+		param.put("status", type);
 		
-		List<Document> docList = docService.selectDocList(param);
-		log.debug("docList = {}",docList);
+		List<String> docNoList = docService.selectDocNo(param);
+		List<Document> docList = new ArrayList<>();
+		
+		for (String docNo : docNoList) {
+			param.put("docNo", docNo);
+			docList.add(docService.selectOneDocumentByParam(param));
+		}
 		model.addAttribute("docList", docList);
-		
 		return "document/docList";
 	}
 	
@@ -63,7 +76,24 @@ public class DocController {
 		return "document/docDetail";
 	}
 
-	
+
+	@PostMapping("/docDetail")
+	public String updateMenu(
+			@ModelAttribute DocLine docLine,
+			Model model){
+		try {
+			int result = 0;
+			//result = docService.updateDocument(param);
+
+			result = docService.updateMyDocLineStatus(docLine);
+			result = docService.updateOthersDocLineStatus(docLine);
+
+			return "redirect:/document/docDetail?docNo="+docLine.getDocNo();
+		} catch (Exception e) {
+			log.error("수정 실패!",e);
+			throw e;
+		}
+	}
 	/**
 	 * java.sql.Date, java.util.Date 필드에 값 대입시
 	 * 사용자 입력값이 ""인 경우, null로 처리될 수 있도록 설정.08

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.document.model.dao.DocDao;
+import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
 @Service
@@ -23,14 +24,40 @@ public class DocServiceImpl implements DocService {
 
 
 	@Override
-	public List<Document> selectDocList(Map<String, Object> param) {
-		return docDao.selectDocList(param);
+	public Document selectOneDocument(String docNo) {
+		return docDao.selectOneDocument(docNo);
 	}
 
 
 	@Override
-	public Document selectOneDocument(String docNo) {
-		return docDao.selectOneDocument(docNo);
+	public int updateDocument(Map<String, Object> param) {
+		return docDao.updateDocument(param);
 	}
+
+
+	@Override
+	public int updateMyDocLineStatus(DocLine docLine) {
+		return docDao.updateMyDocLineStatus(docLine);
+	}
+
+
+	@Override
+	public int updateOthersDocLineStatus(DocLine docLine) {
+		return docDao.updateOthersDocLineStatus(docLine);
+	}
+
+
+	@Override
+	public List<String> selectDocNo(Map<String, Object> param) {
+		return docDao.selectDocNo(param);
+	}
+
+
+	@Override
+	public Document selectOneDocumentByParam(Map<String, Object> param) {
+		return docDao.selectOneDocumentByParam(param);
+	}
+
+
 
 }
