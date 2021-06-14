@@ -22,6 +22,7 @@ import com.fpjt.upmu.board.model.service.BoardService;
 import com.fpjt.upmu.board.model.vo.Attachment;
 import com.fpjt.upmu.board.model.vo.Board;
 import com.fpjt.upmu.common.util.UpmuUtils;
+import com.fpjt.upmu.common.util.HelloSpringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -102,6 +103,8 @@ public class BoardController {
 		
 		return "redirect:/board/boardList.do";
 	}
-	
-	
+	public String boardList() {
+		
+		return "board/boardList";
+	}
 }

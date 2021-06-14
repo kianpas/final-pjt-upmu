@@ -1,0 +1,82 @@
+package com.fpjt.upmu.chat.model.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.fpjt.upmu.chat.model.dao.ChatDao;
+import com.fpjt.upmu.chat.model.vo.ChatMsg;
+import com.fpjt.upmu.chat.model.vo.ChatRoom;
+import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
+import com.fpjt.upmu.chat.model.vo.DirectMsg;
+
+@Service
+public class ChatServiceImpl implements ChatService {
+
+	@Autowired
+	private ChatDao chatDao;
+	
+	@Override
+	public List<ChatRoom> chatRoomList() {
+		
+		return chatDao.chatRoomList();
+	}
+
+	@Override
+	public int insertChatRoom(ChatRoom chatRoom) {
+		
+		return chatDao.insertChatRoom(chatRoom);
+	}
+
+	@Override
+	public List<ChatMsg> selectedRoomChatList(int chatroomNo) {
+		
+		return chatDao.selectedRoomChatList(chatroomNo);
+	}
+
+	@Override
+	public int deleteChatRoom(int chatroomNo) {
+		
+		return chatDao.deleteChatRoom(chatroomNo);
+	}
+
+	@Override
+	public int insertChatMsg(ChatMsg chatMsg) {
+		
+		return chatDao.insertChatMsg(chatMsg);
+	}
+
+	@Override
+	public int joinChatRoom(ChatRoomJoin chatroomJoin) {
+		
+		return chatDao.joinChatRoom(chatroomJoin);
+	}
+
+	@Override
+	public int disconnectChatRoom(ChatRoomJoin chatroomJoin) {
+		
+		return chatDao.disconnectChatRoom(chatroomJoin);
+	}
+
+	@Override
+	public List<ChatRoomJoin> roomUserList(int chatroomNo) {
+		
+		return chatDao.roomUserList(chatroomNo);
+	}
+
+	@Override
+	public int insertDirectMsg(DirectMsg directMsg) {
+		
+		return chatDao.insertDirectMsg(directMsg);
+	}
+
+	@Override
+	public int updateChatRoom(ChatRoom chatRoom) {
+		
+		return chatDao.updateChatRoom(chatRoom);
+	}
+
+	
+	
+}
