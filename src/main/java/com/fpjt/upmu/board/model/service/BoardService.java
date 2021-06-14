@@ -6,6 +6,9 @@ import java.util.Map;
 import com.fpjt.upmu.board.model.vo.Board;
 
 public interface BoardService {
-	
-	
+
+	List<Board> selectBoardList();
+
+	List<Board> selectBoardList(Map<String, Object> param);
+
 }

@@ -7,4 +7,8 @@ import com.fpjt.upmu.board.model.vo.Board;
 
 public interface BoardDao {
 
+	List<Board> selectBoardList();
+
+	List<Board> selectBoardList(Map<String, Object> param);
+
 }
