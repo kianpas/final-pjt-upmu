@@ -49,4 +49,11 @@ public class EmployeeListServiceImpl implements EmployeeListService {
 	public int deleteDept(String param) {
 		return elDao.deleteDept(param);
 	}
+
+	@Override
+	public int updateDept(Map<String, Object> map) {
+		return elDao.updateDept(map);
+	}
+	
+	
 }
