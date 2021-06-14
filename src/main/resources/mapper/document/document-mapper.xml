@@ -3,12 +3,127 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="document">
-	<!-- <select id="selectDocList" resultMap="docMap"> -->
-	<select id="selectDocList" resultType="document">
+	
+	<select id="selectOneDocument" resultMap="docMap">
 		select *
 		from document
+		where doc_no = #{docNo}
 	</select>
-<!-- <resultMap type="document" id="docMap">
 	
-</resultMap> -->
+	<resultMap type="document" id="docMap">
+		<result column="doc_no" property="docNo"/>
+		<result column="title" property="title"/>
+		<result column="writer" property="writer"/>
+		<result column="content" property="content"/>
+		<result column="request_date" property="requestDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="status" property="status"/>
+		<collection property="docLine"
+					javaType="arraylist" 
+					ofType="docLine"
+					column="doc_no"
+					select="selectDocLineList" />
+	</resultMap>
+	<select id="selectDocLineList" resultType="docLine">
+		select
+			dl.*,
+        	e.emp_name,
+        	j.job_name
+		from
+		    docline dl left join employee e
+		        on dl.approver = e.emp_no
+		            left join jobtitle j
+                on e.emp_job = j.job_no
+		where
+			doc_no = #{doc_no}
+		order by
+			lv
+	</select>
+
+	<select id="selectOneDocumentByParam" resultType="document">
+		select 
+		    d.doc_no,
+		    d.title,
+		    e.emp_name writer_name,
+		    d.request_date,
+		    d.end_date,
+		    d.status
+		from
+		    document d left join docline dl
+		        on d.doc_no = dl.doc_no
+	                   left join employee e
+		        on dl.approver = e.emp_no
+		where
+		    approver = #{id}
+		and d.doc_no = #{docNo}
+	
+	</select>
+	
+	<update id="updateDocument">
+		update
+			docline
+		set status = #{status}
+		where
+			doc_no = #{docNo}
+		and
+			approver=#{approver}
+	</update>
+	<update id="updateMyDocLineStatus">
+		update
+			docline
+		set status = #{status}
+		where
+			doc_no = #{docNo}
+		and
+			approver=#{approver}
+	</update>
+	<update id="updateOthersDocLineStatus">
+		update
+			docline
+		set status = 'afterview'
+		<where>
+			doc_no = #{docNo}
+		and
+			approver != #{approver}
+		and
+			status = 'notdecided'
+		<!-- 일반 결재자는 승인시 상급자의 status를 바꾸면 안됨 -->
+		<if test='maxAuthority eq "N" and status eq "approved"'>
+			and lv &lt; #{lv}
+		</if>
+		</where>
+	</update>
+	
+	<select id="selectDocNo" resultType="string">
+		select doc_no from docline
+		<where>
+		    approver = #{id}
+		<if test="status == 'afterview'">
+			and approver_type in ('enforcer', 'referer')
+		</if>
+		<if test="status == 'notdecided'">
+			and approver_type in ('approver', 'agreer')
+		</if>
+		<if test="status == 'approved'">
+			and approver_type in ('approver', 'agreer')
+			and status = #{status}
+		</if>
+		</where>
+		<if test="status != 'afterview'">
+		intersect
+		select doc_no from docline
+		<where>
+			<if test="status == 'rejected' or status == 'notdecided'">
+		    status = #{status}
+			</if>
+			<if test="status == 'completed'">
+			max_authority = 'Y' and status = 'approved'
+			</if>
+			<if test="status == 'approved'">
+			max_authority = 'Y' and status = 'notdecided'
+			</if>
+			
+		</where>
+		</if>
+	</select>
 </mapper>

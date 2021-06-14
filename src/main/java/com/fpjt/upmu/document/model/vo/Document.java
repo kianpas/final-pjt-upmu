@@ -22,4 +22,6 @@ public class Document {
 	private String status;
 	
 	private List<DocLine> docLine;
+	
+	private String writerName;
 }

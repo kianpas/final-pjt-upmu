@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="employeeList">
+	<select id="selectDeptList" resultMap="deptResultMap">
+		SELECT
+			*
+		FROM
+			DEPARTMENT
+	</select>
+	<insert id="insertDept">
+		insert into
+			department
+		values(
+			#{depNo},
+			#{depName}
+		)
+	</insert>
+	<select id="selectDeptEmpList" resultMap="empResultMap">
+		SELECT
+			*
+		FROM
+			EMPLOYEE
+		WHERE
+			EMP_DEPT = #{depNo}
+	</select>
+	<select id="selectSearchList" parameterType="hashMap" resultMap="empResultMap">
+		SELECT
+			*
+		FROM
+			EMPLOYEE
+		WHERE
+			${getKeyword} LIKE #{getSearch}
+	</select>
+	<delete id="deleteDept">
+		DELETE FROM
+			DEPARTMENT
+		WHERE
+			DEP_NO = #{param}
+	</delete>
+	<resultMap type="employee" id="empResultMap">
+		 <result column="EMP_NO" property="empNo" />
+		 <result column="EMP_NAME" property="empName" />
+		 <result column="EMP_PW" property="empPw" />
+		 <result column="EMP_PHONE" property="empPhone" />
+		 <result column="EMP_EMAIL" property="empEmail" />
+		 <result column="EMP_ADDR" property="empAddr" />
+		 <result column="EMP_BIRTH" property="empBirth" />
+		 <result column="EMP_STATE" property="empState" />
+		 <result column="EMP_HIREDATE" property="empHiredate" />
+		 <result column="EMP_DEPT" property="empDept" />
+		 <result column="EMP_JOB" property="empJob" />
+	</resultMap>
+	<resultMap type="department" id="deptResultMap">
+		 <result column="DEP_NO" property="depNo" />
+		 <result column="DEP_NAME" property="depName" />
+	</resultMap>
+</mapper>
