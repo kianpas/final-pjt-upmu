@@ -29,7 +29,5 @@ public class BoardDaoImpl implements BoardDao {
 		return session.selectList("board.selectBoardList", null, rowBounds);
 	}
 	
-	
-	
 }
 

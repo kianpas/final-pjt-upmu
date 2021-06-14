@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <settings>
-  	<!-- javaType값이 null인 경우, jdbtType도 null로 처리 -->
   	<setting name="jdbcTypeForNull" value="NULL"/>
   	<setting name="mapUnderscoreToCamelCase" value="true"/>
   </settings>
@@ -13,7 +12,6 @@
   	<package name="com.fpjt.upmu"/>
   </typeAliases>
   <typeHandlers>
-  	<!-- <typeHandler handler="com.kh.spring.common.typehandler.StringArrayTypeHandler"/> -->
   	<package name="com.fpjt.upmu.common.typehandler"/>
   </typeHandlers>
 </configuration>

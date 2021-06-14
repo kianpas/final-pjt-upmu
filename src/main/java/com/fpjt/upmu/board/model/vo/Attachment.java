@@ -18,6 +18,5 @@ public class Attachment {
 	private Date uploadDate;
 	private int downloadCount;
 	private boolean status;
-	
-	
+
 }
