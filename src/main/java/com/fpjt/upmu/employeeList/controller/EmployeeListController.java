@@ -28,6 +28,7 @@ public class EmployeeListController {
 	@Autowired
 	EmployeeListService elService;
 	
+	//부서목록 불러오기
 	@GetMapping("/eList")
 	public void mList(Model model) {	
 		try {
@@ -38,6 +39,7 @@ public class EmployeeListController {
 		}
 	}
 	
+	//부서 등록
 	@PostMapping("/departEnroll.do")
 	public String departEnroll(Department dept) {
 		try {			
@@ -48,6 +50,7 @@ public class EmployeeListController {
 		return "redirect:/employeeList/eList";
 	}
 	
+	//부서에 따른 조직원 조회
 	@GetMapping("/selectOneDeptEmp.do")
 	@ResponseBody
 	public Map<String, Object> selectOneDeptEmp(@RequestParam(value="depNo") String param) {
@@ -66,6 +69,7 @@ public class EmployeeListController {
 		return map;
 	}
 	
+	//조직원 검색
 	@GetMapping("/selectSearch.do")
 	@ResponseBody
 	public Map<String, Object> selectSearch(@RequestParam Map<String, String> param) {
@@ -89,6 +93,7 @@ public class EmployeeListController {
 		return map;
 	}
 	
+	//부서 삭제
 	@GetMapping("/deleteDept.do")
 	public String deleteDept(@RequestParam(value = "depNo") String param) {
 		try {			
@@ -100,14 +105,26 @@ public class EmployeeListController {
 		return "redirect:/employeeList/eList";
 	}
 	
+	//부서 업데이트 창 띄우기
 	@GetMapping("/modifyPop")
-	public void modifyPop() {
-		
+	public void modifyPop() {}
+	
+	//부서 업데이트
+	@PostMapping("/modifyDept.do")
+	public String modifyDept(Department dep, String modifyDept) {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("dep", dep);
+			map.put("modifyDept", modifyDept);
+			
+			int result = elService.updateDept(map);
+		} catch (Exception e) {
+			log.error("부서등록 오류!");
+		}
+		return "redirect:/employeeList/close";
 	}
 	
-	@PostMapping("/modifyDept.do")
-	public void modifyDept(Department dep, String modifyDept) {
-		log.debug(modifyDept);
-		log.debug("dep = {}", dep);
-	}
+	//부서 업데이트 시 팝업창 닫는 용도
+	@GetMapping("/close")
+	public void close() {}
 }
