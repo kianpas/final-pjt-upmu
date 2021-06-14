@@ -20,6 +20,5 @@ public interface EmployeeListDao {
 
 	int deleteDept(String param);
 
-	int updateDept(Map<String, Object> map);
 
 }

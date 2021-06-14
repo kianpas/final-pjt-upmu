@@ -121,12 +121,11 @@ th, td {
     	</details>
     	<div id="depart-enroll">
     		<h2>부서 등록</h2>
-    		<!-- 관리자, 담당자 권한 추가해야됨. -->
     		<form action="${pageContext.request.contextPath}/employeeList/departEnroll.do" method="post">
 	    		<label class="depart-name" for="depart-name">부서명</label>
-	  			<input id="depart-name" name="depName" class="depart-name" type="text" placeholder="부서명" autocomplete="off" spellcheck="false">
+	  			<input id="depart-name" name="depName" class="depart-name" type="text" placeholder="부서명">
 	  			<label class="depart-code-label" for="depart-code">부서코드</label>
-	  			<input id="depart-code" name="depNo" class="depart-code" type="text" placeholder="부서코드" autocomplete="off" spellcheck="false">
+	  			<input id="depart-code" name="depNo" class="depart-code" type="text" placeholder="부서코드">
 	  			<input id="depart-submit" type="submit" value="등록">
     		</form>
     	</div>
@@ -197,18 +196,19 @@ th, td {
 		html += "</table>";
 		$(".employee-list").html(html);
 	}
+
+	//부서삭제
 	
 	//마우스 오른쪽 버튼 끄기
 	$(".dept").on('contextmenu', () => {
   		return false;
 	});
-
-	//부서 마우스 오른쪽 클릭 이벤트
-	var depNo;
+	
+	var delDeptClass;
 	$(".dept").on('mousedown', (e) => {
 		if(e.button == 2 || e.which==3){
 			const ctxMenu = document.getElementById('context-menu');
-	        depNo = $(e.target).attr('class').split(' ')[0];
+	        delDeptClass = $(e.target).attr('class').split(' ')[0];
 	        // 노출 설정
 	        ctxMenu.style.display = 'inline';
 	        ctxMenu.style.position = 'absolute';
@@ -223,21 +223,12 @@ th, td {
 		$("#context-menu").hide();
 	})
 	
-	//부서삭제, 관리자, 담당자 권한 추가해야함.
+	//부서삭제
 	function deleteDept() {
 		var yn = confirm("정말 삭제하시겠습니까?");
 		if(yn==true) {
-			location.href="${pageContext.request.contextPath}/employeeList/deleteDept.do?depNo=" + depNo;
+			location.href="${pageContext.request.contextPath}/employeeList/deleteDept.do?depNo=" + delDeptClass
 		}
-	}
-
-	//부서수정, 관리자, 담당자 권한 추가해야함.
-	function modifyDept() {
-		var positionX = $(".employee-list").offset().left;
-		var positionY = $(".employee-list").offset().top; 
-		var option = "width=160, height=140, left=" + positionX + ", top=" + positionY;
-		
-		window.open("${pageContext.request.contextPath}/employeeList/modifyPop?depNo=" + depNo, "", option);
 	}
 </script>
 </body>
