@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chat">
+
+	<select id="chatRoomList" resultType="chatroom">
+		select *
+		from chatroom
+		order by reg_date
+	</select>
+	
+	<insert id="insertChatRoom">
+		insert into chatroom 
+		values (seq_chatroom_no.nextval, #{title}, #{empCreate}, sysdate)
+	</insert>
+	
+	<select id="selectedRoomChatList" resultType="chatmsg">
+		select *
+		from chatmsg
+		where chatroom_no = #{chatroomNo}
+	</select>
+	
+	<delete id="deleteChatRoom">
+		delete from chatroom
+		where chatroom_no  = #{chatroomNo}
+	</delete>
+	
+	<insert id="insertChatMsg">
+		insert into chatmsg
+		values (seq_chatmsg_no.nextval, #{chatroomNo}, #{writerNo}, #{msg}, sysdate)
+	</insert>
+	
+	<insert id="joinChatRoom">
+		insert into chatroomjoin
+		values (seq_chatroomjoin_no.nextval, #{empNo}, #{chatroomNo})
+	</insert>
+	<delete id="disconnectChatRoom">
+		delete from chatroomjoin
+		where emp_no = #{empNo} and chatroom_no = #{chatroomNo}
+	</delete>
+	
+	<select id="roomUserList" resultType="chatroomjoin">
+		select * 
+		from chatroomjoin
+		where chatroom_no = #{chatroomNo}
+	</select>
+	
+	<insert id="insertDirectMsg">
+		insert into directmsg
+		values (seq_directmsg_no.nextval, #{messageContent}, sysdate, #{messageSender}, #{messageReceiver}, default)
+	</insert>
+	
+	<update id="updateChatRoom">
+		update chatroom
+		set title = #{title}
+		where chatroom_no = #{chatroomNo}
+	
+	</update>
+</mapper>
