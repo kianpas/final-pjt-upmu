@@ -39,4 +39,22 @@
 		delete from chatroomjoin
 		where emp_no = #{empNo} and chatroom_no = #{chatroomNo}
 	</delete>
+	
+	<select id="roomUserList" resultType="chatroomjoin">
+		select * 
+		from chatroomjoin
+		where chatroom_no = #{chatroomNo}
+	</select>
+	
+	<insert id="insertDirectMsg">
+		insert into directmsg
+		values (seq_directmsg_no.nextval, #{messageContent}, sysdate, #{messageSender}, #{messageReceiver}, default)
+	</insert>
+	
+	<update id="updateChatRoom">
+		update chatroom
+		set title = #{title}
+		where chatroom_no = #{chatroomNo}
+	
+	</update>
 </mapper>

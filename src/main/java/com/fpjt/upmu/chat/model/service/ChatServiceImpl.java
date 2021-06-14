@@ -9,6 +9,7 @@ import com.fpjt.upmu.chat.model.dao.ChatDao;
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
+import com.fpjt.upmu.chat.model.vo.DirectMsg;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -56,6 +57,24 @@ public class ChatServiceImpl implements ChatService {
 	public int disconnectChatRoom(ChatRoomJoin chatroomJoin) {
 		
 		return chatDao.disconnectChatRoom(chatroomJoin);
+	}
+
+	@Override
+	public List<ChatRoomJoin> roomUserList(int chatroomNo) {
+		
+		return chatDao.roomUserList(chatroomNo);
+	}
+
+	@Override
+	public int insertDirectMsg(DirectMsg directMsg) {
+		
+		return chatDao.insertDirectMsg(directMsg);
+	}
+
+	@Override
+	public int updateChatRoom(ChatRoom chatRoom) {
+		
+		return chatDao.updateChatRoom(chatRoom);
 	}
 
 	

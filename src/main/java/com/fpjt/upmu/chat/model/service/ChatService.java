@@ -5,6 +5,7 @@ import java.util.List;
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
+import com.fpjt.upmu.chat.model.vo.DirectMsg;
 
 public interface ChatService {
 
@@ -22,6 +23,11 @@ public interface ChatService {
 
 	public int disconnectChatRoom(ChatRoomJoin chatroomJoin);
 
+	public List<ChatRoomJoin> roomUserList(int chatroomNo);
+
+	public int insertDirectMsg(DirectMsg directMsg);
+
+	public int updateChatRoom(ChatRoom chatRoom);
 
 		
 

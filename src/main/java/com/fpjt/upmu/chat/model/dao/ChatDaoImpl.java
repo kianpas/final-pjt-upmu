@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
+import com.fpjt.upmu.chat.model.vo.DirectMsg;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,6 +60,24 @@ public class ChatDaoImpl implements ChatDao {
 	public int disconnectChatRoom(ChatRoomJoin chatroomJoin) {
 	
 		return session.delete("chat.disconnectChatRoom", chatroomJoin);
+	}
+
+	@Override
+	public List<ChatRoomJoin> roomUserList(int chatroomNo) {
+	
+		return session.selectList("chat.roomUserList", chatroomNo);
+	}
+
+	@Override
+	public int insertDirectMsg(DirectMsg directMsg) {
+		
+		return session.insert("chat.insertDirectMsg", directMsg);
+	}
+
+	@Override
+	public int updateChatRoom(ChatRoom chatRoom) {
+		
+		return session.update("chat.updateChatRoom", chatRoom);
 	}
 	
 	
