@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <title>부서수정</title>
 <style>
-#dep_name{
+#depart-name{
 	display: block;
 	width: 120px;
 }
-#dep_no{
+#depart-code{
 	display: block;
 	width: 40px;
 }
@@ -22,18 +22,18 @@
 </head>
 <body>
 	<form action="${pageContext.request.contextPath}/employeeList/modifyDept.do" method="post">
-		<label for="dep_name">부서명</label>
-		<input id="dep_name" name="depName" type="text" autocomplete="off" spellcheck="false">
-		<label for="dep_no">부서코드</label>
-		<input id="dep_no" name="depNo" type="text" autocomplete="off" spellcheck="false">
-		<input id="modify-dept" type="hidden">
+   		<label for="depart-name">부서명</label>
+		<input id="depart-name" name="depName" class="depart-name" type="text" placeholder="부서명" autocomplete="off" spellcheck="false">
+		<label for="depart-code">부서코드</label>
+		<input id="depart-code" name="depNo" class="depart-code" type="text" placeholder="부서코드" autocomplete="off" spellcheck="false">
+		<input id="modify-dept" type="hidden" name="modifyDept">
 		<input id="modify-button" type="submit" value="제출">
-		<input id="modify-button" type="button" value="취소">
+		<input id="modify-button" type="button" value="취소" onclick="window.close();">
 	</form>
 <script>
 	var modifyDept = location.search.split('=')[1];
 	console.log(modifyDept);
-	document.querySelector('#modify-dept').setAttribute('name', modifyDept);
+	document.querySelector('#modify-dept').setAttribute('value', modifyDept);
 </script>
 </body>
 </html>
