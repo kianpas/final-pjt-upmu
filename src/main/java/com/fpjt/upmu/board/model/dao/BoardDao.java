@@ -9,6 +9,6 @@ public interface BoardDao {
 
 	List<Board> selectBoardList();
 
-	List<Board> selectBoardList(Map<String, Object> param);
+//	List<Board> selectBoardList(Map<String, Object> param);
 
 }

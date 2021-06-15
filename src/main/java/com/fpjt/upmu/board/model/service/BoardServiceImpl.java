@@ -22,9 +22,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectBoardList();
 	}
 
-	@Override
-	public List<Board> selectBoardList(Map<String, Object> param) {
-		return boardDao.selectBoardList(param);
-	}
+//	@Override
+//	public List<Board> selectBoardList(Map<String, Object> param) {
+//		return boardDao.selectBoardList(param);
+//	}
 
 }
