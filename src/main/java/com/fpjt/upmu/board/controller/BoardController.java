@@ -47,59 +47,7 @@ public class BoardController {
 	}
 	
 	
-<<<<<<< Updated upstream
-	@PostMapping("/boardEnroll.do")
-	public String boardEnroll(
-						@ModelAttribute Board board,
-						@RequestParam(name = "upFile") MultipartFile[] upFiles
-					) throws Exception {
-		log.debug("board = {}", board);
-		//1. 파일 저장 : 절대경로 /resources/upload/board
-		//pageContext:PageContext - request:HttpServletRequest - session:HttpSession - application:ServletContext
-		String saveDirectory = application.getRealPath("/resources/upload/board");
-		log.debug("saveDirectory = {}", saveDirectory);
-		
-		//디렉토리 생성
-		File dir = new File(saveDirectory);
-		if(!dir.exists())
-			dir.mkdirs(); // 복수개의 디렉토리를 생성
-		
-		List<Attachment> attachList = new ArrayList<>();
-		
-		for(MultipartFile upFile : upFiles) {
-			//input[name=upFile]로부터 비어있는 upFile이 넘어온다.
-			if(upFile.isEmpty()) continue;
-			
-			String renamedFilename = 
-					UpmuUtils.getRenamedFilename(upFile.getOriginalFilename());
-			
-			//a.서버컴퓨터에 저장
-			File dest = new File(saveDirectory, renamedFilename);
-			upFile.transferTo(dest); // 파일이동
-			
-			//b.저장된 데이터를 Attachment객체에 저장 및 list에 추가
-			Attachment attach = new Attachment();
-			attach.setOriginalFilename(upFile.getOriginalFilename());
-			attach.setRenamedFilename(renamedFilename);
-			attachList.add(attach);
-		}
-		
-		log.debug("attachList = {}", attachList);
-		
-		
-		//2. 업무로직 : db저장 board, attachment
-		
-		//3. 사용자피드백 &  리다이렉트
-		
-		return "redirect:/board/boardList.do";
-	}
-	public String boardList() {
-		
-		return "board/boardList";
-	}
-	
-=======
->>>>>>> Stashed changes
+
 //	@GetMapping("/boardList.do")
 //	public String boardList(@RequestParam(required = true, defaultValue = "1") int cpage, Model model) {
 //		try {
@@ -145,11 +93,6 @@ public class BoardController {
 //			if(upFile.isEmpty()) continue;
 //			
 //			String renamedFilename = 
-<<<<<<< Updated upstream
-//					HelloSpringUtils.getRenamedFilename(upFile.getOriginalFilename());
-=======
-//					UpmuUtils.getRenamedFilename(upFile.getOriginalFilename());
->>>>>>> Stashed changes
 //			
 //			//a.서버컴퓨터에 저장
 //			File dest = new File(saveDirectory, renamedFilename);
@@ -171,13 +114,4 @@ public class BoardController {
 //		
 //		return "redirect:/board/boardList.do";
 //	}
-<<<<<<< Updated upstream
-	
-	
-=======
-//	public String boardList() {
-//		
-//		return "board/boardList";
-//	}
->>>>>>> Stashed changes
 }
