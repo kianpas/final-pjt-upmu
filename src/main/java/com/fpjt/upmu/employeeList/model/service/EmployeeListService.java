@@ -20,4 +20,6 @@ public interface EmployeeListService {
 
 	int deleteDept(String param);
 
+	int updateDept(Map<String, Object> map);
+
 }
