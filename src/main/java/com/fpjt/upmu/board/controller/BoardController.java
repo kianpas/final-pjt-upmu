@@ -1,28 +1,26 @@
 package com.fpjt.upmu.board.controller;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+//import org.springframework.ui.Model;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.ModelAttribute;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fpjt.upmu.board.model.service.BoardService;
-import com.fpjt.upmu.board.model.vo.Attachment;
+//import com.fpjt.upmu.board.model.vo.Attachment;
+//import com.fpjt.upmu.board.model.vo.Board;
+//import com.fpjt.upmu.common.util.UpmuUtils;
+//import com.fpjt.upmu.common.util.HelloSpringUtils;
 import com.fpjt.upmu.board.model.vo.Board;
-import com.fpjt.upmu.common.util.UpmuUtils;
-import com.fpjt.upmu.common.util.HelloSpringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,34 +28,26 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/board")
 @Slf4j
 public class BoardController {
-	@Autowired
-	private ServletContext application;
+//	@Autowired
+//	private ServletContext application;
 	
 	@Autowired
 	private BoardService boardService;
 	
 	@GetMapping("/boardList.do")
-	public String boardList(@RequestParam(required = true, defaultValue = "1") int cpage, Model model) {
+	public String boardList(Model model) {
 		try {
-			log.debug("cpage = {}", cpage);
-			final int limit = 10;
-			final int offset = (cpage - 1) * limit;
-			Map<String, Object> param = new HashMap<>();
-			param.put("limit", limit);
-			param.put("offset", offset);
-			
-			List<Board> list = boardService.selectBoardList(param);
+			List<Board> list = boardService.selectBoardList();
 			model.addAttribute("list", list);
-		} catch(Exception e) {
+		} catch(Exception e ) {
 			log.error("게시글 조회 오류!", e);
 			throw e;
 		}
-		return "board/boardList";
+		return "board/boardList";		
 	}
 	
-	@GetMapping("/boardForm.do")
-	public void boardForm() {}
 	
+<<<<<<< Updated upstream
 	@PostMapping("/boardEnroll.do")
 	public String boardEnroll(
 						@ModelAttribute Board board,
@@ -108,6 +98,8 @@ public class BoardController {
 		return "board/boardList";
 	}
 	
+=======
+>>>>>>> Stashed changes
 //	@GetMapping("/boardList.do")
 //	public String boardList(@RequestParam(required = true, defaultValue = "1") int cpage, Model model) {
 //		try {
@@ -153,7 +145,11 @@ public class BoardController {
 //			if(upFile.isEmpty()) continue;
 //			
 //			String renamedFilename = 
+<<<<<<< Updated upstream
 //					HelloSpringUtils.getRenamedFilename(upFile.getOriginalFilename());
+=======
+//					UpmuUtils.getRenamedFilename(upFile.getOriginalFilename());
+>>>>>>> Stashed changes
 //			
 //			//a.서버컴퓨터에 저장
 //			File dest = new File(saveDirectory, renamedFilename);
@@ -175,6 +171,13 @@ public class BoardController {
 //		
 //		return "redirect:/board/boardList.do";
 //	}
+<<<<<<< Updated upstream
 	
 	
+=======
+//	public String boardList() {
+//		
+//		return "board/boardList";
+//	}
+>>>>>>> Stashed changes
 }
