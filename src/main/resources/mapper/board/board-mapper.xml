@@ -5,14 +5,20 @@
 <mapper namespace="board">
 	<select id="selectBoardList" resultMap="boardExtMap">
 		select
-			b.*,
-			(select count(*) from attachment where board_no = b.no) attach_count			
+		    b.*,
+		    (select count(*) from attachment where board_no = b.board_no) attach_count			
 		from 
-			board b
+		    board b
 		order by
-			no desc
+		    board_no desc
 	</select>
 	<resultMap type="boardExt" id="boardExtMap">
+		<id column="board_no" property="board_no"/>
+		<result column="board_title" property="board_title"/>
+		<result column="emp_no" property="emp_no"/>
+		<result column="board_content" property="board_content"/>
+		<result column="board_time" property="board_time"/>
+		<result column="board_count" property="board_count"/>
 		<result column="attach_count" property="hasAttachment"/>	
 	</resultMap>
 </mapper>
