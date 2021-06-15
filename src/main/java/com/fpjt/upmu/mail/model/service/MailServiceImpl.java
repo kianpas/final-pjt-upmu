@@ -5,13 +5,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fpjt.upmu.mail.model.dao.MailDao;
 import com.fpjt.upmu.mail.model.vo.Mail;
 import com.fpjt.upmu.mail.model.vo.MailExt;
 import com.fpjt.upmu.mail.model.vo.MailAttach;
-//import com.kh.spring.board.model.vo.Attachment;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,10 +23,10 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public int insertMail(MailExt mail) {
 		int result = 0;
-		//1. board 등록
+
 		result = mailDao.insertMail(mail);
 		log.debug("mail = {}", mail);
-		//2. attachment등록
+
 		if(mail.getAttachList().size() > 0) {
 			for(MailAttach attach : mail.getAttachList()) {
 				attach.setMailNo(mail.getMailNo());
@@ -38,7 +36,6 @@ public class MailServiceImpl implements MailService {
 		return result;
 	}
 	
-	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertAttachment(MailAttach attach) {
 		return mailDao.insertAttachment(attach);
@@ -83,15 +80,11 @@ public class MailServiceImpl implements MailService {
 	public int deleteMail(String str) {
 		return mailDao.deleteMail(str);
 	}
-	
-	
 
 //	@Override
 //	public MailExt selectOneMailCollection1(int no) {
 //		return mailDao.selectOneMailCollection1(no);
 //	}
 	
-	
-	
-	
+
 }

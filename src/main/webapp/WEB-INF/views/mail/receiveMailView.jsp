@@ -18,7 +18,7 @@
 	action="${pageContext.request.contextPath}/mail/mailForm.do"
 	name="replyFrm"
 	method="POST">
-<input type="hidden" name="reply" value="${mail.receiverNo}"/> <!-- 수정 -->
+<input type="hidden" name="reply" value="${mail.senderNo}"/>
 </form>
 	<h4 class="page-header">받은 메일함</h4>
 	
@@ -36,17 +36,18 @@
 				<td>제목</td>
 				<td>${mail.mailTitle}</td>
 			</tr>
-			
 			<tr>
 			<td>첨부파일</td>
 			<td>
-			<c:forEach items="${mail.attachList}" var="attach">
-				<button type="button" 
-						class="btn btn-outline-success btn-block"
-						onclick="location.href='${pageContext.request.contextPath}/mail/fileDownload.do?no=${attach.attachNo}';">
-					첨부파일 - ${attach.originalFilename}
-				</button>
-			</c:forEach>
+				<c:forEach items="${mail.attachList}" var="attach">
+					<c:if test="${attach.originalFilename != null}">
+						<button type="button" 
+								class="btn btn-outline-success btn-block"
+								onclick="location.href='${pageContext.request.contextPath}/mail/fileDownload.do?no=${attach.attachNo}';">
+							첨부파일 - ${attach.originalFilename}
+						</button>
+					</c:if>
+				</c:forEach>
 			</td>
 			</tr>
 			<tr>

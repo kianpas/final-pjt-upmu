@@ -20,7 +20,7 @@ function goMailForm(){
 	location.href = "${pageContext.request.contextPath}/mail/mailForm.do";
 }
 
-function test8(chk){
+function chkOne(chk){
     var parentTd = chk.parentNode;
     console.log(parentTd);
 
@@ -29,7 +29,6 @@ function test8(chk){
     else
         parentTd.classList.toggle("on");
 
-    //전체 체크박스 제어
     var chkbox = document.querySelectorAll("[name=chkbox");
     for(var i = 0; i < chkbox.length; i++){
         if(!chkbox[i].checked){
@@ -39,7 +38,7 @@ function test8(chk){
    }
 }
 
-function test7(){
+function chkAll(){
     var chkbox = document.querySelectorAll("[name=chkbox]");
     console.log(chkbox);
     var checkAll = document.querySelector("#checkAll");
@@ -137,9 +136,10 @@ function deleteMail(){
 <div class="container">
 	<h4 class="page-header">받은 메일함</h4>
 
+	<input type="search" placeholder="메일 검색" id="searchMail" class="form-control col-sm-3 d-inline" autofocus/>
 	<div class="text-right"> 
 		<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
-		<!-- <input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail()"/> -->
+		<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail();"/>
 	</div>
 
 	<table class="table table-hover">
@@ -147,7 +147,7 @@ function deleteMail(){
 			<tr>
 				<th scope="col">
 					선택
-					<input type="checkbox" id="checkAll" onchange="test7();">
+					<input type="checkbox" id="checkAll" onchange="chkAll();">
 				</th>
 				<th scope="col">보낸 사람</th>
 				<th scope="col">제목</th>
@@ -157,7 +157,7 @@ function deleteMail(){
 		<tbody>
 			<c:forEach items="${list}" var="mail">
 				<tr data-no="${mail.mailNo}">
-					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="test8(this)" value="${mail.mailNo}"/></td>
+					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
 					<td>${mail.senderNo}</td>
 					<td>${mail.mailTitle}</td>
 					<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd"/></td>
@@ -165,76 +165,7 @@ function deleteMail(){
 				</c:forEach>
 			</tbody>
 		</table>
-		
-		<div class="allCheck text-left">
-			<input type="checkbox" name="allCheck" id="allCheck"> 전체선택
-		</div> 
-		${pageBar}
-</div>
-<%-- <div class="container">
-	<div class="row">
-		<div class="col-lg-12">
-			<h4 class="page-header">받은 메일함</h4>
-
-		</div>
-	</div>
-	<div class='row rowdiv'>
-		<div class="col-xs-12">			
-				 <div class="col-xs-6 text-left search">
-						<div class="form-group input-group">
-								<span class="input-group-btn searchBtnSpan">
-	                                <input class="form-control" type='text' name='keyword' value="" /> 
-									<button class='btn btn-default'></button>
-	                            </span>  
-	                     </div>
-				</div> 		
-				<div class="col-lg-6 text-right regBtnDiv"> 
-					<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
-					<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick=""/>
-				</div>		
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">선택</th>
-								<th scope="col">보낸 사람</th>
-								<th scope="col">제목</th>
-								<th scope="col">수신일</th>
-							</tr>
-						</thead>
-						<tbody>
-						<c:forEach items="${list}" var="mail">
-						<tr data-no="${mail.mailNo}">
-							<td><input type="checkbox" name="chkbox" value=''/></td>
-							<td>${mail.senderNo}</td>
-							<td>${mail.mailTitle}</td>
-							<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd"/></td>
-						</tr>
-						</c:forEach>
-						</tbody>
-					</table>
-
-					<div class="allCheck">
-						<div class="text-left">
-							<div class="form-group input-group">
-								<input type="checkbox" name="allCheck" id="allCheck"> 전체선택
-	                        </div>
-						</div> 	
-					</div>
-				</div>
-				<!-- /.panel-body -->
-			</div>
-			<!-- /.panel panel-default -->
-		</div>
-		<!-- /.col-lg-12 -->
-	</div>
-	<!-- /.row -->
 	${pageBar}
-</div> --%>
+</div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

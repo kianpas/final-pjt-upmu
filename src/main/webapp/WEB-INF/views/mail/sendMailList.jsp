@@ -20,7 +20,7 @@ function goMailForm(){
 	location.href = "${pageContext.request.contextPath}/mail/mailForm.do";
 }
 
-function test8(chk){
+function chkOne(chk){
      var parentTd = chk.parentNode;
      console.log(parentTd);
 
@@ -29,7 +29,6 @@ function test8(chk){
      else
          parentTd.classList.toggle("on");
 
-     //전체 체크박스 제어
      var chkbox = document.querySelectorAll("[name=chkbox");
      for(var i = 0; i < chkbox.length; i++){
          if(!chkbox[i].checked){
@@ -39,7 +38,7 @@ function test8(chk){
     }
 }
 
-function test7(){
+function chkAll(){
      var chkbox = document.querySelectorAll("[name=chkbox]");
      console.log(chkbox);
      var checkAll = document.querySelector("#checkAll");
@@ -137,13 +136,8 @@ function deleteMail(){
 <div class="container">
 	<h4 class="page-header">보낸 메일함</h4>
 	
-	
 	<input type="search" placeholder="메일 검색" id="searchMail" class="form-control col-sm-3 d-inline" autofocus/>
 	<div class="text-right"> 
-		<div class="text-left">
-			<!-- <input type="checkbox" id="checkAll" onchange="test7();">
-			<label for="checkAll">전체 선택</label> -->
-		</div>
 		<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
 		<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail();"/>
 	</div>
@@ -153,7 +147,7 @@ function deleteMail(){
 			<tr>
 				<th scope="col">
 					선택
-					<input type="checkbox" id="checkAll" onchange="test7();">
+					<input type="checkbox" id="checkAll" onchange="chkAll();">
 				</th>
 				<th scope="col">받은 사람</th>
 				<th scope="col">제목</th>
@@ -163,7 +157,7 @@ function deleteMail(){
 			<tbody>
 			<c:forEach items="${list}" var="mail">
 				<tr data-no="${mail.mailNo}">
-					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="test8(this)" value="${mail.mailNo}"/></td>
+					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
 					<td>${mail.receiverNo}</td>
 					<td>${mail.mailTitle}</td>
 					<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd HH:mm:ss"/></td>

@@ -13,16 +13,8 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
 <script>
-function goMailForm(s){
-	//console.log(s);
-	//location.href = "${pageContext.request.contextPath}/mail/mailForm.do";
-//	var mailForm = document.mailForm;
-//	console.log(mailForm);
-//	mailForm.receiverNo.value = s;
-	//mailForm.submit();
+function goMailForm(){
 
-//	var form = document.forms["replyFrm"];
-//	form.
 }
 </script>
 
@@ -33,10 +25,9 @@ function goMailForm(s){
 	method="POST">
 <input type="hidden" name="reply" value="${mail.receiverNo}"/>
 </form>
-	<div class="row">
-		<h4 class="page-header">보낸 메일함</h4>
+	<h4 class="page-header">보낸 메일함</h4>
 		
-		<table class="table">
+	<table class="table">
 		<tbody>
 			<tr>
 				<td>보낸 사람</td>
@@ -50,21 +41,20 @@ function goMailForm(s){
 				<td>제목</td>
 				<td>${mail.mailTitle}</td>
 			</tr>
-			
 			<tr>
 			<td>첨부파일</td>
 			<td>
-			<%-- <c:if --%>
-			<c:forEach items="${mail.attachList}" var="attach">
-				<button type="button" 
-						class="btn btn-outline-success btn-block"
-						onclick="location.href='${pageContext.request.contextPath}/mail/fileDownload.do?no=${attach.attachNo}';">
-					첨부파일 - ${attach.originalFilename}
-				</button>
-			</c:forEach>
+				<c:forEach items="${mail.attachList}" var="attach">
+					<c:if test="${attach.originalFilename != null}">
+						<button type="button" 
+								class="btn btn-outline-success btn-block"
+								onclick="location.href='${pageContext.request.contextPath}/mail/fileDownload.do?no=${attach.attachNo}';">
+							첨부파일 - ${attach.originalFilename}
+						</button>
+					</c:if>
+				</c:forEach>
 			</td>
 			</tr>
-			
 			<tr>
 				<td>보낸 시간</td>
 				<td>
@@ -78,13 +68,11 @@ function goMailForm(s){
 			</tr>
 		
 		</tbody>
-		</table>
-		<div class="text-right">
-				<input type="submit" class="btn btn-outline-primary" value="답장" onclick="goMailForm(${mail.receiverNo});"/>
-				<input type="submit" class="btn btn-outline-primary" value="답장2" onclick="javascript:document.replyFrm.submit();"/>
-				<button type="button" class="btn btn-outline-success" onclick="location.href='${pageContext.request.contextPath}/mail/sendMailList.do?no=1';">목록</button>
-				<button type="button" class="btn btn-outline-danger" onclick="">삭제</button>
-		</div>
+	</table>
+	<div class="text-right">
+			<input type="submit" class="btn btn-outline-primary" value="답장" onclick="javascript:document.replyFrm.submit();"/>
+			<button type="button" class="btn btn-outline-success" onclick="location.href='${pageContext.request.contextPath}/mail/sendMailList.do?no=1';">목록</button>
+			<button type="button" class="btn btn-outline-danger" onclick="">삭제</button>
 	</div>
 </div>
 

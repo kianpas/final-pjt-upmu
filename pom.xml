@@ -310,7 +310,6 @@
 			<version>2.8.5</version>
 		</dependency>
 		
-<<<<<<< HEAD
 		<!-- #15. spring ajax @Responsebody사용을 위한 의존 : 자바객체->json -->
 	    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 	    <dependency>
@@ -319,7 +318,6 @@
 	        <version>2.9.5</version>
 	    </dependency>
 
-=======
 		<!-- #10.query와 resultSet을 logging할 수 있는 log4jdbc-remix 라이브러리추가 -->
 		<!-- https://mvnrepository.com/artifact/org.lazyluke/log4jdbc-remix/0.2.7 -->
 		<dependency>
@@ -347,8 +345,6 @@
 		    <artifactId>spring-messaging</artifactId>
 		    <version>${org.springframework-version}</version>
 		</dependency>
-    
->>>>>>> branch 'master' of https://github.com/HSdover/final-pjt-upmu.git
 	</dependencies>
 	<build>
 		<plugins>

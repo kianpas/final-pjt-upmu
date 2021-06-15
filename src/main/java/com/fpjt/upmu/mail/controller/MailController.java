@@ -52,7 +52,7 @@ public class MailController {
 	@Autowired
 	private MailService mailService;
 	
-	//받은 메일함
+	//받은 메일함 - user 2
 	@GetMapping("/receiveMailList.do")
 	public String receiveMailList(
 				@RequestParam(required = true, defaultValue = "1") int cpage,
@@ -93,7 +93,7 @@ public class MailController {
 		return "mail/receiveMailList";
 	}
 	
-	//보낸 메일함
+	//보낸 메일함 - user 1
 	@GetMapping("/sendMailList.do")
 	public String sendMailList(
 				@RequestParam(required = true, defaultValue = "1") int cpage,

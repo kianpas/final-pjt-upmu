@@ -13,13 +13,13 @@ public interface MailService {
 
 	MailExt selectOneMailCollection(int no);
 
-//	List<Mail> selectMailList(Map<String, Object> param);
-
 	int insertAttachment(MailAttach attach);
 
 	int selectMailTotalContents1(int i);
 
 	int selectMailTotalContents2(int i);
+	
+//	List<Mail> selectMailList(Map<String, Object> param);
 
 	List<Mail> selectMailList1(Map<String, Object> param, int i);
 
