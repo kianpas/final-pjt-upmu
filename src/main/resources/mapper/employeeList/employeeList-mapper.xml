@@ -39,6 +39,15 @@
 		WHERE
 			DEP_NO = #{param}
 	</delete>
+	<update id="updateDept">
+		UPDATE
+			DEPARTMENT
+		SET
+			DEP_NO = #{dep.depNo},
+			DEP_NAME = #{dep.depName}
+		WHERE
+			DEP_NO = #{modifyDept}
+	</update>
 	<resultMap type="employee" id="empResultMap">
 		 <result column="EMP_NO" property="empNo" />
 		 <result column="EMP_NAME" property="empName" />
