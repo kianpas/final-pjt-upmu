@@ -94,6 +94,13 @@ public class DocController {
 			throw e;
 		}
 	}
+
+	@GetMapping("/docForm")
+	public String docForm(){
+		return "document/docForm";
+	}
+	
+	
 	/**
 	 * java.sql.Date, java.util.Date 필드에 값 대입시
 	 * 사용자 입력값이 ""인 경우, null로 처리될 수 있도록 설정.08

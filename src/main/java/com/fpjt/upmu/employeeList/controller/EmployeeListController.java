@@ -127,4 +127,15 @@ public class EmployeeListController {
 	//부서 업데이트 시 팝업창 닫는 용도
 	@GetMapping("/close")
 	public void close() {}
+  
+	//Choims added
+	@GetMapping("/eListForDoc")
+	public void mListForDoc(Model model) {	
+		try {
+			List<Department> dList = elService.selectDeptList();
+			model.addAttribute("dList", dList);
+		} catch (Exception e) {
+			log.error("부서목록 오류!");
+		}
+	}
 }
