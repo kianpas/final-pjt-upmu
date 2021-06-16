@@ -8,90 +8,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
-<style>
-body{
-	position: fixed;
-
-}
-h2 {
-	margin-top: 0px;
-}
-.list-form {
-	display: flex;
-}
-.list {
-	outline : solid 1px black;
-}
-.list p {
-	margin: 0px;
-	cursor: pointer;
-}
-.depart-list {
-	position: relative;
-	overflow-x:auto; 
-	width:200px; 
-	height:500px;
-}
-.depart-code {
-	width: 60px;
-}
-#depart-enroll {
-	position: absolute;
-	outline : solid 1px black;
-	width:200px; 
-	height:200px;
-	left: 0px;
-	bottom: 0px;
-}
-.employee-list {
-	display: hidden;
-	overflow-x:auto; 
-	width:700px; 
-	height:500px;
-}
-
-summary {
-	list-style: none;
-    cursor: pointer;
-}
-label {
-	display: block;
-}
-table {
-    border: 1px solid black;
-    border-collapse: collapse; /*경계선 설정*/
-}
-th, td {
-    border: 1px solid black;
-    padding: 5px; /*여백*/
-}
-
-.search-form{
-	display: flex;
-	margin-left:200px;
-	position: relative;
-}
-.search-form label {
-	margin-right: 5px; 
-}
-#context-menu{
-	border: 1px solid #c8c8c8;
-	background-color: white;
-	margin: 0px;
-	z-index: 9999;
-}
-#context-menu ul li{
-	padding-left: 14px;
-	padding-right: 8px;
-	cursor: default;
-	font-size: 14px;
-}
-#context-menu ul li:hover{
-	background-color: #dcdcdc;
-}
-</style>
-<body>
-
 <div class="search-form">
 		<label for="keyword"></label>
 		<select id="keyword">
@@ -132,7 +48,8 @@ th, td {
     	</div>
 	</div>
 	
-	<div class="employee-list list"></div>
+	<div class="employee-list list">
+	</div>
 </div>
 
 <script>
@@ -148,8 +65,14 @@ th, td {
 			method: "GET",
 			data: getClass,
 			success(data){
-				console.log(data);
+				console.log(data.eList);
 				displayTable(data.eList);
+				$(document).ready( function () {
+				    $('#eListTable').DataTable();
+				    $('#eListTable_wrapper label').hide();
+
+					document.cookie = "safeCookie1=foo; SameSite=Lax"; document.cookie = "safeCookie2=foo"; document.cookie = "crossCookie=bar; SameSite=None; Secure";
+				} );
 			},
 			error: console.log
 		})
@@ -176,7 +99,7 @@ th, td {
 
 	//DB에서 불러온 데이터 테이블에 추가하는 함수
 	function displayTable(data) {
-		let html = "<table><tr><th>사번</th><th>이름</th><th>직급</th><th>부서</th><th>연락처</th><th>이메일</th></tr>";
+		let html = "<table id='eListTable'><thead><tr><th>사번</th><th>이름</th><th>직급</th><th>부서</th><th>연락처</th><th>이메일</th></tr></thead><tbody>";
 		if(data.length > 0){
 			$(data).each((i, eList) => {
 				const {empNo, empName, empJob, empDept, empPhone, empEmail} = eList;
@@ -190,6 +113,7 @@ th, td {
 					<td>\${empEmail}</td>
 					</tr>`;
 			});
+			html += `</tbody>`
 		}
 		else {
 			html += "<td colspan='6'>결과가 없습니다.</td></tr>"
@@ -239,6 +163,8 @@ th, td {
 		
 		window.open("${pageContext.request.contextPath}/employeeList/modifyPop?depNo=" + depNo, "", option);
 	}
+
+
 </script>
 </body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
