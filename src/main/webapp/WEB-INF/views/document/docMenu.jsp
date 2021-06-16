@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <nav>
-	새 문서 작성
+	<a href="${pageContext.request.contextPath}/document/docForm">새 문서 작성</a>
 	<hr />
 	결재 문서 목록
 	<hr />

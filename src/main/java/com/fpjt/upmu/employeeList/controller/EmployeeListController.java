@@ -100,4 +100,15 @@ public class EmployeeListController {
 		}
 		return "redirect:/employeeList/eList";
 	}
+	
+	//Choims added
+	@GetMapping("/eListForDoc")
+	public void mListForDoc(Model model) {	
+		try {
+			List<Department> dList = elService.selectDeptList();
+			model.addAttribute("dList", dList);
+		} catch (Exception e) {
+			log.error("부서목록 오류!");
+		}
+	}
 }
