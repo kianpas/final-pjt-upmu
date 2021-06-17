@@ -9,7 +9,7 @@
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
 <div class="search-form">
-		<label for="keyword"></label>
+		<label class="keyLabel"for="keyword"></label>
 		<select id="keyword">
 			<option value="emp_no" selected>사번</option>
 			<option value="emp_name">이름</option>
@@ -53,6 +53,16 @@
 </div>
 
 <script>
+//css 동적 추가
+var cssUrl = "${pageContext.request.contextPath}/resources/css/eList.css";
+var head = document.getElementsByTagName("head")[0];
+var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = cssUrl;
+document.head.appendChild(link);
+
+$(".keyLabel").hide();
 	//목록에서 employee불러오기
 	var getClass;
 	
@@ -68,7 +78,14 @@
 				console.log(data.eList);
 				displayTable(data.eList);
 				$(document).ready( function () {
-				    $('#eListTable').DataTable();
+				    $('#eListTable').DataTable({
+				        paging: false,
+				        language : {
+					        emptyTable:"결과가 없습니다.",
+					        info:"",
+					        infoEmpty:""
+						}
+				    });
 				    $('#eListTable_wrapper label').hide();
 
 					document.cookie = "safeCookie1=foo; SameSite=Lax"; document.cookie = "safeCookie2=foo"; document.cookie = "crossCookie=bar; SameSite=None; Secure";
@@ -92,6 +109,19 @@
 			success(data){
 				console.log(data);
 				displayTable(data.eList);
+				$(document).ready( function () {
+				    $('#eListTable').DataTable({
+				        paging: false,
+				        language : {
+					        emptyTable:"결과가 없습니다.",
+					        info:"",
+					        infoEmpty:""
+						}
+				    });
+				    $('#eListTable_wrapper label').hide();
+
+					document.cookie = "safeCookie1=foo; SameSite=Lax"; document.cookie = "safeCookie2=foo"; document.cookie = "crossCookie=bar; SameSite=None; Secure";
+				} );
 			},
 			error: console.log
 		})
@@ -116,10 +146,10 @@
 			html += `</tbody>`
 		}
 		else {
-			html += "<td colspan='6'>결과가 없습니다.</td></tr>"
+/* 			html += "<td colspan='6'>결과가 없습니다.</td></tr>" */
 		}
 		html += "</table>";
-		$(".employee-list").html(html);
+		$(".employee-list").html(html).trigger("create");
 	}
 	
 	//마우스 오른쪽 버튼 끄기
