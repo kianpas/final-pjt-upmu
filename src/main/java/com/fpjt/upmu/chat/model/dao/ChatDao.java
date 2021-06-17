@@ -1,6 +1,7 @@
 package com.fpjt.upmu.chat.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
@@ -28,5 +29,15 @@ public interface ChatDao {
 	int insertDirectMsg(DirectMsg directMsg);
 
 	int updateChatRoom(ChatRoom chatRoom);
+
+	List<DirectMsg> selectDmList(Map<String, Object> map);
+
+	int updateChat(ChatMsg chatMsg);
+
+	int deleteChat(int msgNo);
+
+	int updateDm(DirectMsg directMsg);
+
+	int deleteDm(int messegeNo);
 
 }

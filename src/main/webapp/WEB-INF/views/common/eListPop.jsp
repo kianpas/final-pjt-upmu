@@ -42,6 +42,11 @@
 			</table>
 		</div>
 	</div>
+	<button onclick="saveAddress()">주소록에 추가</button>
+		<form id="addressFrm" action="${pageContext.request.contextPath}/address/save" method="post">
+			<input type="hidden" name="savedEmp" value=""/>
+			<input type="hidden" name="byEmp" value=""/>
+		</form>
 <script>
 //목록에서 employee불러오기
 var getClass;
@@ -148,6 +153,66 @@ function minusData(){
 	console.log("삭제용"  + $(".outChecked").remove());
 	html = $("#choice-emp").html();
 }
+const saveAddress = () => {
+	const selectEmp = $("#choice-emp tr");
+	
+	$(selectEmp).each((key, value) => {
+		const savedEmp = $(value).attr("id").substr(1, 1);
+		const empName = $(value).children("td:eq(1)").attr("id");
+		const byEmp = 1;
+		
+		const address = {byEmp, savedEmp};
+		$.ajax({
+			url:"${pageContext.request.contextPath}/address/addressDuplicate",
+			data: {byEmp, savedEmp},
+			success:data=>{
+				console.log(data); //{"available":true}
+				console.log(data.available);
+				if(data.available){
+					
+					saveAddresssReal();
+				}else {
+					const {addr:{addrNo, byEmp, savedEmp}} = data;
+					console.log(data)
+					console.log(savedEmp)
+					alert(`\${savedEmp}은 이미 주소록에 포함되어있습니다.`);
+					
+				}
+				
+			},
+			error:console.log,
+
+		})
+		
+	})
+}
+
+
+const saveAddresssReal = () => {
+	const selectEmp = $("#choice-emp tr");
+	
+	$(selectEmp).each((key, value) => {
+		const savedEmp = $(value).attr("id").substr(1, 1);
+		const empName = $(value).children("td:eq(1)").attr("id");
+		const byEmp = 1;
+		
+		const address = {byEmp, savedEmp};
+		$.ajax({
+			url : `${pageContext.request.contextPath}/address/save`,
+			method: 'POST',
+			contentType:"application/json; charset=utf-8",
+			data : JSON.stringify(address),
+			success(data){
+				console.log(data)
+
+			},
+			error:console.log,
+
+		})
+		
+	})
+	
+} 
 </script>
 </body>
 </html>
