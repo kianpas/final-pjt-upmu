@@ -32,7 +32,8 @@
       <a href="${pageContext.request.contextPath }/member/memberLogin.do" class="header-link">Login</a>
       <!-- 로그인이후 -->
 <%--       <a href="${pageContext.request.contextPath }/member/memberLogout.do" class="header-link"> Logout</a> --%>
-      <a href="#" class="header-link header-link--button">Sign Up</a>
+	<%-- <span><a href="${pageContext.request.contextPath }/member/memberDetail.do">${loginMember.name}</a>님, 안녕하세요</span> --%>
+      <a href="${pageContext.request.contextPath}/member/memberEnroll.do" class="header-link header-link--button">Sign Up</a>
       
     </nav>
     <button class="header-menu-button">Menu</button>
