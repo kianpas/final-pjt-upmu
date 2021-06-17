@@ -31,7 +31,6 @@
 				class="com.fpjt.upmu.common.interceptor.LoggerInterceptor" />
 		</interceptor>
 	</interceptors>
-
 	
 	<beans:bean 
 			id="multipartResolver" 
