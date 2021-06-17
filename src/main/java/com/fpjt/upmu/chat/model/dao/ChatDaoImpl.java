@@ -1,6 +1,7 @@
 package com.fpjt.upmu.chat.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,36 @@ public class ChatDaoImpl implements ChatDao {
 	public int updateChatRoom(ChatRoom chatRoom) {
 		
 		return session.update("chat.updateChatRoom", chatRoom);
+	}
+
+	@Override
+	public List<DirectMsg> selectDmList(Map<String, Object> map) {
+		
+		return session.selectList("chat.selectDmList", map);
+	}
+
+	@Override
+	public int updateChat(ChatMsg chatMsg) {
+		
+		return session.update("chat.updateChat", chatMsg);
+	}
+
+	@Override
+	public int deleteChat(int msgNo) {
+		
+		return session.delete("chat.deleteChat", msgNo);
+	}
+
+	@Override
+	public int updateDm(DirectMsg directMsg) {
+		
+		return session.update("chat.updateDm", directMsg);
+	}
+
+	@Override
+	public int deleteDm(int messegeNo) {
+		
+		return session.delete("chat.deleteDm", messegeNo);
 	}
 	
 	

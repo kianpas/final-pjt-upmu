@@ -48,4 +48,11 @@ public class EmployeeListDaoImpl implements EmployeeListDao {
 	public int deleteDept(String param) {
 		return session.delete("employeeList.deleteDept", param);
 	}
+
+	@Override
+	public int updateDept(Map<String, Object> map) {
+		return session.update("employeeList.updateDept", map);
+	}
+	
+	
 }
