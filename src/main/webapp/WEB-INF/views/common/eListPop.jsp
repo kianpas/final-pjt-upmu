@@ -88,8 +88,6 @@ function displayTable(data) {
 	$(".employee-list").html(html);
 }
 
-var saveData = new Array();
-
 function getDataTable(id){
 	if($("#"+id).css("background-color")==="rgb(220, 220, 220)"){
 		$("#"+id).css("background-color","rgb(192, 192, 192)");
@@ -101,7 +99,9 @@ function getDataTable(id){
 	}
 }
 
+//선택한 조직원 표시해주는 변수
 let html;
+
 function addData(){
 	
 	$('.checked').each(function(){
@@ -147,7 +147,6 @@ function getOutTable(value){
 function minusData(){
 	console.log("삭제용"  + $(".outChecked").remove());
 	html = $("#choice-emp").html();
-	console.log(html);
 }
 </script>
 </body>
