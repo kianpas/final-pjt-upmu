@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mail">
+
+	<insert id="insertMail">
+		insert into
+			mail2
+		values (
+			seq_mail_test.nextval,
+			1,
+			2,
+			#{mailTitle},
+			#{mailContent},
+			default,
+			0
+		)
+
+		<selectKey keyProperty="mailNo" resultType="_int" order="AFTER">
+			select
+				 seq_mail_test.currval
+			from 
+				dual
+		</selectKey>
+	</insert>
+	<insert id="insertAttachment">
+		insert into
+			mailAttach2(
+				attach_no,
+				mail_no,
+				original_filename,
+				renamed_filename
+			)
+		values(
+			seq_mail_attach_test.nextval,
+			#{mailNo},
+			#{originalFilename},
+			#{renamedFilename}
+		)
+	</insert>
+	
+	<select id="selectMailList1" resultMap="mailExtMap">
+		select
+			m.*,
+			(select count (*) from mailAttach2 where mail_no = m.mail_no) attach_count
+		from
+			mail2 m
+		where
+			receiver_no = #{i}
+		order by
+			mail_no desc
+	</select>
+
+	<select id="selectMailList2" resultMap="mailExtMap">
+		select
+			m.*,
+			(select count (*) from mailAttach2 where mail_no = m.mail_no) attach_count
+		from
+			mail2 m
+		where
+			sender_no = #{i}
+		order by
+			mail_no desc
+	</select>
+	<resultMap type="mailExt" id="mailExtMap">
+		<result column="attach_count" property="hasAttachment"/>
+	</resultMap>
+	
+	<select id="selectAttachList" resultMap="attachVoMap">
+		select
+			*
+		from
+			mailAttach2
+		where
+			mail_no = #{mailNo}	
+	</select>
+	<resultMap type="mailAttach" id="attachVoMap">
+		<result column="attachment_status" property="attachmentStatus" typeHandler="booleanYnTypeHandler"/>
+	</resultMap>
+
+	<select id="selectMailTotalContents1" resultType="_int">
+		select
+			count(*)
+		from
+			mail2
+		where
+			receiver_no = #{i}
+	</select>
+	
+	<select id="selectMailTotalContents2" resultType="_int">
+		select
+			count(*)
+		from
+			mail2
+		where
+			sender_no = #{i}
+	</select>
+
+	<select id="selectOneMailCollection" resultMap="mailCollectionMap">
+		select
+			m.*,
+			a.attach_no,
+			a.mail_no,
+			a.original_filename,
+			a.renamed_filename,
+			a.attachment_status
+		from
+			mail2 m
+			left join
+				mailAttach2 a
+					on m.mail_no = a.mail_no
+		where m.mail_no = #{mail_no}
+	</select>
+	<resultMap type="mailExt" id="mailCollectionMap">
+		<id column="mail_no" property="mailNo"/>
+		<result column="sender_no" property="senderNo"/>
+		<result column="receiver_no" property="receiverNo"/>
+		<result column="mail_title" property="mailTitle"/>
+		<result column="mail_content" property="mailContent"/>
+		<result column="send_date" property="sendDate"/>
+		<result column="read_chk" property="readChk"/>
+		<collection property="attachList" ofType="mailAttach">
+			<id column="attach_no" property="attachNo"/>
+			<result column="mail_no" property="mailNo"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="renamed_filename" property="renamedFilename"/>
+			<result column="attachment_status" property="attachmentStatus" typeHandler="booleanYnTypeHandler"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectOneAttachment" resultMap="attachVoMap">
+		select
+			*
+		from
+			 mailAttach2
+		where
+			attach_no = #{no}
+	</select>
+
+	<select id="searchMail" resultType="mail">
+		select 
+			*
+		from 
+			mail2
+		where
+			mail_title like '%' || #{searchTitle} || '%' OR mail_content like '%' || #{searchTitle} || '%' OR receiver_no like '%' || #{searchTitle} || '%'
+	</select>
+	
+	<delete id="deleteMail">
+		delete
+		from 
+			mail2
+		where mail_no = #{str}
+	</delete>
+
+</mapper>

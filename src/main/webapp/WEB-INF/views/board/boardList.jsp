@@ -28,16 +28,16 @@ function goBoardForm(){
 		</tr>
 		<c:forEach items="${list}" var="board">
 		<tr>
-			<td>${board.no}</td>
-			<td>${board.title}</td>
-			<td>${board.memberId}</td>
-			<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd"/></td>
+			<td>${board.board_no}</td>
+			<td>${board.board_title}</td>
+			<td>${board.emp_no}</td>
+			<td><fmt:formatDate value="${board.board_time}" pattern="yyyy-MM-dd"/></td>
 			<td>
 				<c:if test="${board.hasAttachment}">
 				<img src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" />
 				</c:if>
 			</td>
-			<td>${board.readCount}</td>
+			<td>${board.board_count}</td>
 		</tr>
 		</c:forEach>
 		

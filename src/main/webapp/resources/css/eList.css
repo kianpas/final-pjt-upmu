@@ -1,0 +1,73 @@
+@charset "UTF-8";
+body{
+	position: fixed;
+
+}
+h2 {
+	margin-top: 0px;
+}
+.list-form {
+	display: flex;
+}
+.list {
+	outline : solid 1px black;
+}
+.list p {
+	margin: 0px;
+	cursor: pointer;
+}
+.depart-list {
+	position: relative;
+	overflow-x:auto; 
+	width:200px; 
+	height:500px;
+}
+.depart-code {
+	width: 60px;
+}
+#depart-enroll {
+	position: absolute;
+	outline : solid 1px black;
+	width:200px; 
+	height:200px;
+	left: 0px;
+	bottom: 0px;
+}
+.employee-list {
+	display: hidden;
+	overflow-x:auto; 
+	width:700px; 
+	height:500px;
+}
+
+summary {
+	list-style: none;
+    cursor: pointer;
+}
+label {
+	display: block;
+}
+
+.search-form{
+	display: flex;
+	margin-left:200px;
+	position: relative;
+}
+.search-form label {
+	margin-right: 5px; 
+}
+#context-menu{
+	border: 1px solid #c8c8c8;
+	background-color: white;
+	margin: 0px;
+	z-index: 9999;
+}
+#context-menu ul li{
+	padding-left: 14px;
+	padding-right: 8px;
+	cursor: default;
+	font-size: 14px;
+}
+#context-menu ul li:hover{
+	background-color: #dcdcdc;
+}

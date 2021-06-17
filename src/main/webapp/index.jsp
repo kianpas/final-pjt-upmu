@@ -9,10 +9,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <body>
 
-<a href="${pageContext.request.contextPath}/employeeList/eList">조직도</a>	
+<a href="${pageContext.request.contextPath}/board/boardList.do">게시판</a>	
+<a href="${pageContext.request.contextPath}/employeeList/eList.do">조직도</a>	
+<input type="button" value="조직도팝업" onclick="eListPop();">	
 <a href="${pageContext.request.contextPath}/document/docMain">전자결재</a>
 <a href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
-  
+<a href="${pageContext.request.contextPath}/mail/sendMailList.do">보낸 메일함(테스트용 사번 : 1)</a>
+<a href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은 메일함(테스트용 사번 : 2)</a>
+
 <main class="responsive-wrapper">
   <div class="page-title">
     <h1>Latest Updates</h1>
@@ -192,6 +196,13 @@
     </div>
   </div>
 </main>
+<script>
+function eListPop() {
+	var option = "width=500, height=600";
+	
+	window.open("${pageContext.request.contextPath}/common/eListPop.do", "", option);
+}
+</script>
 </body>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
