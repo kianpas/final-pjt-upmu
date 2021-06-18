@@ -9,8 +9,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
 	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-<h1>챗 화면</h1>
-
     <div class="container" id="app">
         <div class="row">
             <div class="col-md-12">
@@ -19,11 +17,6 @@
         </div>
         
         <div class="input-group">
-           
-          
-           <!--  <div class="input-group-append">
-                <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
-            </div> -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
  			 채팅방 개설
 			</button>
@@ -48,7 +41,7 @@
 		    <li><a class="dropdown-item" onclick="chatRoomDelete(${chatRoomList.chatroomNo})">방 삭제</a></li>
 		  </ul>
         </div>
-        <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+       <!--  <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.</div> -->
      </div> 
      </c:forEach>
      </div>

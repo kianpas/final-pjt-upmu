@@ -1,6 +1,7 @@
 package com.fpjt.upmu.chat.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
@@ -28,6 +29,16 @@ public interface ChatService {
 	public int insertDirectMsg(DirectMsg directMsg);
 
 	public int updateChatRoom(ChatRoom chatRoom);
+
+	public List<DirectMsg> selectDmList(Map<String, Object> map);
+
+	public int updateChat(ChatMsg chatMsg);
+
+	public int deleteChat(int msgNo);
+
+	public int updateDm(DirectMsg directMsg);
+
+	public int deleteDm(int messegeNo);
 
 		
 

@@ -1,6 +1,7 @@
 package com.fpjt.upmu.chat.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,36 @@ public class ChatServiceImpl implements ChatService {
 	public int updateChatRoom(ChatRoom chatRoom) {
 		
 		return chatDao.updateChatRoom(chatRoom);
+	}
+
+	@Override
+	public List<DirectMsg> selectDmList(Map<String, Object> map) {
+		
+		return chatDao.selectDmList(map);
+	}
+
+	@Override
+	public int updateChat(ChatMsg chatMsg) {
+		
+		return chatDao.updateChat(chatMsg);
+	}
+
+	@Override
+	public int deleteChat(int msgNo) {
+		
+		return chatDao.deleteChat(msgNo);
+	}
+
+	@Override
+	public int updateDm(DirectMsg directMsg) {
+		
+		return chatDao.updateDm(directMsg);
+	}
+
+	@Override
+	public int deleteDm(int messegeNo) {
+		
+		return chatDao.deleteDm(messegeNo);
 	}
 
 	
