@@ -52,6 +52,16 @@ public class DocDaoImpl implements DocDao {
 		return session.selectOne("document.selectOneDocumentByParam", param);
 	}
 
+	@Override
+	public int insertDocument(Document document) {
+		return session.insert("document.insertDocument", document);
+	}
+
+	@Override
+	public int insertDocLine(DocLine docLine) {
+		return session.insert("document.insertDocLine", docLine);
+	}
+
 	
 
 }

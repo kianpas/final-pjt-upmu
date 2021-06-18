@@ -22,5 +22,9 @@ public interface DocService {
 
 	Document selectOneDocumentByParam(Map<String, Object> param);
 
+	int insertDocument(Document document);
+
+	int insertDocLine(DocLine docLine);
+
 
 }

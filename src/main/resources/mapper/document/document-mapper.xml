@@ -126,4 +126,46 @@
 		</where>
 		</if>
 	</select>
+	
+	<insert id="insertDocument">
+		insert into
+			document(
+				doc_no,
+				title,
+				writer,
+				content
+			)
+		values(
+			seq_doc_no.nextval,
+			#{title},
+			#{writer},
+			#{content}
+		)
+		<selectKey keyProperty="docNo" resultType="_int" order="AFTER">
+			select
+				seq_doc_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	<insert id="insertDocLine">
+		insert into
+			docline(
+				doc_no,
+				approver,
+				approver_type,
+				lv,
+				status,
+				max_authority
+			)
+		values(
+			#{docNo},
+			#{approver},
+			#{approverType},
+			#{lv},
+			#{status},
+			#{maxAuthority}
+		)
+	</insert>
+	
 </mapper>
