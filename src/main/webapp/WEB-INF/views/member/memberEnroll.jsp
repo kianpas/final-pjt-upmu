@@ -46,9 +46,10 @@
           </div>
 
           <div class="emp_birth">
-            <h3 class="emp_birth_">
+            <div class="emp_birth_">
               <label for="yy" class="emp_birth_input">생년월일</label>
-            </h3>
+            </div>
+            
             <input type="text" class="birth_yy" maxlength="4" placeholder="년(4자)">
 
             <select name="birth_mm_" class=" birth_mm">

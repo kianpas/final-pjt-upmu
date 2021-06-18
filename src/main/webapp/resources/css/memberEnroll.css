@@ -4,7 +4,7 @@ body {
     width: 100%;
     height: 100%;
     color: #6a6f8c;
-    background: #d1dddb;
+    background: #f8f3eb;
     font: 600 16px/18px 'Open Sans', sans-serif;
 }
 
@@ -17,7 +17,7 @@ body {
 .sign-wrap {
     width: 100%;
     margin: auto;
-    max-width: 50%;
+    max-width: 45%;
     min-height: 975px;
     position: relative;
     box-shadow: 0 12px 15px 0 rgb(0 0 0 / 24%), 0 17px 50px 0 rgb(0 0 0 / 19%);
@@ -50,19 +50,19 @@ body {
 }
 
 /* 사번,비밀번호,이름,주소,.... */
-.sign-up-htm .emp_no,
+.sign-up-htm .emp_no .emp_no_,
 .sign-up-htm .emp_pw .emp_pw_,
 .sign-up-htm .emp_pw_re .emp_pw_re_,
-.sign-up-htm .emp_name,
-.emp_name_,
+.sign-up-htm .emp_name .emp_name_,
 .sign-up-htm .emp_addr .emp_addr_,
 .sign-up-htm .emp_email .emp_email_,
 .sign-up-htm .emp_birth .emp_birth_,
 .sign-up-htm .emp_hiredate .emp_hiredate_,
 .sign-up-htm .Department .Department_ {
     line-height: 2;
-    color: #d1dddb;
-    font-size: 20px;
+    color: #4a4e4d;
+    font-size: 18px;
+    margin: 20px 0px 0px 20px;
 }
 
 .sign-up-htm .emp_no .emp_no_input,
@@ -76,9 +76,9 @@ body {
     border: none;
     padding: 15px 20px;
     border-radius: 25px;
-    background-color: rgba(255, 255, 255, .1);
+    background-color: rgb(109 109 109 / 42%);
     display: block;
-    color: #fff;
+    color: #6a6f8c;
     width: 80%;
 }
 
@@ -91,7 +91,8 @@ body {
     border-radius: 25px;
     background-color: rgba(255, 255, 255, .1);
     display: inline-table;
-    color: gray;
+    color: #f8f3eb;
+    background: #bebbb6;
     width: 25%;
 }
 

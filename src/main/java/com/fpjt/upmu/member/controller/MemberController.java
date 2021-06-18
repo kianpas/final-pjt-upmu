@@ -45,7 +45,6 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes({"loginMember", "next"})
 public class MemberController {
 
-	//private static final Logger log = LoggerFactory.getLogger(MemberController.class);
 	
 	@Autowired
 	private MemberService memberService;
@@ -119,7 +118,6 @@ public class MemberController {
 		//1. 업무로직
 		Member member = memberService.selectOneMember(emp_no);
 		log.info("member = {}", member);
-//		log.info("encryptedPassword = {}", bcryptPasswordEncoder.encode(password));
 		
 		
 		//2. 로그인여부 분기처리
@@ -168,6 +166,7 @@ public class MemberController {
 		log.debug("loginMember = {}", loginMember);
 		
 		try {
+			
 			int result = memberService.updateMember(member);
 			
 			
@@ -177,10 +176,8 @@ public class MemberController {
 			mav.setView(view);
 			
 			
-			//ModelAndView와 RedirectAttributes 충돌시 FlashMap을 직접 사용
 			FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
 			flashMap.put("msg", "사용자 정보 수정 성공!!!!!!");
-//			redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공!");
 			
 		} catch (Exception e) {
 			log.error("사용자 정보 수정 오류!", e);
