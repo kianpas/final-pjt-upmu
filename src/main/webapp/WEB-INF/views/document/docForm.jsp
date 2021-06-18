@@ -28,17 +28,16 @@
  -->
 <section>
 	<article>
-		<div id="board-container">
+		<div id="container">
 		<form 
-			name="boardFrm" 
+			name="documentFrm" 
 			action="${pageContext.request.contextPath}/document/docInsert" 
 			method="post" 
-			enctype="multipart/form-data"
-			onsubmit="return boardValidate();">
+			enctype="multipart/form-data">
 			
-			<label class="" for="docNo">문서번호</label>
+			<!-- <label class="" for="docNo">문서번호</label>
 			<input type="text" class="form-control" placeholder="문서번호" name="docNo" id="docNo" required>
-			<br />
+			<br /> -->
 			<label class="" for="title">문서제목</label>
 			<input type="text" class="form-control" placeholder="문서제목" name="title" id="title" required>
 			<br />
@@ -48,14 +47,10 @@
 			<br />
 			
 			<!-- 결재선 -->
-			<button name="docLineBtn" id="docLineBtn" >결재선 설정</button>
+			<button type="button" name="docLineBtn" id="docLineBtn" >결재선 설정</button>
 			<br />
 			
-			<div id="docLineDiv">
-				<input type="text" name="empNo" value=""/>
-				<input type="text" name="empName" value=""/>
-				<input type="text" name="approverType" value=""/>
-			</div>
+			<div id="docLineDiv"></div>
 			
 			
 			<textarea class="form-control" name="content" placeholder="내용" required></textarea>
@@ -73,7 +68,7 @@
 			</div>
 
 			
-			<input type="submit" class="btn btn-outline-success" value="저장" >
+			<input type="submit" class="btn btn-outline-success" value="제출" >
 		</form>
 	</div>
 	</article>
@@ -82,7 +77,7 @@
 <script>
 $("#docLineBtn").click(function(){
 	// 새창에 대한 세팅(옵션)
-    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,height=800,width=800,left=0,top=0';
+    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,height=400,width=800,left=0,top=0';
     // 자식창을 열고 자식창의 window 객체를 windowObj 변수에 저장
     windowObj = window.open("${pageContext.request.contextPath}/employeeList/eListForDoc","자식창",settings);
     

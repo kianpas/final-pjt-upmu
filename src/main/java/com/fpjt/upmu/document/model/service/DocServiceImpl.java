@@ -59,5 +59,28 @@ public class DocServiceImpl implements DocService {
 	}
 
 
+	@Override
+	public int insertDocument(Document document) {
+		try {
+			int result = 0;
+			result = docDao.insertDocument(document);
+			
+			if(document.getDocLine().size()>0) {
+				for (DocLine docLine : document.getDocLine()) {
+					docLine.setDocNo(document.getDocNo());
+					result = insertDocLine(docLine);
+				}
+			}
+			return result;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@Override
+	public int insertDocLine(DocLine docLine) {
+		return docDao.insertDocLine(docLine);
+	}
+
 
 }

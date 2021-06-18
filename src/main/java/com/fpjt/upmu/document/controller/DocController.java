@@ -23,10 +23,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.document.model.service.DocService;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
+import com.fpjt.upmu.document.model.vo.MultiDocLine;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -98,6 +100,48 @@ public class DocController {
 	@GetMapping("/docForm")
 	public String docForm(){
 		return "document/docForm";
+	}
+	
+//	docNo
+//	title
+//	writer
+//	docLine<-input으로 값들 넣어줌
+//	content
+	@PostMapping("/docInsert")
+	public String docInsert(
+			@ModelAttribute Document document,
+			@ModelAttribute MultiDocLine docLines,
+			RedirectAttributes redirectAttr
+			) {
+		//log.debug("document = {}", document);
+		List<DocLine> lineList = new ArrayList<>();
+		
+		for (DocLine docLine : docLines.getDocLines()) {
+			//approver, agreer는 notdecided
+			if("approver".equals(docLine.getApproverType()) || "agreer".equals(docLine.getApproverType())) {
+				docLine.setStatus("notdecided");
+			}
+
+			//enforcer, referer는 afterview
+			if("enforcer".equals(docLine.getApproverType()) || "referer".equals(docLine.getApproverType())) {
+				docLine.setStatus("afterview");
+			}
+			lineList.add(docLine);
+			
+			log.debug("docLine = {}", docLine);
+		}
+		document.setDocLine(lineList);
+		log.debug("document = {}", document);
+		
+		int result = 0;
+		try {
+			result = docService.insertDocument(document);
+
+			return "redirect:/document/docDetail?docNo="+document.getDocNo();
+		} catch (Exception e) {
+			log.error("문서 입력 실패!",e);
+			throw e;
+		}
 	}
 	
 	

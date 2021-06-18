@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DocLine {
 	
-	private String docNo;
+	private int docNo;
 	private int approver;
 	private String approverType;
 	private int lv;
