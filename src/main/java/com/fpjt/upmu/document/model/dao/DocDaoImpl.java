@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
@@ -60,6 +61,11 @@ public class DocDaoImpl implements DocDao {
 	@Override
 	public int insertDocLine(DocLine docLine) {
 		return session.insert("document.insertDocLine", docLine);
+	}
+
+	@Override
+	public int insertDocAttach(DocAttach docAttach) {
+		return session.insert("document.insertDocAttach", docAttach);
 	}
 
 	

@@ -167,5 +167,19 @@
 			#{maxAuthority}
 		)
 	</insert>
-	
+	<insert id="insertDocAttach">
+		insert into
+			DocAttach(
+				no,
+				doc_no,
+				original_filename,
+				renamed_filename
+			)
+		values(
+			seq_docAttach_no.nextval,
+			#{docNo},
+			#{originalFilename},
+			#{renamedFilename}
+		)
+	</insert>
 </mapper>

@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fpjt.upmu.document.model.dao.DocDao;
+import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
@@ -58,17 +60,23 @@ public class DocServiceImpl implements DocService {
 		return docDao.selectOneDocumentByParam(param);
 	}
 
-
+	@Transactional
 	@Override
-	public int insertDocument(Document document) {
+	public int insertDocument(Document document, List<DocAttach> attachList) {
 		try {
 			int result = 0;
 			result = docDao.insertDocument(document);
-			
+
 			if(document.getDocLine().size()>0) {
 				for (DocLine docLine : document.getDocLine()) {
 					docLine.setDocNo(document.getDocNo());
 					result = insertDocLine(docLine);
+				}
+			}
+			if(attachList!=null) {
+				for (DocAttach docAttach : attachList) {
+					docAttach.setDocNo(document.getDocNo());
+					result = insertDocAttach(docAttach);
 				}
 			}
 			return result;
@@ -77,6 +85,12 @@ public class DocServiceImpl implements DocService {
 		}
 	}
 	
+	@Override
+	public int insertDocAttach(DocAttach docAttach) {
+		return docDao.insertDocAttach(docAttach);
+	}
+
+
 	@Override
 	public int insertDocLine(DocLine docLine) {
 		return docDao.insertDocLine(docLine);

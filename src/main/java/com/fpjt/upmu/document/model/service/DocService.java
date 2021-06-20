@@ -3,6 +3,7 @@ package com.fpjt.upmu.document.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
@@ -22,9 +23,9 @@ public interface DocService {
 
 	Document selectOneDocumentByParam(Map<String, Object> param);
 
-	int insertDocument(Document document);
+	int insertDocument(Document document, List<DocAttach> attachList);
 
 	int insertDocLine(DocLine docLine);
 
-
+	int insertDocAttach(DocAttach docAttach);
 }
