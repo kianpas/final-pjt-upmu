@@ -34,7 +34,7 @@
 			<!-- listBox는 일부만 다르므로 함수형태로. -->
 			<c:set var="approverTypeArray">approver,agreer,enforcer,referer</c:set>
 			<c:forEach var="approverType" items="${approverTypeArray}">
-				<div class="listBox">
+			<div class="listBox">
 				<button name="approver-btn" value="${approverType}">
 					<c:choose>
 						<c:when test="${approverType eq 'approver'}">결재자</c:when>
@@ -45,9 +45,9 @@
 				▼</button>
 				<select id="${approverType}" size="5" ></select>
 				<div>
-					<span style="cursor: pointer;">▲</span>&nbsp&nbsp
-					<span style="cursor: pointer;">▼</span>&nbsp&nbsp
-					<span style="cursor: pointer;">X</span>
+					<span id="optUp" style="cursor: pointer;">▲</span>&nbsp&nbsp
+					<span id="optDown"  style="cursor: pointer;">▼</span>&nbsp&nbsp
+					<span id="optDel"  style="cursor: pointer;">X</span>
 				</div>
 			</div>
 			</c:forEach>
@@ -60,9 +60,31 @@
 </div>
 
 <script>
+$(document).on('click', '#optUp', function(e) {
+	var $selected = $(e.target).closest('.listBox').find('option:selected');
+	$selected.insertBefore($selected.prev().get(0));
+});
+$(document).on('click', '#optDown', function(e) {
+	var $selected = $(e.target).closest('.listBox').find('option:selected');
+	$selected.insertAfter($selected.next().get(0));
+});
+$(document).on('click', '#optDel', function(e) {
+	var $selected = $(e.target).closest('.listBox').find('option:selected');
+	$selected.remove();
+});
+
+
+
 function saveBtn(){
-	let html = `<table><tr><th>결재종류</th><th>직위</th><th>이름</th></tr>`;
-	
+	//let html = `<table><tr><th>결재종류</th><th>직위</th><th>이름</th></tr>`;
+	let html = `<table class="table">
+					<tr>
+						<th scope="col">결재종류</th>
+						<th scope="col">직위</th>
+						<th scope="col">이름</th>
+					</tr>
+				`;
+
 	//dataset : empno empName approvertype empjob
 	$optArr = $("option")
 	let apvCnt = 0;
@@ -98,7 +120,7 @@ function saveBtn(){
 
 	html += "</table>";
 	$(opener.document).find("#docLineDiv").html(html);
-	//window.close();
+	window.close();
 }
 
 	//결재자 클릭하면 select name="approver" 에 id 추가

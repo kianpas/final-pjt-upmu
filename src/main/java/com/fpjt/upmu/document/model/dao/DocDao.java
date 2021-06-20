@@ -3,6 +3,7 @@ package com.fpjt.upmu.document.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
 
@@ -25,5 +26,7 @@ public interface DocDao {
 	int insertDocument(Document document);
 
 	int insertDocLine(DocLine docLine);
+
+	int insertDocAttach(DocAttach docAttach);
 
 }
