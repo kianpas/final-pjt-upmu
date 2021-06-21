@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fpjt.upmu.employeeList.model.vo.Department;
 import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employeeList.model.vo.Job;
 
 public interface EmployeeListService {
 
@@ -21,5 +22,9 @@ public interface EmployeeListService {
 	int deleteDept(String param);
 
 	int updateDept(Map<String, Object> map);
+
+	List<Job> selectJobList();
+
+	Employee selectOneEmp(String param);
 
 }

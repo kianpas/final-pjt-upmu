@@ -21,7 +21,9 @@
 		SELECT
 			*
 		FROM
-			EMPLOYEE
+			EMPLOYEE E
+		    JOIN DEPARTMENT D ON E.EMP_DEPT = D.DEP_NO
+		    JOIN JOBTITLE J ON E.EMP_JOB = J.JOB_NO
 		WHERE
 			EMP_DEPT = #{depNo}
 	</select>
@@ -29,7 +31,9 @@
 		SELECT
 			*
 		FROM
-			EMPLOYEE
+			EMPLOYEE E
+		    JOIN DEPARTMENT D ON E.EMP_DEPT = D.DEP_NO
+		    JOIN JOBTITLE J ON E.EMP_JOB = J.JOB_NO
 		WHERE
 			${getKeyword} LIKE #{getSearch}
 	</select>
@@ -48,6 +52,24 @@
 		WHERE
 			DEP_NO = #{modifyDept}
 	</update>
+	<select id="selectJobList" resultMap="jobResultMap">
+		SELECT
+			*
+		FROM
+			JOBTITLE
+		ORDER BY
+			JOB_NO DESC
+	</select>
+	<select id="selectOneEmp" resultMap="empResultMap">
+		SELECT
+			*
+		FROM
+			EMPLOYEE E
+		    JOIN DEPARTMENT D ON E.EMP_DEPT = D.DEP_NO
+		    JOIN JOBTITLE J ON E.EMP_JOB = J.JOB_NO
+		WHERE
+			EMP_NO = #{param}
+	</select>
 	<resultMap type="employee" id="empResultMap">
 		 <result column="EMP_NO" property="empNo" />
 		 <result column="EMP_NAME" property="empName" />
@@ -58,11 +80,15 @@
 		 <result column="EMP_BIRTH" property="empBirth" />
 		 <result column="EMP_STATE" property="empState" />
 		 <result column="EMP_HIREDATE" property="empHiredate" />
-		 <result column="EMP_DEPT" property="empDept" />
-		 <result column="EMP_JOB" property="empJob" />
+		 <result column="DEP_NAME" property="empDept" />
+		 <result column="JOB_NAME" property="empJob" />
 	</resultMap>
 	<resultMap type="department" id="deptResultMap">
 		 <result column="DEP_NO" property="depNo" />
 		 <result column="DEP_NAME" property="depName" />
+	</resultMap>
+	<resultMap type="job" id="jobResultMap">
+		 <result column="JOB_NO" property="jobNo" />
+		 <result column="JOB_NAME" property="jobName" />
 	</resultMap>
 </mapper>

@@ -10,6 +10,7 @@ import org.springsource.loaded.Log;
 import com.fpjt.upmu.employeeList.model.dao.EmployeeListDao;
 import com.fpjt.upmu.employeeList.model.vo.Department;
 import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employeeList.model.vo.Job;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,6 +54,16 @@ public class EmployeeListServiceImpl implements EmployeeListService {
 	@Override
 	public int updateDept(Map<String, Object> map) {
 		return elDao.updateDept(map);
+	}
+
+	@Override
+	public List<Job> selectJobList() {
+		return elDao.selectJobList();
+	}
+
+	@Override
+	public Employee selectOneEmp(String param) {
+		return elDao.selelctOneEmp(param);
 	}
 	
 	

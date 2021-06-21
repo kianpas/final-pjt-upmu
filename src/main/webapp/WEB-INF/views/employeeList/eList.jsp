@@ -16,7 +16,7 @@
 			<option value="emp_job">직급</option>
 			<option value="emp_dept">부서</option>
 		</select>
-	    <input id="search" name="p" type="search" autocomplete="off" spellcheck="false" placeholder="검색" onkeypress="if( event.keyCode == 13) {search()};">
+	    <input id="search" name="p" type="search" autocomplete="off" spellcheck="false" placeholder="검색" onkeypress="if( event.keyCode == 13) {colorReset();search()};">
 	    <input id="search-submit" type="submit" value="검색" onclick="search();">
 </div>
 <div class="list-form">
@@ -62,14 +62,33 @@ link.type = "text/css";
 link.href = cssUrl;
 document.head.appendChild(link);
 
+//색상 초기화
+function colorReset() {	
+	$(".dept").each((i, item) => {
+		if($(item).attr("id") === "depNoChecked")		
+			$(item).css("background-color", "");
+	});
+}
+
 $(".keyLabel").hide();
 	//목록에서 employee불러오기
 	var getClass;
 	
 	$(".dept").click((e) => {
 		getClass = {"depNo" : ($(e.target).attr('class').split(' '))[0]};
+		var $depNo = $("." + getClass.depNo);
 
-		console.log(getClass);
+		colorReset();
+
+		//부서선택 시 컬러 변환 이벤트
+		if($depNo.css("background-color")==="rgb(220, 220, 220)") {
+			$depNo.css("background-color" ,"rgb(180, 229, 255)");
+			$depNo.attr("id", "depNoChecked");
+		}
+		else {
+			$depNo.css("background-color");
+		}
+		
 		$.ajax({
 			url: "${pageContext.request.contextPath}/employeeList/selectOneDeptEmp.do",
 			method: "GET",

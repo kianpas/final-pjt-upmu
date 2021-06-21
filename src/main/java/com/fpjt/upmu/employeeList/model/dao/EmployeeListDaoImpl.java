@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.employeeList.model.vo.Department;
 import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employeeList.model.vo.Job;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Repository
-@Slf4j
 public class EmployeeListDaoImpl implements EmployeeListDao {
 
 	@Autowired
@@ -53,6 +53,16 @@ public class EmployeeListDaoImpl implements EmployeeListDao {
 	public int updateDept(Map<String, Object> map) {
 		return session.update("employeeList.updateDept", map);
 	}
-	
+
+	@Override
+	public List<Job> selectJobList() {
+		return session.selectList("employeeList.selectJobList");
+	}
+
+	@Override
+	public Employee selelctOneEmp(String param) {
+		return session.selectOne("employeeList.selectOneEmp", param);
+	}
+
 	
 }
