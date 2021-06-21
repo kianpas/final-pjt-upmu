@@ -66,7 +66,6 @@ public class MemberController {
 	
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll() {
-		
 	}
 	
 	@PostMapping("/memberEnroll.do")
@@ -80,8 +79,9 @@ public class MemberController {
 			member.setEmp_pw(encodedPassword);
 			log.info("member(암호화처리이후) = {}", member);
 			
+			//1. 업무로직
 			int result = memberService.insertMember(member);
-			
+			//2. 사용자피드백
 			redirectAttr.addFlashAttribute("msg", "회원가입성공");
 		} catch (Exception e) {
 			log.error("회원가입 오류!", e);
