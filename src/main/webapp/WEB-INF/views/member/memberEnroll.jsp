@@ -8,15 +8,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/memberEnroll.css" />
 <body>
-<form 
-	name="memberEnrollFrm" 
-	action="${pageContext.request.contextPath }/member/memberEnroll.do"
-	method="post">
-	
  <div class="sign-wrap">
     <div class="sign_up">Sign</div>
     <div class="sign_up_">Up</div>
-    <div class="sgn-in-html">
+    <div class="sign-in-html">
       <div class="sign-form">
         <div class="sign-up-htm">
           <div class="emp_no">
@@ -25,7 +20,6 @@
           </div>
           <div class="emp_pw">
             <label for="pass" class="emp_pw_">사원비밀번호</label>
-
             <input id="emp_pw" type="password" class="emp_pw_input" data-type="password">
           </div>
           <div class="emp_pw_re">
@@ -88,7 +82,6 @@
       </div>
     </div>
   </div>
-  </form>
 	<br />
 	<br />
 	<br />
@@ -127,8 +120,8 @@ $(".en_emp_no").keyup(e => {
 		}
 	});
 });
-$("#emp_pw_input").blur(function() {
-	var $password = $("#emp_pw_input"), $passwordCheck = $("#emp_pw_re_input");
+$("#passwordCheck").blur(function() {
+	var $password = $("#password"), $passwordCheck = $("#passwordCheck");
 	if($password.val() != $passwordCheck.val()){
 		alert("비밀번호가 일치하지 않습니다.");
 		$password.select();
