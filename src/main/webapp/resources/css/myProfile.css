@@ -1,0 +1,15 @@
+@charset "UTF-8";
+label {
+	display: block;
+}
+#profile-form {
+
+	display: flex;
+}
+#photo {
+	width: 103px;
+	height: 132px;
+}
+#profile {
+	margin : 20px;
+}
