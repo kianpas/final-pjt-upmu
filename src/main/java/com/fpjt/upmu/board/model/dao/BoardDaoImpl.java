@@ -9,13 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.board.model.vo.Board;
+import com.fpjt.upmu.board.model.vo.Attachment;
+import com.fpjt.upmu.board.model.vo.BoardExt;
+import com.fpjt.upmu.board.model.dao.BoardDao;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
 
 	@Autowired
 	private SqlSessionTemplate session;
-	
+
 	@Override
 	public List<Board> selectBoardList() {
 		return session.selectList("board.selectBoardList");
@@ -28,6 +31,42 @@ public class BoardDaoImpl implements BoardDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("board.selectBoardList", null, rowBounds);
 	}
+
+	@Override
+	public int selectBoardTotalContents() {
+		return session.selectOne("board.selectBoardTotalContents");
+	}
+
+	@Override
+	public int insertBoard(BoardExt board) {
+		return session.insert("board.insertBoard", board);
+	}
+
+	@Override
+	public int insertAttachment(Attachment attach) {
+		return session.insert("board.insertAttachment", attach);
+	}
+
+	@Override
+	public BoardExt selectOneBoard(int no) {
+		return session.selectOne("board.selectOneBoard", no);
+	}
+
+	@Override
+	public List<Attachment> selectAttachList(int boardNo) {
+		return session.selectList("board.selectAttachList", boardNo);
+	}
+
+	@Override
+	public BoardExt selectOneBoardCollection(int no) {
+		return session.selectOne("board.selectOneBoardCollection", no);
+	}
+	
+	
+	
+	
+	
+	
 	
 }
 

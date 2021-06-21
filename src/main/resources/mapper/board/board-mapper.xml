@@ -5,20 +5,110 @@
 <mapper namespace="board">
 	<select id="selectBoardList" resultMap="boardExtMap">
 		select
-		    b.*,
-		    (select count(*) from attachment where board_no = b.board_no) attach_count			
+			b.*,
+			(select count(*) from attachment where board_no = b.board_no) attach_count			
 		from 
-		    board b
+			board b
 		order by
-		    board_no desc
+			board_no desc
 	</select>
 	<resultMap type="boardExt" id="boardExtMap">
-		<id column="board_no" property="board_no"/>
-		<result column="board_title" property="board_title"/>
-		<result column="emp_no" property="emp_no"/>
-		<result column="board_content" property="board_content"/>
-		<result column="board_time" property="board_time"/>
-		<result column="board_count" property="board_count"/>
 		<result column="attach_count" property="hasAttachment"/>	
+	</resultMap>
+	<select id="selectBoardTotalContents" resultType="_int">
+		select
+			count(*)
+		from
+			board 
+	</select>
+	<insert id="insertBoard">
+		insert into
+			board(
+				board_no,
+				board_title,
+				emp_no,
+				board_content
+			)
+		values (
+			seq_board_no.nextval,
+			#{board_title},
+			#{emp_no},
+			#{board_content}
+		)
+		<!-- 발급받은 board pk no값을 파라미터 board객체의 property no에 저장한다. -->
+		<selectKey keyProperty="no" resultType="_int" order="AFTER">
+			select
+				seq_board_no.currval
+			from 
+				dual
+		</selectKey>
+	</insert>
+	<insert id="insertAttachment">
+		insert into
+			attachment(
+				no,
+				board_no,
+				original_filename,
+				renamed_filename
+			)
+		values(
+			seq_attachment_no.nextval,
+			#{boardNo},
+			#{originalFilename},
+			#{renamedFilename}
+		)
+	</insert>
+	<select id="selectOneBoard" resultMap="boardExtMap">
+		select
+			*
+		from
+			board
+		where 
+			board_no = #{no}
+	</select>
+	<select id="selectAttachList" resultMap="attachVoMap">
+		select
+			*
+		from
+			attachment
+		where
+			board_no = #{boardNo}
+	</select>
+	<resultMap type="attachment" id="attachVoMap">
+		<result column="status" property="status" javaType="boolean" jdbcType="CHAR"/>
+	</resultMap>
+	<select id="selectOneBoardCollection" resultMap="boardCollectionMap">
+		select 
+		    b.*,
+		    a.no "attach_no",
+		    a.board_no,
+		    a.original_filename,
+		    a.renamed_filename,
+		    a.upload_date,
+		    a.download_count,
+		    a.status
+		from  
+		    board b
+		  left join 
+		    attachment a
+		      on b.board_no = a.board_no
+		where b.board_no = #{board.no}
+	</select>
+	<resultMap type="boardExt" id="boardCollectionMap">
+		<id column="no" property="no"/>
+		<result column="member_id" property="memberId"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="read_count" property="readCount"/>
+		<collection property="attachList" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="renamed_filename" property="renamedFilename"/>
+			<result column="upload_date" property="uploadDate"/>
+			<result column="download_count" property="downloadCount"/>
+			<result column="status" property="status" typeHandler="booleanYnTypeHandler"/>
+		</collection>
 	</resultMap>
 </mapper>

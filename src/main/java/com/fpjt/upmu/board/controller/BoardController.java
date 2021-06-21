@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.board.model.service.BoardService;
 import com.fpjt.upmu.board.model.vo.Attachment;
 import com.fpjt.upmu.common.util.UpmuUtils;
-//import com.fpjt.upmu.common.util.HelloSpringUtils;
+import com.fpjt.upmu.board.controller.BoardController;
+import com.fpjt.upmu.board.model.vo.BoardExt;
+import com.fpjt.upmu.common.util.HelloSpringUtils;
 import com.fpjt.upmu.board.model.vo.Board;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +41,11 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@GetMapping("/boardList.do")
-	public String boardList(@RequestParam(required = true, defaultValue = "1") int cpage, Model model) {
+	public String boardList(
+				@RequestParam(required = true, defaultValue = "1") int cpage,
+				HttpServletRequest request,
+				Model model
+			) {
 		try {
 			log.debug("cpage = {}", cpage);
 			final int limit = 10;
@@ -45,68 +53,93 @@ public class BoardController {
 			Map<String, Object> param = new HashMap<>();
 			param.put("limit", limit);
 			param.put("offset", offset);
-			
+			//1.업무로직 : content영역 - Rowbounds
 			List<Board> list = boardService.selectBoardList(param);
+			int totalContents = boardService.selectBoardTotalContents();
+			String url = request.getRequestURI();
+			log.debug("totalContents = {}, url = {}", totalContents, url);
+			String pageBar = HelloSpringUtils.getPageBar(totalContents, cpage, limit, url);
+			
+			//2. jsp에 위임
 			model.addAttribute("list", list);
+			model.addAttribute("pageBar", pageBar);
 		} catch(Exception e) {
 			log.error("게시글 조회 오류!", e);
 			throw e;
 		}
 		return "board/boardList";
 	}
-<<<<<<< Updated upstream
-
-=======
 	
->>>>>>> Stashed changes
 	@GetMapping("/boardForm.do")
-	public void boardForm() {
-		
-	}
+	public void boardForm() {}
 	
 	@PostMapping("/boardEnroll.do")
 	public String boardEnroll(
-						@ModelAttribute Board board,
-						@RequestParam(name = "upFile") MultipartFile[] upFiles
+						@ModelAttribute BoardExt board,
+						@RequestParam(name = "upFile") MultipartFile[] upFiles,
+						RedirectAttributes redirectAttr
 					) throws Exception {
-		log.debug("board = {}", board);
-		//1. 파일 저장 : 절대경로 /resources/upload/board
-		//pageContext:PageContext - request:HttpServletRequest - session:HttpSession - application:ServletContext
-		String saveDirectory = application.getRealPath("/resources/upload/board");
-		log.debug("saveDirectory = {}", saveDirectory);
 		
-		//디렉토리 생성
-		File dir = new File(saveDirectory);
-		if(!dir.exists())
-			dir.mkdirs(); // 복수개의 디렉토리를 생성
-		
-		List<Attachment> attachList = new ArrayList<>();
-		
-		for(MultipartFile upFile : upFiles) {
-			//input[name=upFile]로부터 비어있는 upFile이 넘어온다.
-			if(upFile.isEmpty()) continue;
+		try {
+			log.debug("board = {}", board);
+			//1. 파일 저장 : 절대경로 /resources/upload/board
+			//pageContext:PageContext - request:HttpServletRequest - session:HttpSession - application:ServletContext
+			String saveDirectory = application.getRealPath("/resources/upload/board");
+			log.debug("saveDirectory = {}", saveDirectory);
 			
-			String renamedFilename = 
-					UpmuUtils.getRenamedFilename(upFile.getOriginalFilename());
+			//디렉토리 생성
+			File dir = new File(saveDirectory);
+			if(!dir.exists())
+				dir.mkdirs(); // 복수개의 디렉토리를 생성
 			
-			//a.서버컴퓨터에 저장
-			File dest = new File(saveDirectory, renamedFilename);
-			upFile.transferTo(dest); // 파일이동
+			List<Attachment> attachList = new ArrayList<>();
 			
-			//b.저장된 데이터를 Attachment객체에 저장 및 list에 추가
-			Attachment attach = new Attachment();
-			attach.setOriginalFilename(upFile.getOriginalFilename());
-			attach.setRenamedFilename(renamedFilename);
-			attachList.add(attach);
+			for(MultipartFile upFile : upFiles) {
+				//input[name=upFile]로부터 비어있는 upFile이 넘어온다.
+				if(upFile.isEmpty()) continue;
+				
+				String renamedFilename = 
+						HelloSpringUtils.getRenamedFilename(upFile.getOriginalFilename());
+				
+				//a.서버컴퓨터에 저장
+				File dest = new File(saveDirectory, renamedFilename);
+				upFile.transferTo(dest); // 파일이동
+				
+				//b.저장된 데이터를 Attachment객체에 저장 및 list에 추가
+				Attachment attach = new Attachment();
+				attach.setOriginalFilename(upFile.getOriginalFilename());
+				attach.setRenamedFilename(renamedFilename);
+				attachList.add(attach);
+			}
+			
+			log.debug("attachList = {}", attachList);
+			//board객체에 설정
+			board.setAttachList(attachList);
+			
+			//2. 업무로직 : db저장 board, attachment
+			int result = boardService.insertBoard(board);
+			
+			//3. 사용자피드백 &  리다이렉트
+			redirectAttr.addFlashAttribute("msg", "게시글등록 성공!");
+		} catch(Exception e) {
+			log.error("게시글 등록 오류!", e);
+			throw e;
 		}
+		return "redirect:/board/boardDetail.do?no=" + board.getBoard_no();
+	}
+	
+	@GetMapping("/boardDetail.do")
+	public void selectOneBoard(@RequestParam int no, Model model) {
+		//1. 업무로직 : board - attachment 
+		BoardExt board = boardService.selectOneBoardCollection(no);
+		log.debug("board = {}", board);
 		
-		log.debug("attachList = {}", attachList);
+		//2. jsp에 위임
+		model.addAttribute("board", board);
+	}
+	
+	@GetMapping("/fileDownload.do")
+	public void fileDownload(@RequestParam int no) {
 		
-		
-		//2. 업무로직 : db저장 board, attachment
-		
-		//3. 사용자피드백 &  리다이렉트
-		
-		return "redirect:/board/boardList.do";
 	}
 }

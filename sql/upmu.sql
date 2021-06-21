@@ -45,13 +45,8 @@ Insert into UPMU.BOARD (board_no,board_title,emp_no,board_content,board_time,boa
 insert into attachment values(seq_attachment_no.nextval, 2, 'test.jpg', '20210708_220059_123.jpg', default, default, default);
 commit;
 
-select
-    b.*,
-    (select count(*) from attachment where board_no = b.board_no) attach_count			
-from 
-    board b
-order by
-    board_no desc;
+
+
 
 
 

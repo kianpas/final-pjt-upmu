@@ -9,9 +9,16 @@ import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.board.model.dao.BoardDao;
 import com.fpjt.upmu.board.model.vo.Board;
+import com.fpjt.upmu.board.model.vo.Attachment;
+import com.fpjt.upmu.board.model.vo.BoardExt;
+import com.fpjt.upmu.board.model.service.BoardService;
+import com.fpjt.upmu.board.model.service.BoardServiceImpl;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
+@Slf4j
 public class BoardServiceImpl implements BoardService {
 
 	@Autowired
@@ -27,4 +34,57 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectBoardList(param);
 	}
 
+	@Override
+	public int selectBoardTotalContents() {
+		return boardDao.selectBoardTotalContents();
+	}
+
+	
+	/**
+	 * rollbackFor - 트랜잭션 rollback처리하기위한 예외 등록. Exception -> 모든 예외.
+	 * 		기본적으로 RuntimeException만 rollback한다. 
+	 */
+//	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertBoard(BoardExt board) {
+		int result = 0; 
+		//1.board 등록
+		result = boardDao.insertBoard(board);
+		log.debug("board = {}", board);
+		//2.attachment 등록
+		if(board.getAttachList().size() > 0) {
+			for(Attachment attach : board.getAttachList()) {
+				attach.setBoardNo(board.getBoard_no()); // board no fk 세팅
+				result = insertAttachment(attach);
+			}
+		}
+		
+		return result; 
+	}
+	
+//	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertAttachment(Attachment attach) {
+		return boardDao.insertAttachment(attach);
+	}
+
+	@Override
+	public BoardExt selectOneBoard(int no) {
+		BoardExt board = boardDao.selectOneBoard(no);
+		List<Attachment> attachList = boardDao.selectAttachList(no); // boardNo로 조회
+		board.setAttachList(attachList);
+		return board;
+	}
+
+	@Override
+	public BoardExt selectOneBoardCollection(int no) {
+		return boardDao.selectOneBoardCollection(no);
+	}
+	
+	
+	
+	
+	
+	
+	
 }
