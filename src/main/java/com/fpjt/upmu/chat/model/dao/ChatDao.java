@@ -40,4 +40,8 @@ public interface ChatDao {
 
 	int deleteDm(int messegeNo);
 
+	ChatRoom selectOneChatRoom(int chatroomNo);
+
+	List<Map<String, Object>> joinList(int empNo);
+
 }

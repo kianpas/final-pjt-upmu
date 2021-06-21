@@ -40,6 +40,10 @@ public interface ChatService {
 
 	public int deleteDm(int messegeNo);
 
+	public ChatRoom selectOneChatRoom(int chatroomNo);
+
+	public List<Map<String, Object>> joinList(int empNo);
+
 		
 
 }

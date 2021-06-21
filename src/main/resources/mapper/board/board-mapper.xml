@@ -36,7 +36,7 @@
 			#{board_content}
 		)
 		<!-- 발급받은 board pk no값을 파라미터 board객체의 property no에 저장한다. -->
-		<selectKey keyProperty="no" resultType="_int" order="AFTER">
+		<selectKey keyProperty="board_no" resultType="_int" order="AFTER">
 			select
 				seq_board_no.currval
 			from 

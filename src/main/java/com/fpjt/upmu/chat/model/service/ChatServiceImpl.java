@@ -108,6 +108,18 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.deleteDm(messegeNo);
 	}
 
+	@Override
+	public ChatRoom selectOneChatRoom(int chatroomNo) {
+		
+		return chatDao.selectOneChatRoom(chatroomNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> joinList(int empNo) {
+		
+		return chatDao.joinList(empNo);
+	}
+
 	
 	
 }

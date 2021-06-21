@@ -18,6 +18,8 @@
 <a href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은 메일함(테스트용 사번 : 2)</a>
 <a href="${pageContext.request.contextPath}/admin/eListAdmin.do">관리페이지</a>	
 
+<a href="${pageContext.request.contextPath}/attendance/attendanceManage.do">근태관리</a>	
+
 <main class="responsive-wrapper">
   <div class="page-title">
     <h1>Latest Updates</h1>
