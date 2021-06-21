@@ -3,9 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
+
+<script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
+<style>
+.note-editable {
+	background-color: white; 
+}
+</style>
+
 <!--
 		docNo : 문서번호. 양식 찾아보기.
 		title : 문서제목
@@ -70,7 +79,9 @@
 			</div>
 			
 			
-			<textarea class="form-control" name="content" placeholder="내용" required></textarea>
+			<!-- <textarea class="form-control" name="content" placeholder="내용" required></textarea>
+			<br /> -->
+			<textarea class="form-control" id="summernote" name="content" required></textarea>
 			<br />
 
 			<button type="button" class="btn btn-success" style="margin-bottom: 5px;" onclick="fileFormAdd();">파일 폼 추가</button>
@@ -87,18 +98,6 @@
 			</div>
 
 			<div id="fileFormAddArea"></div>
-
-
-
-<!-- 			<div class="input-group mb-3" style="padding:0px;">
-			  <div class="input-group-prepend" style="padding:0px;">
-			    <span class="input-group-text">첨부파일2</span>
-			  </div>
-			  <div class="custom-file">
-			    <input type="file" class="custom-file-input" name="upFile" id="upFile2" multiple>
-			    <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-			  </div>
-			</div> -->
 			
 			<input type="submit" class="btn btn-outline-success" value="제출" >
 		</form>
@@ -107,6 +106,21 @@
 </section>
 
 <script>
+$(document).ready(function() {
+	//여기 아래 부분
+	$('#summernote').summernote({
+		  height: 300,                 // 에디터 높이
+		  minHeight: null,             // 최소 높이
+		  maxHeight: null,             // 최대 높이
+		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+          
+	});
+	//$('#summernote').summernote('insertText', 'textsomething');
+	//$('#summernote').summernote('enable');
+});-
+
 /* $(document).ready(function() {
 	$("[name=fileFormDelBtn]").click(function() {
 		console.log('clicked');

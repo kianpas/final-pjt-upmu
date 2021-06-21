@@ -19,9 +19,11 @@ public class Document {
 	private String content;
 	private Date requestDate;
 	private Date endDate;
-	//private String status;
 	
 	private List<DocLine> docLine;
 	
 	private String writerName;
+	private String depName;
+	private String jobName;
+	private String empName;
 }
