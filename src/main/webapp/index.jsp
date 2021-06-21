@@ -16,6 +16,7 @@
 <a href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
 <a href="${pageContext.request.contextPath}/mail/sendMailList.do">보낸 메일함(테스트용 사번 : 1)</a>
 <a href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은 메일함(테스트용 사번 : 2)</a>
+<a href="${pageContext.request.contextPath}/admin/eListAdmin.do">관리페이지</a>	
 
 <main class="responsive-wrapper">
   <div class="page-title">
