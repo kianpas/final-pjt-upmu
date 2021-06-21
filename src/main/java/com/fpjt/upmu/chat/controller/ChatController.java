@@ -120,13 +120,14 @@ public class ChatController {
 		try {
 			log.debug("chatroomNo {}", chatroomNo);
 			// 기존에 저장된 채팅메세지
-			// List<ChatMsg> chatMsgList = chatService.selectedRoomChatList(chatroomNo);
+			ChatRoom chatroom = chatService.selectOneChatRoom(chatroomNo);
 			// 유저리스트 가져오기
 			List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
 
 			log.debug("userList ---  {}", userList);
-			// model.addAttribute("chatMsgList", chatMsgList);
+			model.addAttribute("chatroom", chatroom);
 			model.addAttribute("chatroomNo", chatroomNo);
+			
 			return "/chat/roomDetail";
 		} catch (Exception e) {
 			log.error("채팅룸 입장 오류", e);
@@ -174,6 +175,25 @@ public class ChatController {
 			throw e;
 		}
 	}
+	
+	// json으로 보낼경우 @ResponseBody 사용
+		@GetMapping("/joinList/{empNo}")
+		@ResponseBody
+		public List<Map<String, Object>> joinList(@PathVariable int empNo) {
+
+			try {
+				log.debug("empNo +++{}", empNo);
+				// 유저리스트 가져오기
+				List<Map<String, Object>> joinList = chatService.joinList(empNo);
+				log.debug("joinList +++  {}", joinList);
+
+				return joinList;
+
+			} catch (Exception e) {
+				log.error("참여리스트 조회 오류", e);
+				throw e;
+			}
+		}
 
 	// 개인메세지
 	@GetMapping("/dmList/{username}/{recvname}")

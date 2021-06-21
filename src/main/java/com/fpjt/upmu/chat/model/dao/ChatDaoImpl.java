@@ -110,6 +110,18 @@ public class ChatDaoImpl implements ChatDao {
 		
 		return session.delete("chat.deleteDm", messegeNo);
 	}
+
+	@Override
+	public ChatRoom selectOneChatRoom(int chatroomNo) {
+		
+		return session.selectOne("chat.selectOneChatRoom", chatroomNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> joinList(int empNo) {
+		
+		return session.selectList("chat.joinList", empNo);
+	}
 	
 	
 	

@@ -43,15 +43,17 @@ public class MessageController {
 	public void join(ChatRoomJoin chatroomJoin) {
 
 		try {
-			log.debug("chatroomJoin {}", chatroomJoin);
+			
 			int result = chatService.joinChatRoom(chatroomJoin);
+			//ChatRoomJoin joinInfo = chatService.selectChatRoomJoin(chatroomJoin);
+			log.debug("chatroomJoin {}", chatroomJoin);
 		} catch (Exception e) {
 			log.error("챗룸 참여 오류", e);
 			throw e;
 		}
 
 		simpMessagingTemplate.convertAndSend("/topic/chat/greeting/" + chatroomJoin.getChatroomNo(),
-				chatroomJoin.getEmpNo());
+				chatroomJoin);
 	}
 
 	// 개인메세지 출력

@@ -30,7 +30,7 @@
 	<insert id="insertChatMsg">
 		insert into chatmsg
 		values (seq_chatmsg_no.nextval, #{chatroomNo}, #{writerNo}, #{msg}, sysdate)
-		<!-- 발급받은 chatmsg pk msg_no값을 파라미터 board객체의 property no에 저장한다. -->
+		<!-- 발급받은 chatmsg pk msg_no값을 파라미터 board객체의 property no에 저장한다. msgNo는 세터 -->
 		<selectKey keyProperty="msgNo" resultType="_int" order="AFTER">
 			select seq_chatmsg_no.currval
 			from dual
@@ -40,7 +40,12 @@
 	
 	<insert id="joinChatRoom">
 		insert into chatroomjoin
-		values (seq_chatroomjoin_no.nextval, #{empNo}, #{chatroomNo})
+		values (seq_chatroomjoin_no.nextval, #{empNo}, #{chatroomNo}, sysdate)
+			<selectKey keyColumn="jreg_date" keyProperty="regDate" resultType="date" order="AFTER">
+				select reg_date
+				from chatroomjoin
+				where emp_no = #{empNo} and chatroom_no = #{chatroomNo}
+			</selectKey>
 	</insert>
 	<delete id="disconnectChatRoom">
 		delete from chatroomjoin
@@ -92,4 +97,18 @@
 		where message_no = #{messageNo}
 	</delete>
 	
+	<select id="selectOneChatRoom" resultType="chatroom">
+		select *
+		from chatroom
+		where chatroom_no = #{chatroomNo}
+	</select>
+	
+	<select id="joinList" resultType="map">
+		select j.chatroom_no, c.title 
+		from chatroomjoin j 
+			join chatroom c 
+			on j.chatroom_no = c.chatroom_no
+		where j.emp_no = #{empNo}
+		order by j.reg_date
+	</select>
 </mapper>
