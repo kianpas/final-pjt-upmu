@@ -54,7 +54,11 @@ public class BoardController {
 		}
 		return "board/boardList";
 	}
+<<<<<<< Updated upstream
 
+=======
+	
+>>>>>>> Stashed changes
 	@GetMapping("/boardForm.do")
 	public void boardForm() {
 		
