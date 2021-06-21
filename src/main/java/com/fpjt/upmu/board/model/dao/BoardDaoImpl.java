@@ -15,7 +15,7 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Autowired
 	private SqlSessionTemplate session;
-
+	
 	@Override
 	public List<Board> selectBoardList() {
 		return session.selectList("board.selectBoardList");
@@ -28,8 +28,6 @@ public class BoardDaoImpl implements BoardDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("board.selectBoardList", null, rowBounds);
 	}
-	
-	
 	
 }
 

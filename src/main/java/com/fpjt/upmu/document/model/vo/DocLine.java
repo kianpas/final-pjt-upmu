@@ -9,9 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DocLine {
 	
-	private String docNo;
+	private int docNo;
 	private int approver;
 	private String approverType;
 	private int lv;
+	private String status;
+	private String maxAuthority;
 	
+	private String empName;
+	private String jobName;
 }

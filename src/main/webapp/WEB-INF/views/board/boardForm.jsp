@@ -7,14 +7,13 @@
 	<jsp:param value="게시글 작성" name="title"/>
 </jsp:include>
 <style>
-div#board-container{width:400px; margin:0 auto; text-align:center;}
+div#board-container{width:600px; margin:0 auto; text-align:center;}
 div#board-container input{margin-bottom:15px;}
-/* 부트스트랩 : 파일라벨명 정렬*/
 div#board-container label.custom-file-label{text-align:left;}
-
 </style>
+
 <script>
-/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
+/* 공백대비 유효성검사 */
 function boardValidate(){
 	var $content = $("[name=content]");
 	if(/^(.|\n)+$/.test($content.val()) == false){
@@ -26,14 +25,11 @@ function boardValidate(){
 
 $(() => {
 	$("[name=upFile]").change(e => {
-		//파일명 가져오기
 		var file = $(e.target).prop('files')[0];
 		console.log(file);
 		var $label  = $(e.target).next();
 		
-		//label 적용
 		$label.html(file ? file.name : "파일을 선택하세요.");
-		
 	});
 });
 
@@ -53,7 +49,7 @@ $(() => {
 		    <span class="input-group-text">첨부파일1</span>
 		  </div>
 		  <div class="custom-file">
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1"  multiple />
+		    <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple />
 		    <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
 		  </div>
 		</div>

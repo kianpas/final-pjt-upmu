@@ -45,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes({"loginMember", "next"})
 public class MemberController {
 
+<<<<<<< HEAD
 	
 	@Autowired
 	private MemberService memberService;
@@ -178,6 +179,144 @@ public class MemberController {
 			
 			FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
 			flashMap.put("msg", "사용자 정보 수정 성공!!!!!!");
+=======
+	//private static final Logger log = LoggerFactory.getLogger(MemberController.class);
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	@ModelAttribute("common")
+	public Map<String, Object> common(){
+		log.info("@ModelAttribute(\"common\")");
+		Map<String, Object> map = new HashMap<>();
+		map.put("adminEmail", "admin@kh.or.kr");
+		map.put("adminPhone", "070-1234-5678");
+		return map;
+	}
+	
+	
+	
+	@GetMapping("/memberEnroll.do")
+	public void memberEnroll() {
+	}
+	
+	@PostMapping("/memberEnroll.do")
+	public String memberEnroll(Member member, RedirectAttributes redirectAttr) {
+
+		try {
+			log.info("member = {}", member);
+			//0. 비밀번호 암호화처리
+			String rawPassword = member.getEmp_pw();
+			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+			member.setEmp_pw(encodedPassword);
+			log.info("member(암호화처리이후) = {}", member);
+			
+			//1. 업무로직
+			int result = memberService.insertMember(member);
+			//2. 사용자피드백
+			redirectAttr.addFlashAttribute("msg", "회원가입성공");
+		} catch (Exception e) {
+			log.error("회원가입 오류!", e);
+			throw e;
+		}
+		return "redirect:/";
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		PropertyEditor editor = new CustomDateEditor(format, true);
+		binder.registerCustomEditor(Date.class, editor);
+	}
+	
+	@GetMapping("/memberLogin.do")
+	public void memberLogin(
+				@SessionAttribute(required = false) String next,
+				@RequestHeader(name = "Referer", required = false) String referer, 
+				Model model) {
+		log.info("referer = {}", referer);
+		log.info("next = {}", next);
+		if(next == null && referer != null)
+			model.addAttribute("next", referer); // sessionScope에 저장
+	}
+	
+	@PostMapping("/memberLogin.do")
+	public String memberLogin(
+					@RequestParam int emp_no, 
+					@RequestParam String password,
+					@SessionAttribute(required = false) String next,
+					Model model,
+					RedirectAttributes redirectAttr) {
+		
+		//1. 업무로직
+		Member member = memberService.selectOneMember(emp_no);
+		log.info("member = {}", member);
+//		log.info("encryptedPassword = {}", bcryptPasswordEncoder.encode(password));
+		
+		
+		//2. 로그인여부 분기처리
+		if(member != null && bcryptPasswordEncoder.matches(password, member.getEmp_pw())) {
+			// 로그인 성공
+			// loginMember 세션속성으로 저장하려면, class에 @SessionAttributes로 등록
+			model.addAttribute("loginMember", member);
+			//사용한 next값은 제거
+			model.addAttribute("next", null);
+		}
+		else {
+			// 로그인 실패
+			redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀립니다.");
+			return "redirect:/member/memberLogin.do";
+		}
+		
+		
+		return "redirect:" + (next != null ? next : "/");
+	}
+	
+	@GetMapping("/memberLogout.do")
+	public String memberLogout(SessionStatus status) {
+		if(!status.isComplete())
+			status.setComplete();
+		return "redirect:/";
+	}
+	
+	@GetMapping("/memberDetail.do")
+	public ModelAndView memberDetail(ModelAndView mav, @SessionAttribute(name = "loginMember") Member loginMember) {
+		log.info("loginMember = {}", loginMember);
+		//속성 저장
+		mav.addObject("time", System.currentTimeMillis());
+		//viewName 설정
+		mav.setViewName("member/memberDetail");
+		return mav;
+	}
+	
+	@PostMapping("/memberUpdate.do")
+	public ModelAndView memberUpdate(
+								@ModelAttribute Member member,
+								@ModelAttribute("loginMember") Member loginMember,
+								ModelAndView mav, 
+								HttpServletRequest request
+							) {
+		log.debug("member = {}", member);
+		log.debug("loginMember = {}", loginMember);
+		
+		try {
+			int result = memberService.updateMember(member);
+			
+			
+			//리다이렉트시 자동생성되는 queryString 방지
+			RedirectView view = new RedirectView(request.getContextPath() + "/member/memberDetail.do");
+			view.setExposeModelAttributes(false);
+			mav.setView(view);
+			
+			
+			//ModelAndView와 RedirectAttributes 충돌시 FlashMap을 직접 사용
+			FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
+			flashMap.put("msg", "사용자 정보 수정 성공!!!!!!");
+//			redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공!");
+>>>>>>> refs/heads/master
 			
 		} catch (Exception e) {
 			log.error("사용자 정보 수정 오류!", e);

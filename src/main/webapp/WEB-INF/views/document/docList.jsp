@@ -16,16 +16,16 @@
 				<th>제목</th>
 				<th>기안자</th>
 				<th>기안일</th>
-				<th>문서상태</th>
+				<!-- <th>문서상태</th> -->
 			</tr>
 			
 			<c:forEach items="${docList}" var="document">
 			<tr onclick="location.href=`${pageContext.request.contextPath}/document/docDetail?docNo=${document.docNo }`">
 				<td>${document.docNo }</td>
 				<td>${document.title }</td>
-				<td>${document.writer }</td>
+				<td>${document.writerName }</td>
 				<td>${document.requestDate }</td>
-				<td>${document.status }</td>
+				<%-- <td>${document.status }</td> --%>
 			</tr>
 			</c:forEach>
 		</table>

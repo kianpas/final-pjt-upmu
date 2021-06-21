@@ -20,8 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fpjt.upmu.board.model.service.BoardService;
 import com.fpjt.upmu.board.model.vo.Attachment;
-import com.fpjt.upmu.board.model.vo.Board;
 import com.fpjt.upmu.common.util.UpmuUtils;
+//import com.fpjt.upmu.common.util.HelloSpringUtils;
+import com.fpjt.upmu.board.model.vo.Board;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,9 +54,15 @@ public class BoardController {
 		}
 		return "board/boardList";
 	}
+<<<<<<< Updated upstream
+
+=======
 	
+>>>>>>> Stashed changes
 	@GetMapping("/boardForm.do")
-	public void boardForm() {}
+	public void boardForm() {
+		
+	}
 	
 	@PostMapping("/boardEnroll.do")
 	public String boardEnroll(
@@ -102,6 +109,4 @@ public class BoardController {
 		
 		return "redirect:/board/boardList.do";
 	}
-	
-	
 }

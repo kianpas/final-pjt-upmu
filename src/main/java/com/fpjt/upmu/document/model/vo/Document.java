@@ -13,13 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Document {
 	
-	private String docNo;
+	private int docNo;
 	private String title;
 	private int writer;
 	private String content;
 	private Date requestDate;
 	private Date endDate;
-	private String status;
+	//private String status;
 	
-	private List<DocLine> docLineList;
+	private List<DocLine> docLine;
+	
+	private String writerName;
 }

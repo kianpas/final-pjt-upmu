@@ -1,25 +1,41 @@
 package com.fpjt.upmu.document.controller;
 
 import java.beans.PropertyEditor;
+import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fpjt.upmu.common.util.HelloSpringUtils;
 import com.fpjt.upmu.document.model.service.DocService;
+import com.fpjt.upmu.document.model.vo.DocAttach;
+import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.Document;
+import com.fpjt.upmu.document.model.vo.MultiDocLine;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +45,12 @@ import lombok.extern.slf4j.Slf4j;
 public class DocController {
 	
 	@Autowired
+	private ServletContext application;
+	
+	@Autowired
+	private ResourceLoader resourceLoader;
+	
+	@Autowired
 	private DocService docService;
 	
 	@GetMapping("/docMain")
@@ -36,19 +58,25 @@ public class DocController {
 		return "document/docMain";
 	}
 	
-	@GetMapping("/{approverType}")
-	public String docList(@PathVariable String approverType, Model model) {
+
+	
+	@GetMapping("/docList")
+	public String docList(@RequestParam String type, Model model) {
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
 		int id = 1;
-		//String approverType = "approver";
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
-		param.put("approverType", approverType);
+		param.put("status", type);
 		
-		List<Document> docList = docService.selectDocList(param);
-		log.debug("docList = {}",docList);
+		List<String> docNoList = docService.selectDocNo(param);
+		List<Document> docList = new ArrayList<>();
+		
+		for (String docNo : docNoList) {
+			param.put("docNo", docNo);
+			docList.add(docService.selectOneDocumentByParam(param));
+		}
 		model.addAttribute("docList", docList);
-		
 		return "document/docList";
 	}
 	
@@ -63,6 +91,104 @@ public class DocController {
 		return "document/docDetail";
 	}
 
+
+	@PostMapping("/docDetail")
+	public String updateMenu(
+			@ModelAttribute DocLine docLine,
+			Model model){
+		try {
+			int result = 0;
+			//result = docService.updateDocument(param);
+
+			result = docService.updateMyDocLineStatus(docLine);
+			result = docService.updateOthersDocLineStatus(docLine);
+
+			return "redirect:/document/docDetail?docNo="+docLine.getDocNo();
+		} catch (Exception e) {
+			log.error("수정 실패!",e);
+			throw e;
+		}
+	}
+
+	@GetMapping("/docForm")
+	public String docForm(){
+		return "document/docForm";
+	}
+	
+//	docNo
+//	title
+//	writer
+//	docLine<-input으로 값들 넣어줌
+//	content
+	@PostMapping("/docInsert")
+	public String docInsert(
+			@ModelAttribute Document document,
+			@ModelAttribute MultiDocLine docLines,
+			@RequestParam(name = "upFile") MultipartFile[] upFiles,
+			RedirectAttributes redirectAttr
+			) throws Exception{
+		try {
+			List<DocLine> lineList = new ArrayList<>();
+			for (DocLine docLine : docLines.getDocLines()) {
+				//approver, agreer는 notdecided
+				if("approver".equals(docLine.getApproverType()) || "agreer".equals(docLine.getApproverType())) {
+					docLine.setStatus("notdecided");
+				}
+				//enforcer, referer는 afterview
+				if("enforcer".equals(docLine.getApproverType()) || "referer".equals(docLine.getApproverType())) {
+					docLine.setStatus("afterview");
+				}
+				lineList.add(docLine);
+				
+				log.debug("docLine = {}", docLine);
+			}
+			document.setDocLine(lineList);
+			log.debug("document = {}", document);
+			
+			
+			//첨부파일 DocAttach
+			String saveDirectory = application.getRealPath("/resources/upload/document");
+			log.debug("saveDirectory = {}", saveDirectory);
+			
+			//디렉토리 생성
+			File dir = new File(saveDirectory);
+			if(!dir.exists()) {
+				dir.mkdirs(); //복수개의 디렉토리를 생성
+			}
+			List<DocAttach> attachList = new ArrayList<>();
+			for(MultipartFile upFile : upFiles) {
+				//input[name=upFile]로부터 비어있는 upFile이 넘어온다면
+				if(upFile.isEmpty()) continue;
+				
+				String renamedFilename = 
+						HelloSpringUtils.getRenamedFilename(upFile.getOriginalFilename());
+				//a.서버컴퓨터에 저장
+				File dest = new File(saveDirectory, renamedFilename);
+				upFile.transferTo(dest); //파일이동
+				
+				//b.저장된 데이터를 DocAttach객체에 저장 및 list 추가
+				DocAttach attach = new DocAttach();
+				attach.setOriginalFilename(upFile.getOriginalFilename());
+				attach.setRenamedFilename(renamedFilename);
+				attachList.add(attach);
+			}
+			
+			log.debug("attachList = {}", attachList);
+			//board객체에 설정
+			//board.setAttachList(attachList);
+
+			int result = 0;
+			//result = docService.insertDocument(document);
+			result = docService.insertDocument(document,attachList);
+
+			return "redirect:/document/docDetail?docNo="+document.getDocNo();
+			//return "/document/docMain";
+		} catch (Exception e) {
+			log.error("문서 입력 실패!",e);
+			throw e;
+		}
+	}
+	
 	
 	/**
 	 * java.sql.Date, java.util.Date 필드에 값 대입시
