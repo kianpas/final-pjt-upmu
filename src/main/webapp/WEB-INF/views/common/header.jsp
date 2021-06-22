@@ -41,10 +41,10 @@
   <div class="header-right">
     <nav class="header-nav">
       <!-- 로그인이전 -->
-      <a href="${pageContext.request.contextPath }/member/memberLogin.do" class="header-link">Login</a>
+      <a href="${pageContext.request.contextPath }/employee/empLogin.do" class="header-link">Login</a>
       <!-- 로그인이후 -->
 <%--       <a href="${pageContext.request.contextPath }/member/memberLogout.do" class="header-link"> Logout</a> --%>
-      <a href="#" class="header-link header-link--button">Sign Up</a>
+      <a href="${pageContext.request.contextPath }/employee/empEnroll.do" class="header-link header-link--button">Sign Up</a>
       
     </nav>
     <button class="header-menu-button">Menu</button>

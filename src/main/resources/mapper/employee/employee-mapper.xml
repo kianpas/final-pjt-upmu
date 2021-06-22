@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="member">
-	<insert id="insertMember">
+<mapper namespace="employee">
+	<insert id="insertemployee">
 		insert into
 			employee
 		values(
@@ -24,7 +24,7 @@
 		<!-- enroll_date, enabled컬럼은 기본값처리 -->
 	</insert>
 	
-	<select id="selectOneMember" resultMap="memberVoMap">
+	<select id="selectOneemployee" resultMap="employeeVoMap">
 		select
 			*
 		from 
@@ -32,10 +32,10 @@
 		where 
 			emp_no = #{emp_no}
 	</select>
-	<resultMap type="member" id="memberVoMap">
+	<resultMap type="employee" id="employeeVoMap">
 		<result column="hobby" property="hobby" typeHandler="stringArrayTypeHandler"/>
 	</resultMap>
-	<update id="updateMember">
+	<update id="updateemployee">
 		update 
 			employee
 		set
@@ -64,7 +64,7 @@
 			emp_no = #{emp_no}
 	</update>
 	
-	<delete id="deleteMember">
+	<delete id="deleteemployee">
 		delete from
 			employee 
 		where 
