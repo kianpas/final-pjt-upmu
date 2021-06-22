@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
+import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
 
 public interface DocDao {
@@ -28,5 +29,13 @@ public interface DocDao {
 	int insertDocLine(DocLine docLine);
 
 	int insertDocAttach(DocAttach docAttach);
+
+	List<DocAttach> selectDocAttachList(String docNo);
+
+	DocAttach selectOneAttachment(int no);
+
+	int insertReply(DocReply docReply);
+
+	List<DocReply> selectDocReplyList(String docNo);
 
 }

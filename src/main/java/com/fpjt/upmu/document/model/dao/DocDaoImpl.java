@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
+import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
 
 @Repository
@@ -66,6 +67,26 @@ public class DocDaoImpl implements DocDao {
 	@Override
 	public int insertDocAttach(DocAttach docAttach) {
 		return session.insert("document.insertDocAttach", docAttach);
+	}
+
+	@Override
+	public List<DocAttach> selectDocAttachList(String docNo) {
+		return session.selectList("document.selectDocAttachList", docNo);
+	}
+
+	@Override
+	public DocAttach selectOneAttachment(int no) {
+		return session.selectOne("document.selectOneAttachment", no);
+	}
+
+	@Override
+	public int insertReply(DocReply docReply) {
+		return session.insert("document.insertReply", docReply);
+	}
+
+	@Override
+	public List<DocReply> selectDocReplyList(String docNo) {
+		return session.selectList("document.selectDocReplyList", docNo);
 	}
 
 	
