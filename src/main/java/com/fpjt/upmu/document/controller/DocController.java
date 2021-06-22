@@ -2,6 +2,7 @@ package com.fpjt.upmu.document.controller;
 
 import java.beans.PropertyEditor;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +15,11 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -34,6 +39,7 @@ import com.fpjt.upmu.common.util.HelloSpringUtils;
 import com.fpjt.upmu.document.model.service.DocService;
 import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocLine;
+import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
 import com.fpjt.upmu.document.model.vo.MultiDocLine;
 
@@ -85,15 +91,23 @@ public class DocController {
 		
 		Document document = docService.selectOneDocument(docNo);
 		log.debug("document = {}",document);
+		
+		List<DocAttach> docAttachList = docService.selectDocAttachList(docNo);
+		log.debug("docAttachList = {}",docAttachList);
+		
+		List<DocReply> docReplyList = docService.selectDocReplyList(docNo);
+		log.debug("docReplyList = {}",docReplyList);
 
 		model.addAttribute("document", document);
+		model.addAttribute("docAttachList", docAttachList);
+		model.addAttribute("docReplyList", docReplyList);
 		
 		return "document/docDetail";
 	}
 
 
 	@PostMapping("/docDetail")
-	public String updateMenu(
+	public String updateDocDetal(
 			@ModelAttribute DocLine docLine,
 			Model model){
 		try {
@@ -185,6 +199,85 @@ public class DocController {
 			//return "/document/docMain";
 		} catch (Exception e) {
 			log.error("문서 입력 실패!",e);
+			throw e;
+		}
+	}
+	
+	/**
+	 * ResponseEntity
+	 * 1. status code 커스터마이징
+	 * 2. 응답 header 커스터마이징
+	 * 3. @ResponseBody 기능 포함
+	 * @param no
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	@GetMapping("/fileDownload.do")
+	public ResponseEntity<Resource> fileDownloadWithResponseEntity(
+			@RequestParam int no
+			) throws UnsupportedEncodingException{
+		ResponseEntity<Resource> responseEntity;
+		
+		try {
+			//1. 업무로직 : db조회
+			DocAttach attach = docService.selectOneAttachment(no);
+			if(attach ==null) {
+				return ResponseEntity.notFound().build();
+			}
+			
+			//2. Resource객체
+			String saveDirectory = application.getRealPath("/resources/upload/document");
+			File downFile = new File(saveDirectory, attach.getRenamedFilename());
+			Resource resource = resourceLoader.getResource("file:"+downFile);
+			String filename = new String(attach.getOriginalFilename().getBytes("utf-8"),"iso-8859-1");
+			
+			//3. ResponseEntity객체 생성 및 리턴
+			//builder패턴
+			responseEntity = ResponseEntity
+				.ok()
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+				.header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+filename)
+				.body(resource);
+		} catch (Exception e) {
+			log.error("파일 다운로드 오류",e);
+			throw e;
+		}
+		
+		return responseEntity;
+	}
+	
+	@PostMapping("/docReply")
+	public String insertReply(@ModelAttribute DocReply docReply, Model model){
+		try {
+			int result = 0;
+			log.debug("docReply = {}",docReply);
+			result = docService.insertReply(docReply);
+
+			return "redirect:/document/docDetail?docNo="+docReply.getDocNo();
+		} catch (Exception e) {
+			log.error("댓글 입력 실패!",e);
+			throw e;
+		}
+
+	}
+	
+	@GetMapping("/docFormSelect")
+	public ResponseEntity<Document> docFormatSelect(@RequestParam String docNo) {
+		try {
+			Document document = docService.selectOneDocument(docNo);
+			log.debug("document = {}",document);
+			if(document != null) {
+				return ResponseEntity.
+							ok()
+							.body(document);
+			}
+			else {
+				return ResponseEntity
+							.notFound()
+							.build();
+			}
+		} catch (Exception e) {
+			log.error("문서양식 조회 오류 : "+docNo,e);
 			throw e;
 		}
 	}

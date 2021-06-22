@@ -53,6 +53,16 @@
 				<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
 				placeholder="제목을 입력하세요" name="title" id="title" required>
 			</div>
+
+			<div class="input-group mb-3">
+				<select class="custom-select" id="docFrmSelect">
+					<option selected>문서양식을 선택하세요</option>
+					<option value="1">One</option>
+					<option value="2">Two</option>
+					<option value="3">Three</option>
+					<option value="45">휴가신청서2</option>
+				</select>
+			</div>
 			
 			<div class="input-group mb-3">
 				<!-- 임시기안자 1(홍길동) -->
@@ -106,6 +116,36 @@
 </section>
 
 <script>
+$("#docFrmSelect").change(function(e) {
+	console.log(this.value);
+	//$('#summernote').summernote('insertText', '<p>테스트</p>');
+	//$('.note-editable').html('<p>테스트</p>');
+	
+	$.ajax({
+		url: `${pageContext.request.contextPath}/document/docFormSelect?docNo=\${this.value}`,
+		success(data){
+			console.log(data);
+
+			if(data){
+				$('.note-editable').html(data.content);
+			}
+		},
+		/*
+			ResponseEntity로 검색결과 없을때 404 return하게 바꿨기 때문에
+			위의 else문에 들어가지 않고 아래의 error코드로 들어가게 된다. 
+		 */ 
+		error(xhr, statusText, err){
+			console.log(xhr, statusText, err);
+
+			const {status} = xhr;
+			status == 404 && alert("해당 양식이 존재하지 않습니다.");
+			$("[name=id]", e.target).select();
+		}
+	});
+	
+});
+
+
 $(document).ready(function() {
 	//여기 아래 부분
 	$('#summernote').summernote({
@@ -114,7 +154,7 @@ $(document).ready(function() {
 		  maxHeight: null,             // 최대 높이
 		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 		  lang: "ko-KR",					// 한글 설정
-		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+		  //placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
           
 	});
 	//$('#summernote').summernote('insertText', 'textsomething');

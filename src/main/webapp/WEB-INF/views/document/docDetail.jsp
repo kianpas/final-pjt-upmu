@@ -35,6 +35,19 @@ article{
 	background-color: white;
 	padding: 10px;
 }
+#attach-container{
+	width: 500px;
+}
+#reply-container{
+	overflow: hidden;
+}
+textarea{
+	width: 100%;
+	display: block;
+}
+#replyBtn{
+	float: right;
+}
 </style>
 
 <section>
@@ -144,12 +157,53 @@ article{
 			${document.content}
 		</div>
 
-		<p>
-			첨부파일
-		</p>
-
+		<div id="attach-container">
+		첨부파일 클릭시 다운로드
+		<c:forEach items="${docAttachList}" var="attach">
+		<button type="button" 
+				class="btn btn-outline-success btn-block"
+				onclick="location.href='${pageContext.request.contextPath}/document/fileDownload.do?no=${attach.no}';">
+			첨부파일 - ${attach.originalFilename }
+		</button>
+		</c:forEach>
+		</div>
+		
 
 	</article>
+	<footer>
+		<div id="reply-container">
+			댓글창<br />
+			<ul class="list-group">
+				
+			<c:forEach items="${docReplyList}" var="docReply" varStatus="">
+			<li class="list-group-item">
+				<div class="d-flex w-100 justify-content-between">
+					<p class="mb-1 font-weight-bold" >
+						${docReply.depName }
+						${docReply.jobName }
+						${docReply.writerName }
+					</p>
+					<small><fmt:formatDate value="${docReply.regDate }" pattern="yyyy-MM-dd hh:mm:ss"/></small>
+				</div>
+				<p class="mb-1">${docReply.content }</p>
+			</li>
+			</c:forEach>
+			</ul>
+			
+			새 댓글 작성
+			<form id="replyFrm" 
+				action="${pageContext.request.contextPath}/document/docReply"
+				method="post">
+			<!-- no docNo writer content regDate -->
+			<input type="hidden" name="docNo" value="${document.docNo}"/>
+			<!-- writer:댓글작성자 loginMember.getId -->
+			<input type="hidden" name="writer" value="1"/>
+			<textarea class="form-control" name="content"></textarea>
+			
+			<button type="submit" id="replyBtn" class="btn btn-primary">댓글등록</button>
+			</form>
+		</div>
+	</footer>
 </section>
 
 <script>
