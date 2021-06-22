@@ -38,13 +38,7 @@ public class BoardServiceImpl implements BoardService {
 	public int selectBoardTotalContents() {
 		return boardDao.selectBoardTotalContents();
 	}
-
 	
-	/**
-	 * rollbackFor - 트랜잭션 rollback처리하기위한 예외 등록. Exception -> 모든 예외.
-	 * 		기본적으로 RuntimeException만 rollback한다. 
-	 */
-//	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertBoard(BoardExt board) {
 		int result = 0; 
@@ -54,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 		//2.attachment 등록
 		if(board.getAttachList().size() > 0) {
 			for(Attachment attach : board.getAttachList()) {
-				attach.setBoardNo(board.getBoard_no()); // board no fk 세팅
+				attach.setBoardNo(board.getNo()); 
 				result = insertAttachment(attach);
 			}
 		}
@@ -62,7 +56,6 @@ public class BoardServiceImpl implements BoardService {
 		return result; 
 	}
 	
-//	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertAttachment(Attachment attach) {
 		return boardDao.insertAttachment(attach);
@@ -80,11 +73,4 @@ public class BoardServiceImpl implements BoardService {
 	public BoardExt selectOneBoardCollection(int no) {
 		return boardDao.selectOneBoardCollection(no);
 	}
-	
-	
-	
-	
-	
-	
-	
 }

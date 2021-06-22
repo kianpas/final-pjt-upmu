@@ -6,11 +6,11 @@
 	<select id="selectBoardList" resultMap="boardExtMap">
 		select
 			b.*,
-			(select count(*) from attachment where board_no = b.board_no) attach_count			
+			(select count(*) from attachment where board_no = b.no) attach_count			
 		from 
 			board b
 		order by
-			board_no desc
+			no desc
 	</select>
 	<resultMap type="boardExt" id="boardExtMap">
 		<result column="attach_count" property="hasAttachment"/>	
@@ -24,16 +24,16 @@
 	<insert id="insertBoard">
 		insert into
 			board(
-				board_no,
-				board_title,
+				no,
+				title,
 				emp_no,
-				board_content
+				content
 			)
 		values (
 			seq_board_no.nextval,
-			#{board_title},
+			#{title},
 			#{emp_no},
-			#{board_content}
+			#{content}
 		)
 		<!-- 발급받은 board pk no값을 파라미터 board객체의 property no에 저장한다. -->
 		<selectKey keyProperty="no" resultType="_int" order="AFTER">
@@ -64,7 +64,7 @@
 		from
 			board
 		where 
-			board_no = #{no}
+			no = #{no}
 	</select>
 	<select id="selectAttachList" resultMap="attachVoMap">
 		select
@@ -91,12 +91,12 @@
 		    board b
 		  left join 
 		    attachment a
-		      on b.board_no = a.board_no
-		where b.board_no = #{board.no}
+		      on b.no = a.board_no
+		where b.no = #{no}
 	</select>
 	<resultMap type="boardExt" id="boardCollectionMap">
 		<id column="no" property="no"/>
-		<result column="member_id" property="memberId"/>
+		<result column="emp_no" property="emp_no"/>
 		<result column="title" property="title"/>
 		<result column="content" property="content"/>
 		<result column="reg_date" property="regDate"/>
