@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.document.model.vo.DocAttach;
+import com.fpjt.upmu.document.model.vo.DocForm;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
@@ -87,6 +88,26 @@ public class DocDaoImpl implements DocDao {
 	@Override
 	public List<DocReply> selectDocReplyList(String docNo) {
 		return session.selectList("document.selectDocReplyList", docNo);
+	}
+
+	@Override
+	public DocForm selectOneDocForm(String no) {
+		return session.selectOne("document.selectOneDocForm", no);
+	}
+
+	@Override
+	public int insertDocForm(DocForm docForm) {
+		return session.insert("document.insertDocForm", docForm);
+	}
+
+	@Override
+	public int updateDocForm(DocForm docForm) {
+		return session.update("document.updateDocForm", docForm);
+	}
+
+	@Override
+	public List<DocForm> selectDocFormList() {
+		return session.selectList("document.selectDocFormList");
 	}
 
 	

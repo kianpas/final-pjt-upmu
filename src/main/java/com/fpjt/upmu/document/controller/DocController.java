@@ -38,6 +38,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fpjt.upmu.common.util.HelloSpringUtils;
 import com.fpjt.upmu.document.model.service.DocService;
 import com.fpjt.upmu.document.model.vo.DocAttach;
+import com.fpjt.upmu.document.model.vo.DocForm;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
@@ -125,7 +126,12 @@ public class DocController {
 	}
 
 	@GetMapping("/docForm")
-	public String docForm(){
+	public String docForm(Model model){
+		
+		List<DocForm> docFormList = docService.selectDocFormList();
+		
+		model.addAttribute("docFormList", docFormList);
+		
 		return "document/docForm";
 	}
 	
@@ -262,14 +268,14 @@ public class DocController {
 	}
 	
 	@GetMapping("/docFormSelect")
-	public ResponseEntity<Document> docFormatSelect(@RequestParam String docNo) {
+	public ResponseEntity<DocForm> docFormatSelect(@RequestParam String no) {
 		try {
-			Document document = docService.selectOneDocument(docNo);
-			log.debug("document = {}",document);
-			if(document != null) {
+			DocForm docForm = docService.selectOneDocForm(no);
+			log.debug("document = {}",docForm);
+			if(docForm != null) {
 				return ResponseEntity.
 							ok()
-							.body(document);
+							.body(docForm);
 			}
 			else {
 				return ResponseEntity
@@ -277,9 +283,49 @@ public class DocController {
 							.build();
 			}
 		} catch (Exception e) {
-			log.error("문서양식 조회 오류 : "+docNo,e);
+			log.error("문서양식 조회 오류 : "+no,e);
 			throw e;
 		}
+	}
+
+	@GetMapping("/docFormEdit")
+	public String DocFormEdit(Model model){
+		List<DocForm> docFormList = docService.selectDocFormList();
+		
+		model.addAttribute("docFormList", docFormList);
+		
+		return "document/docFormEdit";
+	}
+	
+	@PostMapping("/docFormEdit")
+	public String insertDocFormEdit(
+			@ModelAttribute DocForm docForm,
+			RedirectAttributes redirectAttr
+			){
+		
+		int result = docService.updateDocForm(docForm);
+		
+		redirectAttr.addFlashAttribute("msg","양식 수정 성공!");
+
+		return "redirect:/document/docFormEdit";
+	}
+	
+	@GetMapping("/docFormAdd")
+	public String docFormAdd(){
+		return "document/docFormAdd";
+	}
+	
+	@PostMapping("/docFormAdd")
+	public String InsertDocFormAdd(
+			@ModelAttribute DocForm docForm,
+			RedirectAttributes redirectAttr
+			){
+		
+		int result = docService.insertDocForm(docForm);
+
+		redirectAttr.addFlashAttribute("msg","양식 추가 성공!");
+
+		return "redirect:/document/docFormAdd";
 	}
 	
 	

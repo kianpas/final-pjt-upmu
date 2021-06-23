@@ -7,10 +7,15 @@
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu2.css" />
 
-<nav>
-	<a href="${pageContext.request.contextPath}/document/docForm">새 문서 작성</a>
+<nav id="docNav">
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/document/docForm">새 문서 작성</a></li>
+		<li><a href="${pageContext.request.contextPath}/document/docFormAdd">새 문서양식 추가</a></li>
+		<li><a href="${pageContext.request.contextPath}/document/docFormEdit">기존 문서양식 수정</a></li>
+	</ul>
+
 	<hr />
 	결재 문서 목록
 	<hr />

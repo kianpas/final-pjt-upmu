@@ -252,4 +252,41 @@
 		        on e.emp_job = j.job_no
 		where doc_no = #{docNo}
 	</select>
+	<select id="selectOneDocForm" resultType="docForm">
+		select *
+		from docForm
+		where no = #{no}
+	</select>
+	<insert id="insertDocForm">
+		insert into
+			docForm(
+				no,
+				title,
+				content,
+				type
+			)
+		values(
+			seq_docForm_no.nextval,
+			#{title},
+			#{content},
+			#{type}
+			)
+	
+	</insert>
+	
+	<update id="updateDocForm">
+		update docForm
+		<set>
+			<if test="title!=null">title = #{title},</if>
+			<if test="content!=null">content = #{content},</if>
+			type = #{type}
+		</set>
+		where no = #{no}
+	</update>
+	<select id="selectDocFormList" resultType="docForm">
+		select no,
+	        title,
+	        type
+		from docForm
+	</select>
 </mapper>

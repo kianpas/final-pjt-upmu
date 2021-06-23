@@ -158,7 +158,7 @@ textarea{
 		</div>
 
 		<div id="attach-container">
-		첨부파일 클릭시 다운로드
+		
 		<c:forEach items="${docAttachList}" var="attach">
 		<button type="button" 
 				class="btn btn-outline-success btn-block"
