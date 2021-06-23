@@ -12,12 +12,17 @@ import lombok.NoArgsConstructor;
 public class Mail {
 	
 	private int mailNo;
-	private int senderNo;
-	private int receiverNo;
+//	private int senderNo;
+	private String senderAdd;
+//	private int receiverNo;
+	private String receiverAdd;
 	private String mailTitle;
 	private String mailContent;
 	private Date sendDate;
 	private String readChk;
+	//
+	private int senderDel;
+	private int receiverDel;
 	
 
 }
