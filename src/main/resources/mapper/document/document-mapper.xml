@@ -5,11 +5,25 @@
 <mapper namespace="document">
 	
 	<select id="selectOneDocument" resultMap="docMap">
-		select *
-		from document
+		select 
+	        dep_name,
+	        job_name,
+	        emp_name,
+        	dc.*
+		from
+		    document dc
+		        left join employee e
+		            on dc.writer = e.emp_no
+		        left join department d
+		            on e.emp_dept = d.dep_no
+		        left join jobtitle j
+		            on e.emp_job = j.job_no
 		where doc_no = #{docNo}
 	</select>
-	
+	<!-- 	private String writerName;
+	private String depName;
+	private String jobName;
+	private String empName; -->
 	<resultMap type="document" id="docMap">
 		<result column="doc_no" property="docNo"/>
 		<result column="title" property="title"/>
@@ -17,7 +31,10 @@
 		<result column="content" property="content"/>
 		<result column="request_date" property="requestDate"/>
 		<result column="end_date" property="endDate"/>
-		<result column="status" property="status"/>
+		<result column="emp_name" property="writerName"/>
+		<result column="dep_name" property="depName"/>
+		<result column="job_name" property="jobName"/>
+		<result column="emp_name" property="empName"/>
 		<collection property="docLine"
 					javaType="arraylist" 
 					ofType="docLine"
@@ -46,8 +63,7 @@
 		    d.title,
 		    e.emp_name writer_name,
 		    d.request_date,
-		    d.end_date,
-		    d.status
+		    d.end_date
 		from
 		    document d left join docline dl
 		        on d.doc_no = dl.doc_no
@@ -182,4 +198,58 @@
 			#{renamedFilename}
 		)
 	</insert>
+	<select id="selectDocAttachList" resultMap="docAttachVoMap">
+		select
+			*
+		from
+			docAttach
+		where
+			doc_no = #{docNo}
+	</select>
+	<resultMap type="docAttach" id="docAttachVoMap">
+		<id column="no" property="no"/>
+		<result column="doc_no" property="docNo"/>
+		<result column="original_filename" property="originalFilename"/>
+		<result column="renamed_filename" property="renamedFilename"/>
+		<result column="upload_date" property="uploadDate"/>
+		<result column="status" property="status" typeHandler="booleanYnTypeHandler"/>
+	</resultMap>
+	
+	<select id="selectOneAttachment" resultType="docAttach">
+		select *
+		from docATtach
+		where no = #{no}
+	</select>
+	<insert id="insertReply">
+		insert into
+			docReply(
+				no,
+				doc_no,
+				writer,
+				content,
+				reg_date
+			)
+		values(
+			seq_docReply_no.nextval,
+			#{docNo},
+			#{writer},
+			#{content},
+			sysdate
+		)
+			
+	</insert>
+	<select id="selectDocReplyList" resultType="docReply">
+		select e.emp_name writer_name, 
+		        d.dep_name,
+		        j.job_name,
+		        dr.* 
+		from docReply dr
+		    join employee e
+		        on dr.writer = e.emp_no
+		    join department d
+		        on e.emp_dept = d.dep_no
+		    join jobtitle j
+		        on e.emp_job = j.job_no
+		where doc_no = #{docNo}
+	</select>
 </mapper>

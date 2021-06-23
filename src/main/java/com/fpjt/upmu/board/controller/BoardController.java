@@ -25,7 +25,6 @@ import com.fpjt.upmu.board.model.vo.Attachment;
 import com.fpjt.upmu.common.util.UpmuUtils;
 import com.fpjt.upmu.board.controller.BoardController;
 import com.fpjt.upmu.board.model.vo.BoardExt;
-import com.fpjt.upmu.common.util.HelloSpringUtils;
 import com.fpjt.upmu.board.model.vo.Board;
 
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +57,7 @@ public class BoardController {
 			int totalContents = boardService.selectBoardTotalContents();
 			String url = request.getRequestURI();
 			log.debug("totalContents = {}, url = {}", totalContents, url);
-			String pageBar = HelloSpringUtils.getPageBar(totalContents, cpage, limit, url);
+			String pageBar = UpmuUtils.getPageBar(totalContents, cpage, limit, url);
 			
 			//2. jsp에 위임
 			model.addAttribute("list", list);
@@ -99,7 +98,7 @@ public class BoardController {
 				if(upFile.isEmpty()) continue;
 				
 				String renamedFilename = 
-						HelloSpringUtils.getRenamedFilename(upFile.getOriginalFilename());
+						UpmuUtils.getRenamedFilename(upFile.getOriginalFilename());
 				
 				//a.서버컴퓨터에 저장
 				File dest = new File(saveDirectory, renamedFilename);
@@ -125,7 +124,7 @@ public class BoardController {
 			log.error("게시글 등록 오류!", e);
 			throw e;
 		}
-		return "redirect:/board/boardDetail.do?no=" + board.getBoard_no();
+		return "redirect:/board/boardDetail.do?no=" + board.getNo();
 	}
 	
 	@GetMapping("/boardDetail.do")
