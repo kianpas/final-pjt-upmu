@@ -10,10 +10,17 @@ import com.fpjt.upmu.employeeList.model.vo.Employee;
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
-	private EmployeeDao memberDao;
+	private EmployeeDao empDao;
 
 	@Override
 	public int insertEmployee(Employee employee) {
-		return memberDao.insertEmployee(employee);
+		return	empDao.insertEmployee(employee);
 	}
+
+	@Override
+	public Employee selectOneEmp(String id) {
+		return empDao.selectOneEmp(id);
+	}
+	
+	
 }

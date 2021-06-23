@@ -3,71 +3,32 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="employee">
-	<insert id="insertemployee">
+	<insert id="insertEmp">
 		insert into
 			employee
 		values(
-			#{emp_no},
-			#{emp_name},
-			#{emp_pw},
-			#{emp_phone},
-			#{emp_email},
-			#{emp_addr},
-			#{emp_birth},
-			#{emp_state},
-			#{emp_hiredate},
-			#{Department},
-			#{emp_gender},
-			default, 
-			default
+			seq_emp_no.nextval,
+			#{empName},
+			#{empPw},
+			#{empPhone},
+			#{empEmail},
+			#{empAddr},
+			#{empBirth},
+			'정상',
+			default,
+			null,
+			null
 		)
 		<!-- enroll_date, enabled컬럼은 기본값처리 -->
 	</insert>
 	
-	<select id="selectOneemployee" resultMap="employeeVoMap">
+	<select id="selectOneEmp" resultType="employee">
 		select
 			*
 		from 
 			employee
 		where 
-			emp_no = #{emp_no}
+			emp_email = #{id}
 	</select>
-	<resultMap type="employee" id="employeeVoMap">
-		<result column="hobby" property="hobby" typeHandler="stringArrayTypeHandler"/>
-	</resultMap>
-	<update id="updateemployee">
-		update 
-			employee
-		set
-			emp_no = #{emp_no},
-			emp_gender = #{emp_gender},
-			emp_birth = #{emp_birth},
-			emp_email = #{emp_email},
-			emp_phone = #{emp_phone},
-			emp_addr = #{emp_addr},
-			Department = #{Department}
-		where
-			emp_no = #{emp_no}	
-	</update>
-	
-	<update id="updatePassword">
-		update 
-			employee 
-		set 
-			emp_name = #{emp_name},
-			emp_pw = #{emp_pw}
-			emp_email = #{emp_email},
-			emp_addr = #{emp_addr},
-			emp_tate = #{emp_state},
-			Department = #{Department} 
-		where 
-			emp_no = #{emp_no}
-	</update>
-	
-	<delete id="deleteemployee">
-		delete from
-			employee 
-		where 
-			emp_no = #{emp_no}
-	</delete>
+
 </mapper>
