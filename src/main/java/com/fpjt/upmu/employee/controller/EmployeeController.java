@@ -1,6 +1,12 @@
 package com.fpjt.upmu.employee.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.employee.model.service.EmployeeService;
@@ -20,45 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/employee")
 @Slf4j
-@SessionAttributes({"loginEmp", "next"})
 public class EmployeeController {
-
-	//private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 	
 	@Autowired
-	private EmployeeService EmployeeService;
+	private EmployeeService empService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
-	@PostMapping("/EmpEnroll.do")
-	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {
-
-		try {
-			log.info("Employee = {}", employee);
-			//0. 비밀번호 암호화처리
-			String rawPassword = employee.getEmpPw();
-			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
-			employee.setEmpPw(encodedPassword);
-			log.info("Employee(암호화처리이후) = {}", employee);
-			
-			//1. 업무로직
-			int result = EmployeeService.insertEmployee(employee);
-			//2. 사용자피드백
-			redirectAttr.addFlashAttribute("msg", "회원가입성공");
-		} catch (Exception e) {
-			log.error("회원가입 오류!", e);
-			throw e;
-		}
-		return "redirect:/";
-	}
-	
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//		PropertyEditor editor = new CustomDateEditor(format, true);
-//		binder.registerCustomEditor(Date.class, editor);
-//	}
 	
 	@GetMapping("/empLogin.do")
 	public void EmpLogin(
@@ -70,6 +45,69 @@ public class EmployeeController {
 		if(next == null && referer != null)
 			model.addAttribute("next", referer); // sessionScope에 저장
 	}
+	
+	@GetMapping("/empEnroll.do")
+	public void EmpEnroll(
+				@SessionAttribute(required = false) String next,
+				@RequestHeader(name = "Referer", required = false) String referer, 
+				Model model) {
+		log.info("referer = {}", referer);
+		log.info("next = {}", next);
+		if(next == null && referer != null)
+			model.addAttribute("next", referer); // sessionScope에 저장
+	}
+	
+	@PostMapping("/empEnroll.do")
+	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {
+
+		try {
+			log.info("Employee = {}", employee);
+			//0. 비밀번호 암호화처리
+			String rawPassword = employee.getEmpPw();
+			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+			employee.setEmpPw(encodedPassword);
+			log.info("Employee(암호화처리이후) = {}", employee);
+			
+			//1. 업무로직
+			int result = empService.insertEmployee(employee);
+			//2. 사용자피드백
+			redirectAttr.addFlashAttribute("msg", "회원가입성공");
+		} catch (Exception e) {
+			log.error("회원가입 오류!", e);
+		}
+		return "redirect:/";
+	}
+	
+	@GetMapping("/checkIdDuplicate.do")
+	public ResponseEntity<Map<String, Object>> checkIdDuplicate(@RequestParam String id) {
+		Employee employee = empService.selectOneEmp(id);
+		boolean available = (employee == null);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("available", available);
+		map.put("id", id);
+		
+		return ResponseEntity
+				.ok()
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.body(map);
+	}
+	
+	@GetMapping("/jusoPopup.do")
+	public void jusoPopup() {
+		
+	}
+	
+	@PostMapping("/jusoPopup.do")
+	public void jusoPost() {
+		
+	}
+//	@InitBinder
+//	public void initBinder(WebDataBinder binder) {
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//		PropertyEditor editor = new CustomDateEditor(format, true);
+//		binder.registerCustomEditor(Date.class, editor);
+//	}
 //	
 //	@PostMapping("/EmployeeLogin.do")
 //	public String EmployeeLogin(
@@ -152,47 +190,7 @@ public class EmployeeController {
 //		return mav;
 //	}
 //	
-//	@GetMapping("/checkIdDuplicate1.do")
-//	public String checkIdDuplicate1(@RequestParam int emp_no, Model model) {
-//		//1. 업무로직
-//		Employee Employee = EmployeeService.selectOneEmployee(emp_no);
-//		boolean available = Employee == null;
-//		//2. Model에 속성 저장
-//		model.addAttribute("available", available);
-//		model.addAttribute("emp_no", emp_no);
-//		
-//		return "jsonView";
-//	}
-//	
-//	@GetMapping("/checkIdDuplicate2.do")
-//	@ResponseBody
-//	public Map<String, Object> checkIdDuplicate2(@RequestParam int emp_no) {
-//		//1. 업무로직
-//		Employee Employee = EmployeeService.selectOneEmployee(emp_no);
-//		boolean available = Employee == null;
-//		//2. map에 요소 저장후 리턴
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("available", available);
-//		map.put("emp_no", emp_no);
-//		
-//		return map;
-//	}
-//
-//	@GetMapping("/checkemp_noDuplicate3.do")
-//	public ResponseEntity<Map<String, Object>> checkemp_noDuplicate3(@RequestParam int emp_no) {
-//		//1. 업무로직
-//		Employee Employee = EmployeeService.selectOneEmployee(emp_no);
-//		boolean available = (Employee == null);
-//		//2. map에 요소 저장후 리턴
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("available", available);
-//		map.put("emp_no", emp_no);
-//		
-//		return ResponseEntity
-//				.ok()
-//				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
-//				.body(map);
-//	}
+
 }
 
 

@@ -14,8 +14,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public int insertEmployee(Employee employee) {
-		return session.insert("member.insertMember", employee);
+		return session.insert("employee.insertEmp", employee);
+	}
+
+	@Override
+	public Employee selectOneEmp(String id) {
+		return session.selectOne("employee.selectOneEmp", id);
 	}
 	
-
+	
 }
