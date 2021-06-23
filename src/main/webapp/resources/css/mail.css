@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+.address_info .tf_address{
+	display: inline-block;
+	overflow: hidden;
+	border: 0 none;
+	resize: none;
+	outline: 0 none;
+	vertical-align: top;
+}
+
+.address_info .box_address {
+	display: inline-block;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #7bb2f5;
+	color: #0294e8;
+	margin: 0 3px 0 3px;
+    padding: 0 3px 0 3px;
+}
+
+.address_info .box_out {
+	border-color: #92dca3;
+    color: #45af6a;
+    margin: 0 3px 0 3px;
+    padding: 0 3px 0 3px;
+}
+
+.address_info .box_invalid  {
+    border-color: #f09d99;
+    color: #e9635c;
+    margin: 0 3px 0 3px;
+    padding: 0 3px 0 3px;
+}
+
+.box_address .btn_del {
+	border: 0px;
+	color: #0294e8;
+}
+
+.box_out .btn_del {
+	border: 0px;
+	color: #45af6a;
+}
+
+.box_invalid .btn_del {
+	border: 0px;
+	color: #e9635c;
+}
+
+input {
+	border-width: 0px;
+    border-bottom : 1px solid #efefef;
+   /*  border-radius: 1px; */
+}
+
+input:focus {
+	outline: none;
+	border-bottom-color: #7bb2f5;
+}
+
+textarea {
+	resize: none;
+}
