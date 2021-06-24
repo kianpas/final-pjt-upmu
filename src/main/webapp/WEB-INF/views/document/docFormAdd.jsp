@@ -54,7 +54,7 @@ th, td {
 					<span class="input-group-text" id="inputGroup-sizing-default">양식 이름</span>
 				</div>
 				<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
-				name="title" id="title" required>
+				name="title" id="title">
 			</div>			
 						
 			<div class="input-group mb-3">
@@ -72,7 +72,7 @@ th, td {
 			
 			</div>
 
-			<textarea class="form-control" id="summernote" name="content" required></textarea>
+			<textarea class="form-control" id="summernote" name="content"></textarea>
 			<br />
 			
 			<input type="submit" class="btn btn-outline-success" value="제출" >
@@ -82,6 +82,39 @@ th, td {
 </section>
 
 <script>
+function bootAlert(str,dest){
+	var html = `
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>\${str}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			 <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		`;
+	dest.before(html)
+	//alert로 화면 이동
+	var offset = $('.alert').offset();
+	$('html').scrollTop(offset.top);
+	//알람창 자동제거
+    $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+        $(this).slideUp(500);
+        $(this).remove();
+    });
+}
+/* Validation */
+$("[name=documentFrm]").submit(function(e) {
+	if ($('#title').val()=='') {
+		bootAlert('문서제목을 입력해주세요',$('#title').closest('div'));
+		return false;
+	}	
+	
+	if ($('#summernote').summernote('isEmpty')) {
+		bootAlert('문서내용을 입력해주세요',$('#summernote'));
+		return false;
+	}
+
+	return true;
+});
 
 $(document).ready(function() {
 	//여기 아래 부분

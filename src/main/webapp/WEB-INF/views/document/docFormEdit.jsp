@@ -45,7 +45,7 @@ h1{
 </div>
 </c:if>
 	<header>
-		<h1>기존 문서양식 수정 페이지</h1>
+		<!-- <h1>기존 문서양식 수정 페이지</h1> -->
 	</header>
 	<article>
 		<div id="container">
@@ -70,7 +70,7 @@ h1{
 					<span class="input-group-text" id="inputGroup-sizing-default">양식 번호</span>
 				</div>
 				<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
-				 name="no" id="no" readonly>
+				 name="no" id="no" required readonly>
 			</div>			
 						
 			<div class="input-group mb-3">
@@ -78,7 +78,7 @@ h1{
 					<span class="input-group-text" id="inputGroup-sizing-default">양식 이름</span>
 				</div>
 				<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
-				name="title" id="title" required>
+				name="title" id="title">
 			</div>			
 						
 			<div class="input-group mb-3">
@@ -96,7 +96,7 @@ h1{
 			
 			</div>
 
-			<textarea class="form-control" id="summernote" name="content" required></textarea>
+			<textarea class="form-control" id="summernote" name="content"></textarea>
 			<br />
 			
 			<input type="submit" class="btn btn-outline-success" value="제출" >
@@ -106,6 +106,49 @@ h1{
 </section>
 
 <script>
+function bootAlert(str,dest){
+	var html = `
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>\${str}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			 <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		`;
+	dest.before(html)
+	//alert로 화면 이동
+	var offset = $('.alert').offset();
+	$('html').scrollTop(offset.top);
+	//알람창 자동제거
+    $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+        $(this).slideUp(500);
+        $(this).remove();
+    });
+}
+/* Validation */
+$("[name=documentFrm]").submit(function(e) {
+
+	var ex = $('#no').val();
+	console.log("no = " + ex);
+ 	if ($('#no').val() == '' ) {
+		bootAlert('문서양식을 선택해주세요',$('#docFrmSelect').closest('div'));
+		return false;
+	}
+	
+	
+	if ($('#title').val()=='') {
+		bootAlert('문서제목을 입력해주세요',$('#title').closest('div'));
+		return false;
+	}	
+	
+	if ($('#summernote').summernote('isEmpty')) {
+		bootAlert('문서내용을 입력해주세요',$('#summernote'));
+		return false;
+	}
+
+	return true;
+});
+
 $("#docFrmSelect").change(function(e) {
 	console.log(this.value);
 	//$('#summernote').summernote('insertText', '<p>테스트</p>');
@@ -118,9 +161,10 @@ $("#docFrmSelect").change(function(e) {
 
 			if(data){
 				$('.note-editable').html(data.content);
+				$('#summernote').summernote('insertText', '');
+				
 				$('#title').val(data.title);
 				$('#no').val(data.no);
-				
 			}
 		},
 		/*

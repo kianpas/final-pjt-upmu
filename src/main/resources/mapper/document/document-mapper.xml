@@ -104,7 +104,7 @@
 		and
 			status = 'notdecided'
 		<!-- 일반 결재자는 승인시 상급자의 status를 바꾸면 안됨 -->
-		<if test='maxAuthority eq "N" and status eq "approved"'>
+		<if test='maxAuthority != "Y" and status eq "approved"'>
 			and lv &lt; #{lv}
 		</if>
 		</where>

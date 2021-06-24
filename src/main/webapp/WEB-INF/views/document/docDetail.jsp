@@ -207,7 +207,7 @@ textarea{
 </section>
 
 <script>
-
+//결재선 가로정렬
 $("#docLineTable").each(function() {
     var $this = $(this);
     var newrows = [];
@@ -263,7 +263,7 @@ $(document).ready(function(){
       <br />
       <input type="radio" name="status" value="rejected"/>반려
       <br />
-      <input type="radio" name="status" value="notdecided"/>미정
+      <!-- <input type="radio" name="status" value="notdecided"/>미정 -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
