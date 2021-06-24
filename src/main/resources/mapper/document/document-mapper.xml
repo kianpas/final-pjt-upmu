@@ -104,7 +104,7 @@
 		and
 			status = 'notdecided'
 		<!-- 일반 결재자는 승인시 상급자의 status를 바꾸면 안됨 -->
-		<if test='maxAuthority eq "N" and status eq "approved"'>
+		<if test='maxAuthority != "Y" and status eq "approved"'>
 			and lv &lt; #{lv}
 		</if>
 		</where>
@@ -251,5 +251,42 @@
 		    join jobtitle j
 		        on e.emp_job = j.job_no
 		where doc_no = #{docNo}
+	</select>
+	<select id="selectOneDocForm" resultType="docForm">
+		select *
+		from docForm
+		where no = #{no}
+	</select>
+	<insert id="insertDocForm">
+		insert into
+			docForm(
+				no,
+				title,
+				content,
+				type
+			)
+		values(
+			seq_docForm_no.nextval,
+			#{title},
+			#{content},
+			#{type}
+			)
+	
+	</insert>
+	
+	<update id="updateDocForm">
+		update docForm
+		<set>
+			<if test="title!=null">title = #{title},</if>
+			<if test="content!=null">content = #{content},</if>
+			type = #{type}
+		</set>
+		where no = #{no}
+	</update>
+	<select id="selectDocFormList" resultType="docForm">
+		select no,
+	        title,
+	        type
+		from docForm
 	</select>
 </mapper>

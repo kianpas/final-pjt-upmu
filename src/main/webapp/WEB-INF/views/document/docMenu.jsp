@@ -7,25 +7,65 @@
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu2.css" />
 
-<nav>
-	<a href="${pageContext.request.contextPath}/document/docForm">새 문서 작성</a>
+<nav id="docNav">
+<%-- 	<ul class="list-group">
+		<li><a href="${pageContext.request.contextPath}/document/docForm"
+		 class="list-group-item list-group-item-action">새 문서 작성</a></li>
+		<li><a href="${pageContext.request.contextPath}/document/docFormAdd"
+		 class="list-group-item list-group-item-action">새 문서양식 추가</a></li>
+		<li><a href="${pageContext.request.contextPath}/document/docFormEdit"
+		 class="list-group-item list-group-item-action">기존 문서양식 수정</a></li>
+	</ul> --%>
+	
+	<div class="list-group" id="docEditorMenu">
+		<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>
+		<button type="button" class="list-group-item list-group-item-action" id="docFormAdd">새 문서양식 추가</button>
+		<button type="button" class="list-group-item list-group-item-action" id="docFormEdit">기존 문서양식 수정</button>
+	</div>
+
 	<hr />
-	결재 문서 목록
+	<h4 align="center">결재문서 목록</h4>
 	<hr />
-	<ul id="ver2">
-		<li><span id="notdecided">대기중(결재를 기다리는 문서)</span></li>
-		<li><span id="approved">진행중(나는 결재했지만 종결되지 않은 문서)</span></li>
-		<li><span id="completed">결재완료(결재가 최종승인된 문서)</span></li>
-		<li><span id="afterview">열람</span></li>
-		<li><span id="rejected">반려</span></li>
-	</ul>
+
+	<div class="list-group" id="docTypeMenu">
+		<button type="button" class="list-group-item list-group-item-action" id="notdecided">대기중</button>
+		<button type="button" class="list-group-item list-group-item-action" id="approved">진행중</button>
+		<button type="button" class="list-group-item list-group-item-action" id="completed">결재완료</button>
+		<button type="button" class="list-group-item list-group-item-action" id="afterview">열람</button>
+		<button type="button" class="list-group-item list-group-item-action" id="rejected">반려</button>
+	</div>
+	
 </nav>
 
 <script>
-$("#ver2>li>span").click(function(){
+/* button activate */
+$( document ).ready(function() {
+	const addr = window.location.href;
+	const url = new URL(addr);
+	const params = url.searchParams;
+
+	if(addr.includes('docList')){
+		const type = params.get('type');
+		console.log(type);
+		$("#"+type).addClass('active');
+	}
+	else if(addr.includes('docForm')){
+		const idx = addr.lastIndexOf("/");
+		const type = addr.substr(idx+1);
+		console.log(type);
+		$("#"+type).addClass('active');
+	}
+});
+
+$("#docTypeMenu>button").click(function(){
 	location.href = `${pageContext.request.contextPath}/document/docList?type=\${this.id}`;
 });
+
+$("#docEditorMenu>button").click(function(){
+	location.href = `${pageContext.request.contextPath}/document/\${this.id}`;
+});
+
 </script>
 

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fpjt.upmu.document.model.dao.DocDao;
 import com.fpjt.upmu.document.model.vo.DocAttach;
+import com.fpjt.upmu.document.model.vo.DocForm;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
@@ -118,6 +119,30 @@ public class DocServiceImpl implements DocService {
 	@Override
 	public List<DocReply> selectDocReplyList(String docNo) {
 		return docDao.selectDocReplyList(docNo);
+	}
+
+
+	@Override
+	public DocForm selectOneDocForm(String no) {
+		return docDao.selectOneDocForm(no);
+	}
+
+
+	@Override
+	public int insertDocForm(DocForm docForm) {
+		return docDao.insertDocForm(docForm);
+	}
+
+
+	@Override
+	public int updateDocForm(DocForm docForm) {
+		return docDao.updateDocForm(docForm);
+	}
+
+
+	@Override
+	public List<DocForm> selectDocFormList() {
+		return docDao.selectDocFormList();
 	}
 
 

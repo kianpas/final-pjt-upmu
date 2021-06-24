@@ -77,7 +77,7 @@ $(document).on('click', '#optDel', function(e) {
 
 function saveBtn(){
 	//let html = `<table><tr><th>결재종류</th><th>직위</th><th>이름</th></tr>`;
-	let html = `<table class="table">
+	let html = `<table class="table" id="docLineTable">
 					<tr>
 						<th scope="col">결재종류</th>
 						<th scope="col">직위</th>
@@ -94,10 +94,19 @@ function saveBtn(){
 		empName = item.dataset.empname;
 		approverType = item.dataset.approvertype;
 		empJob = item.dataset.empjob;
+		let typeName;
+
+		switch(approverType){
+		case 'approver' : typeName = '결재자'; break;
+		case 'agreer' : typeName = '합의자'; break;
+		case 'enforcer' : typeName = '시행자'; break;
+		case 'referer' : typeName = '수신참조자'; break;
+		}
+		
 
 		html += `
 			<tr>
-				<td>\${approverType}</td>
+				<td>\${typeName}</td>
 				<td>\${empJob}</td>
 				<td>\${empName}</td>
 			</tr>

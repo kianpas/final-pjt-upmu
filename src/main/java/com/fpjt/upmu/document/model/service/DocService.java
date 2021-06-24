@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fpjt.upmu.document.model.vo.DocAttach;
+import com.fpjt.upmu.document.model.vo.DocForm;
 import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
@@ -37,4 +38,12 @@ public interface DocService {
 	int insertReply(DocReply docReply);
 
 	List<DocReply> selectDocReplyList(String docNo);
+
+	DocForm selectOneDocForm(String no);
+
+	int insertDocForm(DocForm docForm);
+
+	int updateDocForm(DocForm docForm);
+
+	List<DocForm> selectDocFormList();
 }
