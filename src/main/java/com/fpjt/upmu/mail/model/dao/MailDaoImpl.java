@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.fpjt.upmu.mail.model.vo.MailAttach;
 import com.fpjt.upmu.mail.model.vo.Mail;
 import com.fpjt.upmu.mail.model.vo.MailExt;
+import com.fpjt.upmu.mail.model.vo.MailReceiver;
 
 @Repository
 public class MailDaoImpl implements MailDao {
@@ -34,7 +35,7 @@ public class MailDaoImpl implements MailDao {
 	}
 
 	@Override
-	public int selectMailTotalContents1(int i) {
+	public int selectMailTotalContents1(String i) {
 		return session.selectOne("mail.selectMailTotalContents1", i);
 	}
 
@@ -44,7 +45,7 @@ public class MailDaoImpl implements MailDao {
 	}
 
 	@Override
-	public List<Mail> selectMailList1(Map<String, Object> param, int i) {
+	public List<Mail> selectMailList1(Map<String, Object> param, String i) {
 		int offset = (int)param.get("offset");
 		int limit = (int)param.get("limit");
 		RowBounds rowBounds = new RowBounds(offset, limit);
@@ -70,20 +71,58 @@ public class MailDaoImpl implements MailDao {
 	}
 
 	@Override
-	public List<Mail> searchMail(String searchMail) {
-		return session.selectList("mail.searchMail", searchMail);
+	public List<Mail> searchMail(Map<String, Object> searchMail, int i) {	
+		if(i == 1) {
+			//보낸 메일함 검색
+			return session.selectList("mail.searchSenderMail", searchMail);
+		}
+		else {
+			//
+			return session.selectList("mail.searchReceiverMail", searchMail);
+		}
 	}
-
+	
 	@Override
-	public int deleteMail(String str) {
-		return session.delete("mail.deleteMail", str);
+	public List<MailReceiver> searchReceiver(String searchReceiver) {
+		return session.selectList("mail.searchReceiver", searchReceiver);
 	}
-
-
-//	@Override
-//	public MailExt selectOneMailCollection1(int no) {
-//		return session.selectOne("mail.selectOneMailCollection1",no);
-//	}
-
-
+	
+	@Override
+	public String deleteMail(String str, int who, int now) {
+		int result;
+		String resultStr = null;
+		
+		if(who == 1) {
+			//보낸 사람이 삭제
+			if(now != 2) {
+				result =  session.update("mail.hideSendMail", str);
+				resultStr = "hide";
+				
+				if(result != 1) {
+					resultStr = "beforeDel";
+				}				
+			} else if(now == 2){
+				result = session.delete("mail.deleteMail", str);
+				return result + "";
+			}
+		}
+		
+		else {
+			
+			if(now != 2) {
+				//받은 사람이 삭제
+				result = session.update("mail.hideReceiveMail", str);
+				resultStr = "hide";
+				
+				if(result != 1) {
+					resultStr = "beforeDel";
+				}	
+			} else {
+				result = session.delete("mail.deleteMail", str);
+				return result + "";
+			}
+		}
+		return resultStr;
+	}
 }
+

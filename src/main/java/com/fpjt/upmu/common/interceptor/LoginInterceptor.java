@@ -9,7 +9,7 @@ import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.fpjt.upmu.member.model.vo.Member;
+import com.fpjt.upmu.employeeList.model.vo.Employee;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
@@ -18,7 +18,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		//로그인 여부를 체크해서 로그인하지 않은 경우, return false;
 		HttpSession session = request.getSession();
-		Member loginMember = (Member) session.getAttribute("loginMember");
+		Employee loginMember = (Employee) session.getAttribute("loginMember");
 		if(loginMember == null) {
 			//FlashMap을 통해서 redirect후 사용자피드백 전달하기
 			FlashMap flashMap = new FlashMap();
