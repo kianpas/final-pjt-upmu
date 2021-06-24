@@ -52,34 +52,30 @@ $(() => {
 	$("tr[data-no]").click(e=> {
 
 		var $tr = $(e.target).parents();
+		//console.log($tr);
 		var no = $tr.data("no");
+		//console.log(no);
 		//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + no;
 		location.href = "${pageContext.request.contextPath}/mail/sendMailView.do?no=" + no;
 	});
 
 	$( "#searchMail" ).autocomplete({
- 		source: function(request, response){	 		
-  			var searchMap= {
- 		 			"searchTerm": request.term,
- 		 			"who": 1
-			
- 		 	};
- 	 	  $.ajax({
+  		source: function(request, response){
+  	 	  $.ajax({
 			url: "${pageContext.request.contextPath}/mail/searchMail.do",
-			data: 
-				searchMap
-			,
+			data: {
+				searchMail: request.term 
+			},
 			success(data){
 				console.log(data);
 				const {list} = data;
 				const arr = 
-					list.map(({mailNo, mailTitle, mailContent, receiverAdd}) => ({
+					list.map(({mailNo, mailTitle, mailContent, receiverNo}) => ({
 						label: '메일 제목 : ' + mailTitle,
 						value: mailTitle,
-						mailNo
-/* 						mailContent,
-						receiverAdd,
-						mailNo */
+						mailNo,
+						mailContent,
+						receiverNo
 					}));
 				console.log(arr);
 				response(arr);
@@ -87,11 +83,10 @@ $(() => {
 			error(xhr, statusText, err){
 				console.log(xhr, statusText, err);
 			}
- 	  	  });
+  	  	  });
 		},
 		select: function(event, selected){
 			const {item: {mailNo}} = selected;
-			console.log(mailNo);
 			//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + mailNo;
 			location.href = "${pageContext.request.contextPath}/mail/sendMailView.do?no=" + mailNo;
 		},
@@ -99,48 +94,41 @@ $(() => {
 		 return false;
 		},
 		autoFocus: true
- 	});
-
+  });
 
 });
 
 function deleteMail(){
-	//보낸 사람 삭제 구분 변수
-	//1 : sender, 2 : receiver
-	var who = 1;
-	var valueArr = new Array();
-	var list = $("input[name='chkbox']");
-	for(var i = 0; i < list.length; i++){
-		if(list[i].checked){
-			valueArr.push(list[i].value);
+		var valueArr = new Array();
+		var list = $("input[name='chkbox']");
+		for(var i = 0; i < list.length; i++){
+			if(list[i].checked){
+				valueArr.push(list[i].value);
+			}
 		}
-	}
-	if(valueArr.length == 0){
-		alert("선택된 글이 없습니다.");
-	}
-	else {
-		var chk = confirm("정말 삭제하시겠습니까?");
-		if(chk){
+		if(valueArr.length == 0){
+			alert("선택된 글이 없습니다.");
+		}
+		else {
+			var chk = confirm("정말 삭제하시겠습니까?");
 			$.ajax({
 				url: "${pageContext.request.contextPath}/mail/deleteMail.do",
 				type: 'POST',
 				traditional: true,
 				data: {
-					valueArr: valueArr,
-					who : who
+					valueArr: valueArr
 				},
-				success: function(result){
-					if(result == "OK"){
-						alert("삭제하였습니다.");
-						window.location.href='${pageContext.request.contextPath}/mail/sendMailList.do?sender_no=1'
+				success: function(jdata){
+					if(jdata = 1){
+						alert("삭제 성공");
+						
 					}
 					else {
-						alert("삭제 실패하였습니다.");	
+						alert("삭제 실패");	
 					}
 				}
 
 			});
-		}
 	}
 }
 </script>
@@ -148,7 +136,7 @@ function deleteMail(){
 <div class="container">
 	<h4 class="page-header">보낸 메일함</h4>
 	
-	<input type="search" placeholder="메일 제목, 받은 사람, 내용 검색" id="searchMail" class="form-control col-sm-3 d-inline"/>
+	<input type="search" placeholder="메일 검색" id="searchMail" class="form-control col-sm-3 d-inline" autofocus/>
 	<div class="text-right"> 
 		<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
 		<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail();"/>
@@ -170,12 +158,7 @@ function deleteMail(){
 			<c:forEach items="${list}" var="mail">
 				<tr data-no="${mail.mailNo}">
 					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
-					<%-- <td>${mail.receiverNo}</td> --%>
-					<%-- <td>${mail.receiverAdd}</td> --%>
-					<td>
-						<c:set var = "receiverAdd" value="${fn:replace(mail.receiverAdd, ':', '')}"/>
-						${receiverAdd}
-					</td>
+					<td>${mail.receiverNo}</td>
 					<td>${mail.mailTitle}</td>
 					<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd HH:mm:ss"/></td>
 				</tr>

@@ -3,7 +3,6 @@ package com.fpjt.upmu.mail.controller;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,15 +32,7 @@ import com.fpjt.upmu.common.util.UpmuUtils;
 import com.fpjt.upmu.mail.model.service.MailService;
 import com.fpjt.upmu.mail.model.vo.Mail;
 import com.fpjt.upmu.mail.model.vo.MailExt;
-import com.fpjt.upmu.mail.model.vo.MailReceiver;
 import com.fpjt.upmu.mail.model.vo.MailAttach;
-
-//외부 메일
-import javax.mail.internet.MimeMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.core.io.FileSystemResource;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,6 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/mail")
 @Slf4j
 public class MailController {
+	
+	//합칠 수 있는건 합치기
 	
 	@Autowired
 	private ServletContext application;
@@ -59,12 +51,6 @@ public class MailController {
 	
 	@Autowired
 	private MailService mailService;
-	
-	//외부메일
-	@Autowired
-	JavaMailSenderImpl mailSender;
-	
-//	String saveDirectory = null;
 	
 	//받은 메일함 - user 2
 	@GetMapping("/receiveMailList.do")
@@ -83,12 +69,12 @@ public class MailController {
 			param.put("offset", offset);
 
 //			List<Mail> list = mailService.selectMailList(param, 사원번호);
-//			List<Mail> list = mailService.selectMailList1(param, ":2:"); // :추가
-			List<Mail> list = mailService.selectMailList1(param, ":가가가:");
+			//	List<Mail> list = mailService.selectMailList1(param, 1); //test - user1
+			List<Mail> list = mailService.selectMailList1(param, 2); //test - user2
 
 //			int totalContents = mailService.selectMailTotalContents(사원번호);
-//			int totalContents = mailService.selectMailTotalContents1(":2:"); // :추가
-			int totalContents = mailService.selectMailTotalContents1(":가가가:");
+			//int totalContents = mailService.selectMailTotalContents1(1); //test - user1
+			int totalContents = mailService.selectMailTotalContents1(2); //test - user2
 			
 			String url = request.getRequestURI();
 			
@@ -125,7 +111,7 @@ public class MailController {
 
 //			List<Mail> list = mailService.selectMailList(param, 사원번호);
 			List<Mail> list = mailService.selectMailList2(param, 1); //test
-		
+
 //			int totalContents = mailService.selectMailTotalContents(사원번호);
 			int totalContents = mailService.selectMailTotalContents2(1);
 			String url = request.getRequestURI();
@@ -150,27 +136,18 @@ public class MailController {
 	public void mailForm() {}
 	
 	//메일 보내기(답장)
-//	@PostMapping("/mailForm.do")
-//	public void mailForm2() {}
-	
-	//메일 보내기(답장)
-	@PostMapping("/mailReply.do")
-	public void mailForm3() {}
+	@PostMapping("/mailForm.do")
+	public void mailForm2() {}
 	
 	@PostMapping("/mailEnroll.do")
 	public String mailEnroll(
-				@RequestParam(name = "receiverArr") String[] receiverArr,
+				@ModelAttribute MailExt mail,
 				@RequestParam(name = "upFile") MultipartFile[] upFiles,
-				RedirectAttributes redirectAttr,
-				HttpServletRequest request
+				RedirectAttributes redirectAttr
 			) throws Exception {
-		
+			
 		try {
-			
-			MailExt mail = new MailExt();
-			
-			String mailTitle = request.getParameter("mailTitle");
-			String mailContent = request.getParameter("mailContent");
+			log.debug("mail = {}", mail);
 
 			String saveDirectory = application.getRealPath("/resources/upload/mail");
 			log.debug("saveDirectory = {}", saveDirectory);
@@ -194,66 +171,30 @@ public class MailController {
 				attach.setRenamedFilename(renamedFilename);
 				attachList.add(attach);
 						
-			}		
-
-			int i;
-			
-			for(i = 0; i < receiverArr.length; i++) {
-				String s = receiverArr[i];
-				//외부메일
-				if(receiverArr[i].contains("@")) {
-					final MimeMessagePreparator preparator = new MimeMessagePreparator() {
-						
-						@Override
-						public void prepare(MimeMessage mimeMessage) throws Exception {
-							final MimeMessageHelper mailHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-								
-							mailHelper.setFrom("theupmuteam@gmail.com");
-							mailHelper.setTo(s);
-							mailHelper.setSubject(mailTitle);
-							mailHelper.setText(mailContent);
-							
-							if(attachList != null) {
-								for(int i = 0; i < attachList.size(); i++) {
-									FileSystemResource files = new FileSystemResource(new File(saveDirectory + "\\" + attachList.get(i).getRenamedFilename()));
-									mailHelper.addAttachment(attachList.get(i).getOriginalFilename(), files);
-								}
-							}			
-						}
-					};
-					mailSender.send(preparator);
-				}
-			
-				//외부, 내부 공통
-				if(mail.getReceiverAdd() == null) {
-					mail.setReceiverAdd(":" + receiverArr[i] + ":");
-				}
-				else {
-					mail.setReceiverAdd(mail.getReceiverAdd() + ",:" + receiverArr[i] + ":");
-				}
 			}
-			mail.setAttachList(attachList);			
-			mail.setMailTitle(mailTitle);
-			mail.setMailContent(mailContent);
-			
+			log.debug("attachList = {}", attachList);
+				
+			mail.setAttachList(attachList);
+	
 			int result = mailService.insertMail(mail);
+					
 			redirectAttr.addFlashAttribute("msg", "메일 전송 성공!");
+		} catch(Exception e) {
+			log.error("메일 전송 오류!", e);
+			throw e;
+		}
 			
-			
-			} catch(Exception e) {
-				log.error("메일 전송 오류!", e);
-				throw e;
-			}
 		return "redirect:/mail/sendMailList.do?sender_no=1";
-	}
 
+	}
+	
 	//받은 메일 상세 보기
 	@GetMapping("/receiveMailView.do")
 	public void selectOneReceiveMail(@RequestParam int no, Model model) {
 		
 //		MailExt mail = mailService.selectOneMailCollection1(no);
 		MailExt mail = mailService.selectOneMailCollection(no);
-		log.debug("받은 mail = {}", mail);
+		log.debug("mail = {}", mail);
 		
 		model.addAttribute("mail",mail);
 	}
@@ -265,12 +206,8 @@ public class MailController {
 //		MailExt mail = mailService.selectOneMailCollection2(no);
 		MailExt mail = mailService.selectOneMailCollection(no);
 		
-		log.debug("보낸 mail = {}", mail);
+		log.debug("mail = {}", mail);
 		
-		String receiver = mail.getReceiverAdd();
-		receiver = receiver.replace(":", "");
-		
-		mail.setReceiverAdd(receiver);
 		model.addAttribute("mail",mail);
 	}
 
@@ -305,21 +242,11 @@ public class MailController {
 	//메일 검색
 	@GetMapping("/searchMail.do")
 	@ResponseBody
-	public Map<String, Object> searchMail(@RequestParam Map<String, Object> searchMail, @RequestHeader(name = "Referer") String referer){	
+	public Map<String, Object> searchMail(@RequestParam String searchMail){
 		log.debug("searchMail = {}", searchMail);
-		log.info("referer = {}", referer);
 		
-		List<Mail> list = null;
-
-		if(referer.contains("send")) {
-			//1 : 보낸
-			list = mailService.searchMail(searchMail, 1);
-		}
-
-		else if(referer.contains("receive")) {
-			//2 : 받은
-			list = mailService.searchMail(searchMail, 2);
-		}
+		List<Mail> list = mailService.searchMail(searchMail);
+		log.debug("list = {}", list);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
@@ -327,73 +254,21 @@ public class MailController {
 		return map;
 	}
 	
-	//받는 사람 검색
-	@GetMapping("/searchReceiver.do")
-	@ResponseBody
-	public Map<String, Object> searchReceiver(@RequestParam String searchReceiver){
-		log.debug("searchTitle = {}", searchReceiver);
-
-		List<MailReceiver> list = mailService.searchReceiver(searchReceiver);
-		log.debug("list = {}", list);
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("list", list);
-		map.put("searchReceiver", searchReceiver);
-		
-		return map;	
-	}
-	
 	//메일 삭제
+	//한 명만 지워도 둘 다 지워지는 상황 -> 수정 필요
 	@PostMapping("/deleteMail.do")
-	@ResponseBody
 	public String deleteMail(HttpServletRequest request) {
 		
-		String result = null;
 		
-		try {
-			String[] arr = request.getParameterValues("valueArr");
-			int who = Integer.parseInt(request.getParameter("who"));
-
-			//
-			int now = 1;
-			
-			for(int i = 0; i < arr.length; i++) {
-				result = mailService.deleteMail(arr[i], who, now);
-			
-				//beforeDel인 경우
-				if(result.equals("beforeDel")) {
-					List<MailAttach> delAttach = mailService.selectOneMailCollection(Integer.parseInt(arr[i])).getAttachList();
-					for(int j = 0; j < delAttach.size(); j ++) {
-						
-						String saveDirectory = application.getRealPath("/resources/upload/mail");
-						MailAttach attach = delAttach.get(j);
-						String filePath = saveDirectory + "\\" + attach.getRenamedFilename();
-						
-						File deleteFile = new File(filePath);
-						
-						if(deleteFile.exists()) {
-							deleteFile.delete();
-						
-						} else {
-							System.out.println("파일이 존재하지 않습니다.");
-						}
-					}
-					
-					now = 2;
-					mailService.deleteMail(arr[i], who, now);
-				}
-			}
-
-			result = "OK";
-					
-		} catch(Exception e) {
-			log.error("삭제 오류!", e);
-			result = "Fail";
-			throw e;
-			
+		String[] arr = request.getParameterValues("valueArr");
+		int size = arr.length;
+		for(int i = 0; i < arr.length; i++) {
+			mailService.deleteMail(arr[i]);
 		}
-
-		return result;
+		
+//		return "redirect:/mail/sendMailList.do";
+		
+		return "";
 	}
 
 }

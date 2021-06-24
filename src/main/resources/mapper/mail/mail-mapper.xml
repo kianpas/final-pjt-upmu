@@ -10,14 +10,11 @@
 		values (
 			seq_mail_test.nextval,
 			1,
-			<!-- 2, -->
-			#{receiverAdd},
+			2,
 			#{mailTitle},
 			#{mailContent},
 			default,
-			0,
-			default,
-			default
+			0
 		)
 
 		<selectKey keyProperty="mailNo" resultType="_int" order="AFTER">
@@ -50,7 +47,7 @@
 		from
 			mail2 m
 		where
-			receiver_add like '%' || #{i} || '%' and receiver_del = 0
+			receiver_no = #{i}
 		order by
 			mail_no desc
 	</select>
@@ -62,7 +59,7 @@
 		from
 			mail2 m
 		where
-			sender_add = #{i} and sender_del = 0
+			sender_no = #{i}
 		order by
 			mail_no desc
 	</select>
@@ -88,7 +85,7 @@
 		from
 			mail2
 		where
-			receiver_add like '%' || #{i} || '%' and receiver_del = 0
+			receiver_no = #{i}
 	</select>
 	
 	<select id="selectMailTotalContents2" resultType="_int">
@@ -97,7 +94,7 @@
 		from
 			mail2
 		where
-			sender_add = #{i} and sender_del = 0
+			sender_no = #{i}
 	</select>
 
 	<select id="selectOneMailCollection" resultMap="mailCollectionMap">
@@ -117,14 +114,12 @@
 	</select>
 	<resultMap type="mailExt" id="mailCollectionMap">
 		<id column="mail_no" property="mailNo"/>
-		<result column="sender_add" property="senderAdd"/>
-		<result column="receiver_add" property="receiverAdd"/>
+		<result column="sender_no" property="senderNo"/>
+		<result column="receiver_no" property="receiverNo"/>
 		<result column="mail_title" property="mailTitle"/>
 		<result column="mail_content" property="mailContent"/>
 		<result column="send_date" property="sendDate"/>
 		<result column="read_chk" property="readChk"/>
-		<result column="sender_del" property="senderDel"/>
-		<result column="receiver_del" property="receiverDel"/>
 		<collection property="attachList" ofType="mailAttach">
 			<id column="attach_no" property="attachNo"/>
 			<result column="mail_no" property="mailNo"/>
@@ -142,51 +137,15 @@
 		where
 			attach_no = #{no}
 	</select>
-	
-	<select id="searchReceiverMail" parameterType="hashmap" resultType="mail">
-		select 
-			*
-		from 
-			mail2
-		where
-			(mail_title like '%' || #{searchTerm} || '%' OR mail_content like '%' || #{searchTerm} || '%' OR sender_add like '%' || #{searchTerm} || '%')
-			and
-			receiver_add like '%' || #{who} || '%'
-	</select>
 
-	<select id="searchSenderMail" resultType="mail">
+	<select id="searchMail" resultType="mail">
 		select 
 			*
 		from 
 			mail2
 		where
-			(mail_title like '%' || #{searchTerm} || '%' OR mail_content like '%' || #{searchTerm} || '%' OR receiver_add like '%' || #{searchTerm} || '%')
- 			and
-			sender_add = #{who}
+			mail_title like '%' || #{searchTitle} || '%' OR mail_content like '%' || #{searchTitle} || '%' OR receiver_no like '%' || #{searchTitle} || '%'
 	</select>
-	
-	<select id="searchReceiver" resultMap="receiverMap">
-		select
-			e.emp_no, e.emp_name, j.job_name, d.dep_name
-		from
-			employee_mail_test e
-		left join
-			jobtitle_mail j
-		on 
-			e.emp_job = j.job_no
-		left join
-			dept_mail d
-		on
-			e.emp_dep =  d.dep_no
-		where
-			e.emp_no like '%' || #{searchReceiver} || '%' OR e.emp_name like '%' || #{searchReceiver} || '%' OR j.job_name like '%' || #{searchReceiver} || '%' OR d.dep_name like '%' || #{searchReceiver} || '%'
-	</select>
-	<resultMap type="mailReceiver" id="receiverMap">
-		<id column="emp_no" property="empNo"/>
-		<result column="emp_name" property="empName"/>
-		<result column="job_name" property="jobName"/>
-		<result column="dep_name" property="depName"/>
-	</resultMap>
 	
 	<delete id="deleteMail">
 		delete
@@ -194,22 +153,5 @@
 			mail2
 		where mail_no = #{str}
 	</delete>
-	
-	<update id="hideSendMail">
-		update
-			mail2
-    	set
-    		sender_del = 1
-		where
-			mail_no = #{str} and sender_del = 0 and receiver_del = 0
-	</update>
-	<update id="hideReceiveMail">
-		update
-			mail2
-    	set
-    		receiver_del = 1
-		where
-			mail_no = #{str} and receiver_del = 0 and sender_del = 0
-	</update>
 
 </mapper>

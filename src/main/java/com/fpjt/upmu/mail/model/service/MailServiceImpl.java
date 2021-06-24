@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.fpjt.upmu.mail.model.dao.MailDao;
 import com.fpjt.upmu.mail.model.vo.Mail;
 import com.fpjt.upmu.mail.model.vo.MailExt;
-import com.fpjt.upmu.mail.model.vo.MailReceiver;
 import com.fpjt.upmu.mail.model.vo.MailAttach;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +42,7 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int selectMailTotalContents1(String i) {
+	public int selectMailTotalContents1(int i) {
 		return mailDao.selectMailTotalContents1(i);
 	}
 
@@ -53,7 +52,7 @@ public class MailServiceImpl implements MailService {
 	}
 	
 	@Override
-	public List<Mail> selectMailList1(Map<String, Object> param, String i) {
+	public List<Mail> selectMailList1(Map<String, Object> param, int i) {
 		return mailDao.selectMailList1(param, i);
 	}
 
@@ -73,18 +72,19 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public List<Mail> searchMail(Map<String, Object> searchMail, int i) {
-		return mailDao.searchMail(searchMail, i);
-	}
-	
-	@Override
-	public List<MailReceiver> searchReceiver(String searchReceiver) {
-		return mailDao.searchReceiver(searchReceiver);
+	public List<Mail> searchMail(String searchMail) {
+		return mailDao.searchMail(searchMail);
 	}
 
 	@Override
-	public String deleteMail(String str, int who, int now) {
-		return mailDao.deleteMail(str, who, now);
+	public int deleteMail(String str) {
+		return mailDao.deleteMail(str);
 	}
+
+//	@Override
+//	public MailExt selectOneMailCollection1(int no) {
+//		return mailDao.selectOneMailCollection1(no);
+//	}
+	
 
 }
