@@ -20,57 +20,11 @@ img {
 }
 
 .responsive-wrapper {
-  width: 100%;
-  max-width: 100%;
+  width: 95%;
+  max-width: 1900px;
   margin-left: auto;
   margin-right: auto;
 }
-
-
-
-/* 메뉴바 */
-.gnb {
-  position: relative;
-  -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
-}
-
-.gnb_inner {
-  position: relative;
-  width: 1130px;
-  padding: 0 30px;
-  margin: 0 auto;
-}
-
-.gnb .group_nav {
-  overflow: hidden;
-  position: relative;
-  padding: 11px 270px 11px 0;
-}
-
-.gnb .gnb_inner .group_nav .list_nav {
-	display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: space-between;
-    justify-content: space-between;
-}
-
-.categori .boardList,
-.categori .eList_,
-.categori .eList__,
-.categori .docmain,
-.categori .chatroomlist,
-.categori .sendmaillist,
-.categori .receivemaillist,
-.categori .elistAdmin {
-  border-radius: 25px;
-  background-color: rgb(194, 133, 133);
-  margin: 0 15px 0 0;
-}
-
-
-
 
 
 
