@@ -9,7 +9,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
- <script src="${pageContext.request.contextPath}/resources/js/bootstrap.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0px 0 40px 20%; margin: -55px 0px 0px 0px;" >
@@ -19,6 +19,10 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"
               href="${pageContext.request.contextPath}/attendance/attendanceManage.do">게시판</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/document/docMain.do">전자결재</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"
