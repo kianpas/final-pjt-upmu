@@ -22,6 +22,10 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/document/docMain.do">전자결재</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
               href="${pageContext.request.contextPath}/board/boardList.do">근태관리</a>
           </li>
           <li class="nav-item">
