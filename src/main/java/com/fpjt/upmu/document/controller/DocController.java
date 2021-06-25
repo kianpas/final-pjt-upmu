@@ -108,7 +108,7 @@ public class DocController {
 
 
 	@PostMapping("/docDetail")
-	public String updateDocDetal(
+	public String updateDocDetail(
 			@ModelAttribute DocLine docLine,
 			Model model){
 		try {
