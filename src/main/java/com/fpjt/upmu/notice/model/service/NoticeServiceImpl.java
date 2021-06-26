@@ -1,5 +1,7 @@
 package com.fpjt.upmu.notice.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int insertNotice(Notice notice) {
 		return noticeDao.insertNotice(notice);
+	}
+
+	@Override
+	public List<Notice> selectNoticeList(int empNo) {
+		return noticeDao.selectNoticeList(empNo);
 	}
 
 

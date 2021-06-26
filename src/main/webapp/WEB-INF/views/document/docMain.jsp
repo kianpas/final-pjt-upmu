@@ -10,6 +10,29 @@
 
 <section>
 	<article>
+	<!-- Notice 임시출력 -->
+	<table>
+		<tr>
+			<th>알림</th>
+		</tr>
+	<c:forEach items="${noticeList}" var="notice">
+		<tr>
+			<td>
+			<a href="${pageContext.request.contextPath}${notice.linkAddr}">
+			<c:choose>
+				<c:when test="${notice.notiType eq 'docReply'}">
+				내 결재문서에 댓글이 달렸습니다.
+				</c:when>
+				<c:when test="${notice.notiType eq 'docLine'}">
+				확인이 필요한 결재문서가 추가되었습니다.
+				</c:when>
+			</c:choose>
+			</a>
+			</td>
+		</tr>
+	</c:forEach>
+	</table>
+	
 	</article>
 </section>
 

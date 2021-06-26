@@ -1,5 +1,7 @@
 package com.fpjt.upmu.notice.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,11 @@ public class NoticeDaoImpl implements NoticeDao {
 	@Override
 	public int insertNotice(Notice notice) {
 		return session.insert("notice.insertNotice", notice);
+	}
+
+	@Override
+	public List<Notice> selectNoticeList(int empNo) {
+		return session.selectList("notice.selectNoticeList",empNo);
 	}
 
 }

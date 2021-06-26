@@ -17,7 +17,15 @@
 			#{linkAddr},
 			#{notiType}
 		)
-	
 </insert>
+<select id="selectNoticeList" resultType="Notice">
+	select
+		*
+	from
+		Notice
+	where
+		emp_no = #{empNo}
+</select>
+
 
 </mapper>
