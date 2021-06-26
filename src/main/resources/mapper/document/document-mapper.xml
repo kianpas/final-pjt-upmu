@@ -290,4 +290,12 @@
 	        type
 		from docForm
 	</select>
+	<select id="selectOnedocumentSimple" resultType="document">
+		select
+			* 
+		from 
+			document
+		where
+			doc_no = #{docNo}
+	</select>
 </mapper>

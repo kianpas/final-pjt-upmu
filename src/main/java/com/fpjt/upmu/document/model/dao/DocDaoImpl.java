@@ -110,6 +110,11 @@ public class DocDaoImpl implements DocDao {
 		return session.selectList("document.selectDocFormList");
 	}
 
+	@Override
+	public Document selectOnedocumentSimple(int docNo) {
+		return session.selectOne("document.selectOnedocumentSimple", docNo);
+	}
+
 	
 
 }

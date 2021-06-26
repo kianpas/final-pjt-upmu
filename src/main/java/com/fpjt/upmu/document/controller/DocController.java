@@ -68,9 +68,13 @@ public class DocController {
 
 	
 	@GetMapping("/docList")
-	public String docList(@RequestParam String type, Model model) {
+	public String docList(
+			@RequestParam int empNo, 
+			@RequestParam String type, 
+			Model model
+			) {
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
-		int id = 1;
+		int id = empNo;
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
