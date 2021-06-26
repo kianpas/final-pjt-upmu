@@ -97,17 +97,17 @@ textarea{
 								</td>
 								</c:if>
 								<c:if test="${docLine.approver != '1' }">
-								<td>미결재</td>
+								<td class="bg-warning text-white">미결재</td>
 								</c:if>
 							</c:when>
 							<c:when test="${docLine.status eq 'approved' }">
-								<td>결재완료(도장)</td>
+								<td class="bg-success text-white">결재완료</td>
 							</c:when>
 							<c:when test="${docLine.status eq 'rejected' }">
-								<td>반려</td>
+								<td class="bg-danger text-white">반려</td>
 							</c:when>
 							<c:when test="${docLine.status eq 'afterview' }">
-								<td>후열</td>
+								<td class="bg-secondary text-white">후열</td>
 							</c:when>
 						</c:choose>
 						<td>${docLine.empName}</td>
@@ -122,7 +122,33 @@ textarea{
 					<c:if test='${docLine.approverType eq "agreer"}'>
 					<tr>
 						<td>${docLine.jobName}</td>
-						<td>${docLine.status}</td>
+						<c:choose>
+							<c:when test="${docLine.status eq 'notdecided' }">
+								<%-- 
+									결재자가 본인인 경우만 링크 활성화
+									임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
+								--%>
+								<c:if test="${docLine.approver == '1' }">
+								<td>
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
+									<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
+									<input type="hidden" id="lv" value="${docLine.lv}"/>
+								</td>
+								</c:if>
+								<c:if test="${docLine.approver != '1' }">
+								<td class="bg-warning text-white">미결재</td>
+								</c:if>
+							</c:when>
+							<c:when test="${docLine.status eq 'approved' }">
+								<td class="bg-success text-white">결재완료</td>
+							</c:when>
+							<c:when test="${docLine.status eq 'rejected' }">
+								<td class="bg-danger text-white">반려</td>
+							</c:when>
+							<c:when test="${docLine.status eq 'afterview' }">
+								<td class="bg-secondary text-white">후열</td>
+							</c:when>
+						</c:choose>
 						<td>${docLine.empName}</td>
 					</tr>
 					</c:if>
@@ -134,7 +160,9 @@ textarea{
 					<c:if test='${docLine.approverType eq "enforcer"}'>
 					<tr>
 						<td>${docLine.jobName}</td>
-						<td>${docLine.status}</td>
+						<c:if test="${docLine.status eq 'afterview' }">
+							<td class="bg-secondary text-white">후열</td>
+						</c:if>
 						<td>${docLine.empName}</td>
 					</tr>
 					</c:if>
@@ -146,7 +174,9 @@ textarea{
 					<c:if test='${docLine.approverType eq "referer"}'>
 					<tr>
 						<td>${docLine.jobName}</td>
-						<td>${docLine.status}</td>
+						<c:if test="${docLine.status eq 'afterview' }">
+							<td class="bg-secondary text-white">후열</td>
+						</c:if>
 						<td>${docLine.empName}</td>
 					</tr>
 					</c:if>

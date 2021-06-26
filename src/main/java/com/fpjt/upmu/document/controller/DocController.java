@@ -43,6 +43,8 @@ import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
 import com.fpjt.upmu.document.model.vo.MultiDocLine;
+import com.fpjt.upmu.notice.model.service.NoticeService;
+import com.fpjt.upmu.notice.model.vo.Notice;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,17 +62,35 @@ public class DocController {
 	@Autowired
 	private DocService docService;
 	
+	//Notice 임시출력을 위한 코드
+	@Autowired
+	private NoticeService noticeService;
+	
+	//원래 docMain코드
+//	@GetMapping("/docMain")
+//	public String docMain() {
+//		return "document/docMain";
+//	}	
+	
 	@GetMapping("/docMain")
-	public String docMain() {
+	public String docMain(Model model) {
+		int empNo = 1;
+		List<Notice> noticeList = noticeService.selectNoticeList(empNo);
+	
+		model.addAttribute("noticeList", noticeList);
 		return "document/docMain";
 	}
 	
 
 	
 	@GetMapping("/docList")
-	public String docList(@RequestParam String type, Model model) {
+	public String docList(
+			@RequestParam int empNo, 
+			@RequestParam String type, 
+			Model model
+			) {
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
-		int id = 1;
+		int id = empNo;
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
@@ -108,7 +128,7 @@ public class DocController {
 
 
 	@PostMapping("/docDetail")
-	public String updateDocDetal(
+	public String updateDocDetail(
 			@ModelAttribute DocLine docLine,
 			Model model){
 		try {

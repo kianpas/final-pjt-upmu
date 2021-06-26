@@ -60,7 +60,8 @@ $( document ).ready(function() {
 });
 
 $("#docTypeMenu>button").click(function(){
-	location.href = `${pageContext.request.contextPath}/document/docList?type=\${this.id}`;
+	//empNo=1. 원래는 <sec:authentication property="principal.empNo"/>
+	location.href = `${pageContext.request.contextPath}/document/docList?empNo=1&type=\${this.id}`;
 });
 
 $("#docEditorMenu>button").click(function(){
