@@ -24,4 +24,9 @@ public class NoticeDaoImpl implements NoticeDao {
 		return session.selectList("notice.selectNoticeList",empNo);
 	}
 
+	@Override
+	public int deleteNotice(int no) {
+		return session.delete("notice.deleteNotice", no);
+	}
+
 }
