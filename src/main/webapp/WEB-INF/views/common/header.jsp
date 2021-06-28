@@ -52,7 +52,6 @@
       <sec:authorize access="isAuthenticated()">
 		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
 		   	<sec:authentication property="principal.username"/></a>님, 안녕하세요.			    
-		   	<sec:authentication property="authorities"/>
 		   		&nbsp;
 			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
