@@ -52,30 +52,35 @@ $(() => {
 	$("tr[data-no]").click(e=> {
 
 		var $tr = $(e.target).parents();
-		//console.log($tr);
 		var no = $tr.data("no");
-		//console.log(no);
+
 		//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + no;
 		location.href = "${pageContext.request.contextPath}/mail/receiveMailView.do?no=" + no;
 	});
 
 	$( "#searchMail" ).autocomplete({
  		source: function(request, response){
+  			var searchMap= {
+ 		 			"searchTerm": request.term,
+ 		 			"who": ":가가가:"
+ 		 	};
+
  	 	  $.ajax({
 			url: "${pageContext.request.contextPath}/mail/searchMail.do",
-			data: {
-				searchMail: request.term 
-			},
+			data: 
+				searchMap
+			,
 			success(data){
 				console.log(data);
 				const {list} = data;
 				const arr = 
-					list.map(({mailNo, mailTitle, mailContent, receiverNo}) => ({
+					list.map(({mailNo, mailTitle, mailContent, senderAdd}) => ({
 						label: '메일 제목 : ' + mailTitle,
 						value: mailTitle,
-						mailNo,
-						mailContent,
-						receiverNo
+						mailNo
+/* 						mailContent,
+						senderAdd,
+						mailNo */
 					}));
 				console.log(arr);
 				response(arr);
@@ -99,36 +104,42 @@ $(() => {
 });
 
 function deleteMail(){
-		var valueArr = new Array();
-		var list = $("input[name='chkbox']");
-		for(var i = 0; i < list.length; i++){
-			if(list[i].checked){
-				valueArr.push(list[i].value);
-			}
+	//보낸 사람 삭제 구분 변수
+	//1 : sender, 2 : receiver
+	var who = 2;
+	var valueArr = new Array();
+	var list = $("input[name='chkbox']");
+	for(var i = 0; i < list.length; i++){
+		if(list[i].checked){
+			valueArr.push(list[i].value);
 		}
-		if(valueArr.length == 0){
-			alert("선택된 글이 없습니다.");
-		}
-		else {
-			var chk = confirm("정말 삭제하시겠습니까?");
+	}
+	if(valueArr.length == 0){
+		alert("선택된 글이 없습니다.");
+	}
+	else {
+		var chk = confirm("정말 삭제하시겠습니까?");
+		if(chk){
 			$.ajax({
 				url: "${pageContext.request.contextPath}/mail/deleteMail.do",
 				type: 'POST',
 				traditional: true,
 				data: {
-					valueArr: valueArr
+					valueArr: valueArr,
+					who : who
 				},
-				success: function(jdata){
-					if(jdata = 1){
-						alert("삭제 성공");
-						
+				success: function(result){
+					if(result == "OK"){
+						alert("삭제하였습니다.");
+						location.reload();
+						//window.location.href='${pageContext.request.contextPath}/mail/receiveMailList.do'
 					}
 					else {
-						alert("삭제 실패");	
+						alert("삭제 실패하였습니다.");	
 					}
 				}
-
 			});
+		}
 	}
 }
 </script>
@@ -136,7 +147,7 @@ function deleteMail(){
 <div class="container">
 	<h4 class="page-header">받은 메일함</h4>
 
-	<input type="search" placeholder="메일 검색" id="searchMail" class="form-control col-sm-3 d-inline" autofocus/>
+	<input type="search" placeholder="메일 제목, 보낸 사람, 내용 검색" id="searchMail" class="form-control col-sm-3 d-inline"/>
 	<div class="text-right"> 
 		<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
 		<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail();"/>
@@ -158,7 +169,7 @@ function deleteMail(){
 			<c:forEach items="${list}" var="mail">
 				<tr data-no="${mail.mailNo}">
 					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
-					<td>${mail.senderNo}</td>
+					<td>${mail.senderAdd}</td>
 					<td>${mail.mailTitle}</td>
 					<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd"/></td>
 				</tr>

@@ -46,4 +46,6 @@ public interface DocService {
 	int updateDocForm(DocForm docForm);
 
 	List<DocForm> selectDocFormList();
+
+	Document selectOnedocumentSimple(int docNo);
 }

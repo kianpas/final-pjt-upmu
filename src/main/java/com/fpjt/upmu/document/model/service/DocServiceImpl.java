@@ -146,4 +146,10 @@ public class DocServiceImpl implements DocService {
 	}
 
 
+	@Override
+	public Document selectOnedocumentSimple(int docNo) {
+		return docDao.selectOnedocumentSimple(docNo);
+	}
+
+
 }

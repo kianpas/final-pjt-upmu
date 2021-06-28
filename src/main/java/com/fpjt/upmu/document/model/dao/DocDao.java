@@ -47,4 +47,6 @@ public interface DocDao {
 
 	List<DocForm> selectDocFormList();
 
+	Document selectOnedocumentSimple(int docNo);
+
 }

@@ -61,6 +61,5 @@
 <%--       <a href="${pageContext.request.contextPath }/member/memberLogout.do" class="header-link"> Logout</a> --%>
       
     </nav>
-    <button class="header-menu-button">Menu</button>
   </div>
 </header>

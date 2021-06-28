@@ -119,6 +119,7 @@
 		</if>
 		<if test="status == 'notdecided'">
 			and approver_type in ('approver', 'agreer')
+			and status = #{status}
 		</if>
 		<if test="status == 'approved'">
 			and approver_type in ('approver', 'agreer')
@@ -288,5 +289,13 @@
 	        title,
 	        type
 		from docForm
+	</select>
+	<select id="selectOnedocumentSimple" resultType="document">
+		select
+			* 
+		from 
+			document
+		where
+			doc_no = #{docNo}
 	</select>
 </mapper>

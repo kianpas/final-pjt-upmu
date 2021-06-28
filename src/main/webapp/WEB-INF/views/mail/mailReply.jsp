@@ -17,7 +17,67 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mail.css" />
 
+<%
+	String s = null;
+	String[] ss = null;
+	
+	if(request.getParameter("reply") != null){
+		s = request.getParameter("reply");		
+		if(s.contains(",")){
+			ss = s.split(",");		
+		}
+		else {
+			ss = new String[1];
+			ss[0] = s;
+		}		
+	}
+%>
+
 <script>
+var receiverArr = [];
+
+$(function(){
+	var sArr = new Array(<%= ss.length %>);
+
+	<%
+	for(int i=0; i < ss.length; i++){ %>
+		sArr[<%=i %>] = '<%= ss[i]%>';
+		console.log(sArr[<%=i%>]);
+	<%}%>
+
+	var b;
+	for(var i=0; i < sArr.length; i++){
+
+		if(sArr[i].indexOf('@') != -1){
+			
+			b = sArr[i].replace('@', '').split('.')[0];
+
+			$("#toInput").before(
+					"<div class='box_address box_out' id=m" + b + ">" + 
+					"<em class='txt_address'>" + sArr[i] + "</em>" + 
+					"<a href='javascript:delBtn(m" + b + ", 3);' class='btn_del' title='" + sArr[i] + " 삭제'>" +
+						"<span> X</span>" + 
+					"</a>" + 
+					"<input class='tf_edit' type='hidden' value=" + sArr[i] + ">" +
+				"</div>"
+			);
+		}
+		else {
+
+			$("#toInput").before(
+					"<div class='box_address' id=" + sArr[i] + ">" + 
+					"<em class='txt_address'>" + sArr[i] + "</em>" +
+					"<a href='javascript:delBtn(" + sArr[i] + ", 1);' class='btn_del' title='" + sArr[i] + " 삭제'>" + 
+						"<span> X </span>" + 
+					"</a>" + 
+					/* "<input class='tf_edit' type='hidden' value=" + empNo + ">" +  */
+					"<input class='tf_edit' type='hidden' value=" + sArr[i] + ">" +
+					"</div>"
+				);
+		}
+	}	
+});
+
 function mailValidate(){
 	var $title = $("[name=mailTitle]");
 	if(/^(.|\n)+$/.test($title.val()) == false){
@@ -26,8 +86,6 @@ function mailValidate(){
 	}
 	return true;
 }
-
-var receiverArr = [];
 
 $(() => {
 	$("[name=upFile]").change(e => {
@@ -87,7 +145,7 @@ $(() => {
 					"</div>"
 					);
 			}
-		}	
+		}
 	});
 
 	$("#toInput").autocomplete({
@@ -118,7 +176,7 @@ $(() => {
 		select: function(event, selected){
 			
 			const {item: {value, empNo}} = selected;
-
+			
 			b = value;
 
 			for(var i = 0; i < $('.tf_edit').length; i++){
@@ -178,7 +236,7 @@ function delBtn(b, i){
 		$("#" + b.id).remove();
 	}
 }
-	
+
 function goBack(){
 	window.history.back();
 	
@@ -201,12 +259,12 @@ function goBack(){
 		</tr>
 		<tr>
 			<td style="width: 10%">받는 사람</td>
-			<td style="height: 0.5vh">
+			<td>
 				<div class = "address_info">
 					<!-- <input class="hiddenForBubble" type="text" aria-hidden="true" style="left: -10000px;width: 1px; position: absolute;" value> -->
 					<!-- <textarea id="toTextarea" class="tf-address"></textarea> -->
 					<input style="width: 40%" id="toInput" class="tf-address"/>
-					<br><span class="s1"style="border: 1px; font-size:1px; color: #848485">사내 메일은 선택, 외부 이메일은 ,로 구분합니다.</span>
+					<br><span style="border: 1px; font-size:1px; color: #848485">사내 메일은 선택, 외부 이메일은 ,로 구분합니다.</span>
 					<input type="hidden" name="receiverArr" id="receiverArr" value=''>
 				</div>
 			</td>
@@ -228,12 +286,11 @@ function goBack(){
 			<td colspan="2"><textarea class="form-control" name="mailContent" rows="10"></textarea></td>
 		</tr>
 		</table>
-			
 		<div class="text-right">
 			<input type="button" class="btn btn-outline-primary" onclick="beforeSubmit();"value="전송"/>
 			<button type="button" class="btn btn-outline-danger" onclick="goBack();">취소</button>
 		</div>
-	</form>	
+	</form>
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
