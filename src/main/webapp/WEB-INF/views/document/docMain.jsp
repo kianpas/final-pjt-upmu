@@ -13,15 +13,18 @@
 
 <section>
 	<article>
-	<!-- Notice 임시출력 -->
-	<table>
-		<tr>
-			<th>알림</th>
-		</tr>
-	<c:forEach items="${noticeList}" var="notice">
-		<tr>
-			<td>
-				<a href="${pageContext.request.contextPath}${notice.linkAddr}">
+
+	<div class="dropdown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		알림
+	</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+			<h6 class="dropdown-header">알림 목록</h6>
+			<c:forEach items="${noticeList}" var="notice">
+			<div>
+				<span class="dropdown-item" 
+				onclick="location.href='${pageContext.request.contextPath}${notice.linkAddr}'"
+				style="display: inline;">
 				<c:choose>
 					<c:when test="${notice.notiType eq 'docReply'}">
 					내 결재문서에 댓글이 달렸습니다.
@@ -30,16 +33,17 @@
 					확인이 필요한 결재문서가 추가되었습니다.
 					</c:when>	
 				</c:choose>
-				</a>
-				
-				<!-- 공통되는 삭제버튼 -->
+				</span>
+	
+				<!-- deleteBtn -->
 				<button type="button" class="close" aria-label="Close" value="${notice.no }">
 					<span aria-hidden="true">&times;</span>
 				</button>
-			</td>
-		</tr>
-	</c:forEach>
-	</table>
+				<div class="dropdown-divider"></div>
+			</div>
+			</c:forEach>
+		</div>
+	</div>
 	
 	</article>
 </section>
@@ -62,7 +66,7 @@ $(".close").on('click', function(e) {
 		success(data){
 			console.log(data);
 			//목록에서 바로 삭제
-			$thisRow.closest('tr').remove();
+			$thisRow.closest('div').remove();
 		},
 
 		error(xhr, statusText, err){
