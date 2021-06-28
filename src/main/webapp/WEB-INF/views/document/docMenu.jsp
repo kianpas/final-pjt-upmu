@@ -9,7 +9,7 @@
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu2.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu.css" />
 
 <nav id="docNav">
 
@@ -30,6 +30,7 @@
 		<button type="button" class="list-group-item list-group-item-action" id="afterview">열람</button>
 		<button type="button" class="list-group-item list-group-item-action" id="rejected">반려</button>
 	</div>
+	
 	
 </nav>
 
