@@ -31,12 +31,15 @@ public class EmployeeController {
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
+	@GetMapping("/empLogin.do")
+	public void EmpLogin() {
+		log.debug("훔쳐감");
+	}
+	
 	@GetMapping("/empEnroll.do")
 	public void EmpEnroll() {}
 	
-	@GetMapping("/empLogin.do")
-	public void EmpLogin() {
-	}
+	
 	
 	@PostMapping("/empEnroll.do")
 	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {
