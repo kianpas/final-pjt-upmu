@@ -13,7 +13,6 @@ h2 {
 }
 .list-form {
 	display: flex;
-	width: 220px;
 }
 .list {
 	outline : solid 1px #c8c8c8;

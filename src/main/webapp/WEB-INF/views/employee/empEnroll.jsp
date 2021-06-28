@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
@@ -14,7 +15,7 @@
     <div class="sign-in-html">
       <div class="sign-form">
         <div class="sign-up-htm">
-         <form action="${pageContext.request.contextPath}/employee/empEnroll.do" name="form" id="form" method="post">
+         <form:form action="${pageContext.request.contextPath}/employee/empEnroll.do" name="form" id="form" method="post">
           <div class="emp_email">
             <label for="emp_email" class="emp_email_">이메일</label>
             <input id="emp_email" name="empEmail" type="text" class="emp_email_input" required>
@@ -27,7 +28,6 @@
             <label for="emp_pw" class="emp_pw_">비밀번호</label>
             <input id="emp_pw" name="empPw" type="password" class="emp_pw_input" required>
             <span class="pwError1" style="display: none;">비밀번호는 최소 8자, 최소 하나의 문자, 숫자 및 특수 문자 포함입니다.</span>
-            <input type="hidden" id="pwValid" value="0"/>
           </div>
           <div class="emp_pw_re">
             <label for="re_emp_pw_check" class="emp_pw_re_">비밀번호확인</label>
@@ -61,11 +61,12 @@
           <div class="sign_up_button">
             <input type="submit" class="sign_up_button_" value="Sign Up">
           </div>
-          </form>
+          </form:form>
         </div>
       </div>
     </div>
   </div>
+  
 <script>
 //css 동적 추가
 var cssUrl = "${pageContext.request.contextPath}/resources/css/index.css";
@@ -92,8 +93,6 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAdd
 		 document.form.zipNo.value = zipNo;
 }
 
-
-
 //아이디 유효성 검사
 $("#emp_email").keyup(e => {
 	const id = $(e.target).val();
@@ -114,8 +113,8 @@ $("#emp_email").keyup(e => {
 		if(!regEmail.test(id)){
 			$error.hide();
 			$ok.hide();
-			$idValid.val(0);
 			$regError.show();
+			$idValid.val(0);
 			console.log("비유효");
 			return;
 		}
@@ -123,14 +122,15 @@ $("#emp_email").keyup(e => {
 	}
 	$.ajax({
 		url: "${pageContext.request.contextPath}/employee/checkIdDuplicate.do",
+		method: "GET",
 		data: {id},
 		success: (data) => {
 			console.log(data);
 			const {available} = data;
 			if(available){
-				$error.hide();
-				$idValid.val(1);
 				$ok.show();
+				$idValid.val(1);
+				$error.hide();
 			}
 			else {
 				$ok.hide();
@@ -138,8 +138,8 @@ $("#emp_email").keyup(e => {
 				$error.show();
 			}
 		},
-		error: (xhr, statusText, err) => {
-			console.log(xhr, statusText, err);
+		error: () => {
+			console.log
 		}
 	});
 });
@@ -162,12 +162,12 @@ $("#emp_pw").keyup(e => {
 	else {
 		if(!regPw.test(pw)){
 			$pwError1.show();
-			$pwValid.val(0);
 			return;
 		}
 		$pwError1.hide();
 	}
 });
+
 //비밀번호 확인
 $("#re_emp_pw_check").blur(function(){
 	var $password = $("#emp_pw"), $passwordCheck = $("#re_emp_pw_check");
@@ -182,8 +182,14 @@ $("#re_emp_pw_check").blur(function(){
 	}
 });
 
-$("#signUp").submit(function(){
-	console.log("asdasdasd");
+$("#form").submit(function(){
+	var $idValid = $("#idValid");
+	
+	if($idValid.val() == 0){
+		alert("아이디를 확인해주세요.");
+		$id.focus();
+		e.preventDefault();
+	}
 });
 </script>
 </body>

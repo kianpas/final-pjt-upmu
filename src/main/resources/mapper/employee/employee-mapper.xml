@@ -16,8 +16,8 @@
 			#{empBirth},
 			'정상',
 			default,
-			null,
-			null
+			default,
+			default
 		)
 		<!-- enroll_date, enabled컬럼은 기본값처리 -->
 	</insert>

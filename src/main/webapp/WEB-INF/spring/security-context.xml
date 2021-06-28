@@ -1,10 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:security="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.0.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- #8.2. BCryptPasswordEncoder 빈 등록 -->
-	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-</beans>
+	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<http security="none" pattern="/resources/**"/>
+	<http auto-config="true">
+		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
+		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
+		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
+		<intercept-url pattern="/**" access="hasRole('USER')"/>
+		
+		 <form-login 
+			login-page="/employee/empLogin.do"
+			login-processing-url="/employee/empLoginProcess.do"
+			username-parameter="empEmail"
+			password-parameter="empPw"/>
+		
+		<logout
+			logout-url="/employee/empLogout.do"
+			invalidate-session="true"
+			logout-success-url="/"/>
+			
+		<!-- 
+			remember-me : session-timeout시간이상으로 사용자 정보를 관리
+			token-validity-seconds : remember-me 토큰 무효시간 60 * 60 * 24 * 14 (초단위)
+		-->
+		<remember-me
+			data-source-ref="dataSource"
+			token-validity-seconds="1209600"
+			/>
+		<!-- 권한 없는 페이지 접근시 처리 -->
+		<access-denied-handler error-page="/common/accessDenied.do"/>
+ 		<!-- <http-basic />
+        <csrf request-matcher-ref="csrfMatcher"/> -->
+        
+	</http>
+	
+	<authentication-manager>
+		<authentication-provider user-service-ref="securityService">
+			<password-encoder ref="bcryptPasswordEncoder"/>
+		</authentication-provider>
+	</authentication-manager>
+ 	<!-- <beans:bean id="csrfMatcher" class="org.springframework.security.web.util.matcher.OrRequestMatcher">
+        <beans:constructor-arg>
+                <beans:bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+                    <beans:constructor-arg name="pattern" value="https://www.juso.go.kr/addrlink/addrLinkUrl.do"/>
+                    <beans:constructor-arg name="httpMethod" value="POST"/>
+                </beans:bean>
+        </beans:constructor-arg>
+    </beans:bean> -->
+	
+	<!-- #7. UserDetails구현체 빈등록 -->
+	<context:component-scan base-package="com.fpjt.upmu.security"/>
+</beans:beans>

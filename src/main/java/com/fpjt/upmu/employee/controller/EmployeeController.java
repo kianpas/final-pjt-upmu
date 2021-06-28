@@ -9,14 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.employee.model.service.EmployeeService;
@@ -35,26 +31,11 @@ public class EmployeeController {
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
-	@GetMapping("/empLogin.do")
-	public void EmpLogin(
-				@SessionAttribute(required = false) String next,
-				@RequestHeader(name = "Referer", required = false) String referer, 
-				Model model) {
-		log.info("referer = {}", referer);
-		log.info("next = {}", next);
-		if(next == null && referer != null)
-			model.addAttribute("next", referer); // sessionScope에 저장
-	}
-	
 	@GetMapping("/empEnroll.do")
-	public void EmpEnroll(
-				@SessionAttribute(required = false) String next,
-				@RequestHeader(name = "Referer", required = false) String referer, 
-				Model model) {
-		log.info("referer = {}", referer);
-		log.info("next = {}", next);
-		if(next == null && referer != null)
-			model.addAttribute("next", referer); // sessionScope에 저장
+	public void EmpEnroll() {}
+	
+	@GetMapping("/empLogin.do")
+	public void EmpLogin() {
 	}
 	
 	@PostMapping("/empEnroll.do")
@@ -80,6 +61,7 @@ public class EmployeeController {
 	
 	@GetMapping("/checkIdDuplicate.do")
 	public ResponseEntity<Map<String, Object>> checkIdDuplicate(@RequestParam String id) {
+		log.debug(id);
 		Employee employee = empService.selectOneEmp(id);
 		boolean available = (employee == null);
 		
@@ -99,8 +81,7 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/jusoPopup.do")
-	public void jusoPost() {
-		
+	public void jusoPost() throws Exception {
 	}
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder) {
