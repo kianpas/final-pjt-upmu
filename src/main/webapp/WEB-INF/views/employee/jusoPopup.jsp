@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,7 +47,6 @@
 		모의 해킹 테스트 시 팝업API를 호출하시면 IP가 차단 될 수 있습니다. 
 		주소팝업API를 제외하시고 테스트 하시기 바랍니다.
 */
-console.log(opener);
 function init(){
 	var url = location.href;
 	var confmKey = "devU01TX0FVVEgyMDIxMDYyMjE0MTEzMTExMTMxMDA=";
@@ -66,7 +66,7 @@ function init(){
 }
 </script>
 <body onload="init();">
-	<form id="form" name="form" method="post">
+	<form:form id="form" name="form" method="post">
 		<input type="hidden" id="confmKey" name="confmKey" value=""/>
 		<input type="hidden" id="returnUrl" name="returnUrl" value=""/>
 		<input type="hidden" id="resultType" name="resultType" value=""/>
@@ -75,6 +75,6 @@ function init(){
 		<input type="hidden" id="encodingType" name="encodingType" value="EUC-KR"/>
 		 -->
 		<!-- 해당시스템의 인코딩타입이 EUC-KR일경우에만 추가 END-->
-	</form>
+	</form:form>
 </body>
 </html>

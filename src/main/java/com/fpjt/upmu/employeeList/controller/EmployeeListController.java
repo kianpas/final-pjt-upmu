@@ -57,9 +57,7 @@ public class EmployeeListController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			String depNo = param;
-			log.debug(depNo);
 			List<Employee> eList = elService.selectDeptEmpList(depNo);
-			log.debug("eList={}",eList);
 			
 			//2. map에 요소 저장후 리턴
 			map.put("eList", eList);
@@ -78,8 +76,6 @@ public class EmployeeListController {
 			Map<String, String> keyword = param;
 			
 			if(keyword.get("getSearch") == "") {
-					
-				
 				return map; 
 			}
 			List<Employee> eList = elService.selectSearchList(keyword);
@@ -97,7 +93,6 @@ public class EmployeeListController {
 	@GetMapping("/deleteDept.do")
 	public String deleteDept(@RequestParam(value = "depNo") String param) {
 		try {			
-			log.debug(param);
 			int result = elService.deleteDept(param);
 		} catch (Exception e) {
 			log.error("부서삭제 오류!");

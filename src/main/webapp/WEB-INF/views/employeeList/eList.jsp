@@ -5,9 +5,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eList.css" />
 <div class="search-form">
 		<label class="keyLabel"for="keyword"></label>
 		<select id="keyword">
@@ -38,13 +40,13 @@
     	<div id="depart-enroll">
     		<h2>부서 등록</h2>
     		<!-- 관리자, 담당자 권한 추가해야됨. -->
-    		<form action="${pageContext.request.contextPath}/employeeList/departEnroll.do" method="post">
+    		<form:form action="${pageContext.request.contextPath}/employeeList/departEnroll.do" method="post">
 	    		<label class="depart-name" for="depart-name">부서명</label>
 	  			<input id="depart-name" name="depName" class="depart-name" type="text" placeholder="부서명" autocomplete="off" spellcheck="false">
 	  			<label class="depart-code-label" for="depart-code">부서코드</label>
 	  			<input id="depart-code" name="depNo" class="depart-code" type="text" placeholder="부서코드" autocomplete="off" spellcheck="false">
 	  			<input id="depart-submit" type="submit" value="등록">
-    		</form>
+    		</form:form>
     	</div>
 	</div>
 	
@@ -54,13 +56,13 @@
 
 <script>
 //css 동적 추가
-var cssUrl = "${pageContext.request.contextPath}/resources/css/eList.css";
+/* var cssUrl = "${pageContext.request.contextPath}/resources/css/eList.css";
 var head = document.getElementsByTagName("head")[0];
 var link = document.createElement("link");
 link.rel = "stylesheet";
 link.type = "text/css";
 link.href = cssUrl;
-document.head.appendChild(link);
+document.head.appendChild(link); */
 
 //색상 초기화
 function colorReset() {	
@@ -115,7 +117,6 @@ $(".keyLabel").hide();
 	});
 	
 	//검색에서 employee불러오기
-	
 	function search(){
 		var getKeyword;
 
@@ -179,7 +180,7 @@ $(".keyLabel").hide();
 	//부서 마우스 오른쪽 클릭 이벤트
 	var depNo;
 	$(".dept").on('mousedown', (e) => {
-		if(e.button == 2 || e.which==3){
+		if(e.button == 2 || e.which == 3){
 			const ctxMenu = document.getElementById('context-menu');
 	        depNo = $(e.target).attr('class').split(' ')[0];
 	        // 노출 설정
