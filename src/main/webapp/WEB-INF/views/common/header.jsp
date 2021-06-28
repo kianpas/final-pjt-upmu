@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -13,6 +15,7 @@
 <!-- bootstrap js: jquery load 이후에 작성할것.-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 <!-- 조직도 테이블 관련 -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
@@ -41,10 +44,22 @@
   <div class="header-right">
     <nav class="header-nav">
       <!-- 로그인이전 -->
-      <a href="${pageContext.request.contextPath }/employee/empLogin.do" class="header-link">Login</a>
+      <sec:authorize access="isAnonymous()">
+      <a href="${pageContext.request.contextPath}/employee/empLogin.do" class="header-link">Login</a>
+      <a href="${pageContext.request.contextPath}/employee/empEnroll.do" class="header-link header-link--button">Sign Up</a> 
+      </sec:authorize>
       <!-- 로그인이후 -->
+      <sec:authorize access="isAuthenticated()">
+		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
+		   	<sec:authentication property="principal.username"/></a>님, 안녕하세요.			    
+		   	<sec:authentication property="authorities"/>
+		   		&nbsp;
+			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
+			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
+			   	</form:form>
+    	</sec:authorize>
 <%--       <a href="${pageContext.request.contextPath }/member/memberLogout.do" class="header-link"> Logout</a> --%>
-      <a href="${pageContext.request.contextPath }/employee/empEnroll.do" class="header-link header-link--button">Sign Up</a> 
+      
     </nav>
     <button class="header-menu-button">Menu</button>
   </div>

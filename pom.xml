@@ -203,7 +203,6 @@
 			<artifactId>spring-security-test</artifactId>
 			<version>${org.springframework.security-version}</version>
 		</dependency>
-
 		<!-- jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

@@ -59,5 +59,15 @@ $(() => {
 	${pageBar}
 	
 </section> 
-
+<script>
+var cssUrl = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css";
+var head = document.getElementsByTagName("head")[0];
+var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.integrity = "sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4";
+link.setAttribute("crossorigin", "anonymous");
+link.href = cssUrl;
+document.head.appendChild(link);
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
