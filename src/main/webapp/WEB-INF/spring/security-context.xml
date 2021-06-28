@@ -19,6 +19,10 @@
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/**" access="hasRole('USER')"/>
 		
+		<!-- Choims added -->
+		<!-- <intercept-url pattern="/document/docFormAdd" access="hasAnyRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/document/docFormEdit" access="hasAnyRole('ROLE_ADMIN')"/> -->
+		
 		 <form-login 
 			login-page="/employee/empLogin.do"
 			login-processing-url="/employee/empLoginProcess.do"

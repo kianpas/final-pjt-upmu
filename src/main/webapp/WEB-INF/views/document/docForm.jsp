@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
 
@@ -37,9 +40,9 @@
 <section>
 	<article>
 		<div id="container">
-		<form 
+		<form:form 
 			name="documentFrm" 
-			action="${pageContext.request.contextPath}/document/docInsert" 
+			action="${pageContext.request.contextPath}/document/docInsert?${_csrf.parameterName}=${_csrf.token}" 
 			method="post" 
 			enctype="multipart/form-data"
 			onsubmit="return documentValidate();">
@@ -66,8 +69,10 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="inputGroup-sizing-default">기안자</span>
 				</div>
+				<%--기안자 writer는 empNo로 표시, 화면에 표시할때는 이름으로 표시 --%>
 				<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
-				name="writer" value="1" readonly required>			
+				name="writerName" value='<sec:authentication property="principal.empName"/>' readonly required>
+				<input type="hidden" name="writer" value='<sec:authentication property="principal.empNo"/>'/>
 			</div>
 			
 			<!-- <button type="button" onclick="testBtn();">testBtn</button> -->
@@ -106,7 +111,7 @@
 			<div id="fileFormAddArea"></div>
 			
 			<input type="submit" class="btn btn-outline-success" value="제출" >
-		</form>
+		</form:form>
 	</div>
 	</article>
 </section>

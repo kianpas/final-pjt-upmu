@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> --%>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
@@ -40,14 +43,22 @@
 	
 	</article>
 </section>
-
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 <script>
 $(".close").on('click', function(e) {
-	//console.log($(this).closest('tr'));
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
 	$thisRow = $(this);
  	$.ajax({
 		url: `${pageContext.request.contextPath}/notice/deleteNotice?no=\${this.value}`,
 		method: "DELETE",
+		beforeSend : function(xhr)
+        {   
+	        /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+			xhr.setRequestHeader(header, token);
+        },
 		success(data){
 			console.log(data);
 			//목록에서 바로 삭제
