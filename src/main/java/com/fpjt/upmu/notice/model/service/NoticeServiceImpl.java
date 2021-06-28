@@ -24,6 +24,11 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeDao.selectNoticeList(empNo);
 	}
 
+	@Override
+	public int deleteNotice(int no) {
+		return noticeDao.deleteNotice(no);
+	}
+
 
 
 }

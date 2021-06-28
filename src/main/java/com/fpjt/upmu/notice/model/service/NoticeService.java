@@ -10,4 +10,6 @@ public interface NoticeService {
 
 	List<Notice> selectNoticeList(int empNo);
 
+	int deleteNotice(int no);
+
 }

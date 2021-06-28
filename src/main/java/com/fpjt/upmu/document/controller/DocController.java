@@ -20,6 +20,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -43,6 +44,7 @@ import com.fpjt.upmu.document.model.vo.DocLine;
 import com.fpjt.upmu.document.model.vo.DocReply;
 import com.fpjt.upmu.document.model.vo.Document;
 import com.fpjt.upmu.document.model.vo.MultiDocLine;
+import com.fpjt.upmu.employeeList.model.vo.Employee;
 import com.fpjt.upmu.notice.model.service.NoticeService;
 import com.fpjt.upmu.notice.model.vo.Notice;
 
@@ -73,8 +75,10 @@ public class DocController {
 //	}	
 	
 	@GetMapping("/docMain")
-	public String docMain(Model model) {
-		int empNo = 1;
+	public String docMain(Authentication authentication, Model model) {
+		Employee principal = (Employee) authentication.getPrincipal();
+		int empNo = principal.getEmpNo();
+		
 		List<Notice> noticeList = noticeService.selectNoticeList(empNo);
 	
 		model.addAttribute("noticeList", noticeList);
