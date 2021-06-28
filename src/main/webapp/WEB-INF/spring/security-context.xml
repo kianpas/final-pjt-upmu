@@ -17,6 +17,7 @@
 		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
+		<intercept-url pattern="/employee/checkIdDuplicate.do" access="isAnonymous()"/>
 		<intercept-url pattern="/**" access="hasRole('USER')"/>
 		
 		 <form-login 
