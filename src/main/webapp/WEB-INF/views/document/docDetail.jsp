@@ -3,8 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
@@ -52,6 +53,8 @@ textarea{
 
 <section>
 	<article>
+		<%-- 로그인유저 사번을 loginEmpNo에 넣어 사용 --%>
+		<sec:authentication property="principal.empNo" var="loginEmpNo"/>
 		<h1 id="title">${document.title}</h1>
 		<br />
 		<div class="tableDiv" id="docColumn">
@@ -89,14 +92,14 @@ textarea{
 									결재자가 본인인 경우만 링크 활성화
 									임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
 								--%>
-								<c:if test="${docLine.approver == '1' }">
+								<c:if test="${docLine.approver == loginEmpNo }">
 								<td>
 									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
 									<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
 									<input type="hidden" id="lv" value="${docLine.lv}"/>
 								</td>
 								</c:if>
-								<c:if test="${docLine.approver != '1' }">
+								<c:if test="${docLine.approver != loginEmpNo }">
 								<td class="bg-warning text-white">미결재</td>
 								</c:if>
 							</c:when>
@@ -128,14 +131,14 @@ textarea{
 									결재자가 본인인 경우만 링크 활성화
 									임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
 								--%>
-								<c:if test="${docLine.approver == '1' }">
+								<c:if test="${docLine.approver == loginEmpNo }">
 								<td>
 									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
 									<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
 									<input type="hidden" id="lv" value="${docLine.lv}"/>
 								</td>
 								</c:if>
-								<c:if test="${docLine.approver != '1' }">
+								<c:if test="${docLine.approver != loginEmpNo }">
 								<td class="bg-warning text-white">미결재</td>
 								</c:if>
 							</c:when>
@@ -221,17 +224,17 @@ textarea{
 			</ul>
 			
 			새 댓글 작성
-			<form id="replyFrm" 
+			<form:form id="replyFrm" 
 				action="${pageContext.request.contextPath}/document/docReply"
 				method="post">
 			<!-- no docNo writer content regDate -->
 			<input type="hidden" name="docNo" value="${document.docNo}"/>
 			<!-- writer:댓글작성자 loginMember.getId -->
-			<input type="hidden" name="writer" value="1"/>
+			<input type="hidden" name="writer" value="${loginEmpNo}"/>
 			<textarea class="form-control" name="content"></textarea>
 			
 			<button type="submit" id="replyBtn" class="btn btn-primary">댓글등록</button>
-			</form>
+			</form:form>
 		</div>
 	</footer>
 </section>
@@ -284,7 +287,7 @@ $(document).ready(function(){
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form 
+      <form:form
       		id="docLineFrm"
       		action="${pageContext.request.contextPath}/document/docDetail"
 			method="POST">
@@ -300,11 +303,11 @@ $(document).ready(function(){
         <button type="submit" class="btn btn-primary" id="save">Save changes</button>
       </div>
       <input type="hidden" name="docNo" value="${document.docNo}"/>
-      <%--원래 로그인한 사람 사번 제출. 여기선 홍길동=1 --%>
-      <input type="hidden" name="approver" value="1"/>
+      
+      <input type="hidden" name="approver" value="${loginEmpNo}"/>
       <input type="hidden" name="maxAuthority" value=""/>
       <input type="hidden" name="lv" value=""/>
-      </form>
+      </form:form>
     </div>
   </div>
 </div>

@@ -26,6 +26,11 @@
 	where
 		emp_no = #{empNo}
 </select>
-
-
+<delete id="deleteNotice">
+	delete from
+		Notice
+	where
+		no = #{no}
+</delete>
+		
 </mapper>

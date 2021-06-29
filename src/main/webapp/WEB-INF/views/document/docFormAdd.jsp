@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
 
@@ -43,11 +45,10 @@ th, td {
 </c:if>
 	<article>
 		<div id="container">
-		<form 
+		<form:form 
 			name="documentFrm" 
 			action="${pageContext.request.contextPath}/document/docFormAdd" 
-			method="post" 
-			enctype="multipart/form-data">
+			method="post" >
 									
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">
@@ -76,7 +77,7 @@ th, td {
 			<br />
 			
 			<input type="submit" class="btn btn-outline-success" value="제출" >
-		</form>
+		</form:form>
 	</div>
 	</article>
 </section>
