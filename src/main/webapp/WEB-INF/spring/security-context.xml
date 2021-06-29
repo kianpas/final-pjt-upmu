@@ -15,12 +15,15 @@
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/**" access="hasRole('USER')"/>
+		<!-- 한성 관리 페이지 -->
 		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
+		<!-- <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/> -->
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empIdPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/checkIdDuplicate.do" access="isAnonymous()"/>
-		<intercept-url pattern="/**" access="hasRole('USER')"/>
+		
 		
 		<!-- Choims added -->
 		<!-- <intercept-url pattern="/document/docFormAdd" access="hasAnyRole('ROLE_ADMIN')"/>

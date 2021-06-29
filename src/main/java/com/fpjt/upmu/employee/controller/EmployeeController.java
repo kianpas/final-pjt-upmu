@@ -40,6 +40,12 @@ public class EmployeeController {
 	@GetMapping("/empIdPwSearch.do")
 	public void EmpIdPwdSearch() {}
 	
+	@GetMapping("/jusoPopup.do")
+	public void jusoPopup() {}
+	
+	@PostMapping("/jusoPopup.do")
+	public void jusoPost() throws Exception {}
+	
 	@PostMapping("/empEnroll.do")
 	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {
 
@@ -76,15 +82,15 @@ public class EmployeeController {
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.body(map);
 	}
-	
-	@GetMapping("/jusoPopup.do")
-	public void jusoPopup() {
-		
-	}
-	
-	@PostMapping("/jusoPopup.do")
-	public void jusoPost() throws Exception {
-	}
+
+	/*
+	 * @PostMapping("/empIdPwSearch.do") public String empIdPwSearch(Employee
+	 * employee) {
+	 * 
+	 * log.debug("emp = {}", employee);
+	 * 
+	 * return "redirect:/"; }
+	 */
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder) {
 //		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
