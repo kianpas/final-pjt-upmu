@@ -3,22 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%-- security사용을 위한 태그 --%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu2.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu.css" />
 
 <nav id="docNav">
-<%-- 	<ul class="list-group">
-		<li><a href="${pageContext.request.contextPath}/document/docForm"
-		 class="list-group-item list-group-item-action">새 문서 작성</a></li>
-		<li><a href="${pageContext.request.contextPath}/document/docFormAdd"
-		 class="list-group-item list-group-item-action">새 문서양식 추가</a></li>
-		<li><a href="${pageContext.request.contextPath}/document/docFormEdit"
-		 class="list-group-item list-group-item-action">기존 문서양식 수정</a></li>
-	</ul> --%>
-	
+
 	<div class="list-group" id="docEditorMenu">
 		<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>
 		<button type="button" class="list-group-item list-group-item-action" id="docFormAdd">새 문서양식 추가</button>
@@ -36,6 +30,7 @@
 		<button type="button" class="list-group-item list-group-item-action" id="afterview">열람</button>
 		<button type="button" class="list-group-item list-group-item-action" id="rejected">반려</button>
 	</div>
+	
 	
 </nav>
 
@@ -61,7 +56,8 @@ $( document ).ready(function() {
 
 $("#docTypeMenu>button").click(function(){
 	//empNo=1. 원래는 <sec:authentication property="principal.empNo"/>
-	location.href = `${pageContext.request.contextPath}/document/docList?empNo=1&type=\${this.id}`;
+	var empNo = '<sec:authentication property="principal.empNo"/>';
+	location.href = `${pageContext.request.contextPath}/document/docList?empNo=\${empNo}&type=\${this.id}`;
 });
 
 $("#docEditorMenu>button").click(function(){

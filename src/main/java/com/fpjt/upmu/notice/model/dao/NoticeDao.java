@@ -10,4 +10,6 @@ public interface NoticeDao {
 
 	List<Notice> selectNoticeList(int empNo);
 
+	int deleteNotice(int no);
+
 }
