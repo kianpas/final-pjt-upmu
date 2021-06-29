@@ -9,16 +9,20 @@
 			no,
 			emp_no,
 			link_addr,
-			noti_type
+			noti_type,
+			checked,
+			reg_date
 		)
 		values(
 			seq_notice_no.nextval,
 			#{empNo},
 			#{linkAddr},
-			#{notiType}
+			#{notiType},
+			default,
+			default
 		)
 </insert>
-<select id="selectNoticeList" resultType="Notice">
+<select id="selectNoticeList" resultMap="NoticeVoMap">
 	select
 		*
 	from
@@ -26,11 +30,43 @@
 	where
 		emp_no = #{empNo}
 </select>
+<resultMap type="Notice" id="NoticeVoMap">
+	<result column="checked" property="checked" typeHandler="booleanYnTypeHandler"/>
+</resultMap>
+
+
 <delete id="deleteNotice">
 	delete from
 		Notice
 	where
 		no = #{no}
 </delete>
+<update id="updateNotice">
+	update
+		Notice
+	set
+		checked = 'Y'
+	where
+		no = #{no}
+</update>
+<select id="countNoticeList" resultType="_int">
+	select
+		count(*)
+	from
+		notice
+	where
+		emp_no = #{empNo}
+</select>
+<delete id="deleteNoticeList">
+	delete from
+		Notice
+	<where>
+		emp_no = #{empNo}
+	<if test="checked != null">
+		AND checked = 'Y'
+	</if>
+	</where>
 		
+</delete>
+
 </mapper>
