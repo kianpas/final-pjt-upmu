@@ -7,7 +7,7 @@
 <body>
 	<div class="UPMU">
 		<a href="${pageContext.request.contextPath}/index.jsp" id="UPMU_logo">
-			<img src="${pageContext.request.contextPath}/resources/images/logo1.zpng" alt="UPMU-logo" />
+			<img src="${pageContext.request.contextPath}/resources/images/logo1.png" alt="UPMU-logo" />
 		</a>
 	</div>
 
