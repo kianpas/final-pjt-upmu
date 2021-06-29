@@ -39,7 +39,7 @@
           </div>
           <div class="hr"></div>
           <div class="foot-lnk">
-            <a href="#forgot">비밀번호를 잊어버리셨습니까?</a>
+            <a href="${pageContext.request.contextPath}/employee/empIdPwSearch.do">아이디/비밀번호를 잊어버리셨습니까?</a>
           </div>
         </div>
       </form:form>

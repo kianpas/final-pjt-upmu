@@ -29,18 +29,68 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
+<!-- bootstrap -->
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <%-- <c:if test="${not empty msg}">
 <script>							
 	alert("${msg}");
 </script> 
 </c:if>--%>
+
 </head>
 <body>
 	<header class="header responsive-wrapper">
   <a class="header-left" href="${pageContext.request.contextPath}">
   <img alt="logo" src="${pageContext.request.contextPath }/resources/images/logo1.png"  width="200" height="150">
   </a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: flex; width: 60%;" >
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/attendance/attendanceManage.do">게시판</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/document/docMain.do">전자결재</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/board/boardList.do">근태관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              조직도
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/employeeList/eList.do">페이지이동</a>
+              </li>
+              <li><input value="새창으로이동" onclick="eListPop();" class="dropdown-item" /></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              메일함
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mail/sendMailList.do">보낸 메일함</a>
+              </li>
+              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은 메일함</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <div class="header-right">
     <nav class="header-nav">
       <!-- 로그인이전 -->
@@ -57,8 +107,6 @@
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 			   	</form:form>
     	</sec:authorize>
-<%--       <a href="${pageContext.request.contextPath }/member/memberLogout.do" class="header-link"> Logout</a> --%>
-      
     </nav>
   </div>
 </header>

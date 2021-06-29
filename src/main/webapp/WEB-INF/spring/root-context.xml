@@ -62,4 +62,5 @@
 		    </props>
 		 </property>
 	</bean>
+	<!-- email 인증 관련   -->
 </beans>
