@@ -22,12 +22,6 @@
 	    <input id="search-submit" type="submit" value="검색" onclick="search();">
 </div>
 <div class="list-form">
-	<div id="context-menu" class="" style="display: none;">
-	      <ul style="margin: 0px; padding: 0px; list-style: none;">
-	        <li onclick="deleteDept()">부서삭제</li>
-	        <li onclick="modifyDept()">부서수정</li>
-	      </ul>
-   	</div>
 	<div class="depart-list list">
 		<details>
 	        <summary class="dList-all">
@@ -37,17 +31,7 @@
 				<p class="${dept.depNo} dept">${dept.depName}</p>
 			</c:forEach>
     	</details>
-    	<div id="depart-enroll">
-    		<h2>부서 등록</h2>
-    		<!-- 관리자, 담당자 권한 추가해야됨. -->
-    		<form:form action="${pageContext.request.contextPath}/employeeList/departEnroll.do" method="post">
-	    		<label class="depart-name" for="depart-name">부서명</label>
-	  			<input id="depart-name" name="depName" class="depart-name" type="text" placeholder="부서명" autocomplete="off" spellcheck="false">
-	  			<label class="depart-code-label" for="depart-code">부서코드</label>
-	  			<input id="depart-code" name="depNo" class="depart-code" type="text" placeholder="부서코드" autocomplete="off" spellcheck="false">
-	  			<input id="depart-submit" type="submit" value="등록">
-    		</form:form>
-    	</div>
+
 	</div>
 	
 	<div class="employee-list list">

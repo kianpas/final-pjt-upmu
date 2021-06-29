@@ -1,6 +1,6 @@
 @charset "UTF-8";
 body{
-	position: fixed;
+	/* position: fixed; */
 	background-color: #f8f3eb;
 }
 h2 {
