@@ -32,14 +32,13 @@ public class EmployeeController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@GetMapping("/empLogin.do")
-	public void EmpLogin() {
-		log.debug("훔쳐감");
-	}
+	public void EmpLogin() {}
 	
 	@GetMapping("/empEnroll.do")
 	public void EmpEnroll() {}
 	
-	
+	@GetMapping("/empIdPwSearch.do")
+	public void EmpIdPwdSearch() {}
 	
 	@PostMapping("/empEnroll.do")
 	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {

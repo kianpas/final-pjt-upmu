@@ -107,8 +107,6 @@
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 			   	</form:form>
     	</sec:authorize>
-<%--       <a href="${pageContext.request.contextPath }/member/memberLogout.do" class="header-link"> Logout</a> --%>
-      
     </nav>
   </div>
 </header>

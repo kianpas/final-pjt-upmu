@@ -11,12 +11,14 @@
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<http security="none" pattern="/resources/**"/>
+	<http security="none" pattern="/employee/josoPopup.do"/>
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
+		<intercept-url pattern="/employee/empIdPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/checkIdDuplicate.do" access="isAnonymous()"/>
 		<intercept-url pattern="/**" access="hasRole('USER')"/>
 		
@@ -33,6 +35,7 @@
 		<logout
 			logout-url="/employee/empLogout.do"
 			invalidate-session="true"
+			
 			logout-success-url="/"/>
 			
 		<!-- 
@@ -45,7 +48,7 @@
 			/>
 		<!-- 권한 없는 페이지 접근시 처리 -->
 		<access-denied-handler error-page="/common/accessDenied.do"/>
- 		<!-- <http-basic />
+ <!-- 		 <http-basic />
         <csrf request-matcher-ref="csrfMatcher"/> -->
         
 	</http>
@@ -55,10 +58,10 @@
 			<password-encoder ref="bcryptPasswordEncoder"/>
 		</authentication-provider>
 	</authentication-manager>
- 	<!-- <beans:bean id="csrfMatcher" class="org.springframework.security.web.util.matcher.OrRequestMatcher">
+<!--      <beans:bean id="csrfMatcher" class="org.springframework.security.web.util.matcher.OrRequestMatcher">
         <beans:constructor-arg>
                 <beans:bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
-                    <beans:constructor-arg name="pattern" value="https://www.juso.go.kr/addrlink/addrLinkUrl.do"/>
+                    <beans:constructor-arg name="pattern" value="/employee/**"/>
                     <beans:constructor-arg name="httpMethod" value="POST"/>
                 </beans:bean>
         </beans:constructor-arg>
