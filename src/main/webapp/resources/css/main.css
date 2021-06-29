@@ -50,4 +50,14 @@ li.nav-links a:hover {
   margin-bottom: 300px;
 }
 
+#upmu_login {
+	margin: 0 70px 0 0;
+	background-color: #000;
+	color:#fff; 
+	padding: 0.5rem 1.25rem;
+}
+a:hover {
+	color: #aaa;
+}
+
 

@@ -6,7 +6,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <body>
 	<div class="UPMU">
-		<a href="${pageContext.request.contextPath}/index.jsp" id="UPMU_logo">
+		<a href="${pageContext.request.contextPath}#" id="UPMU_logo">
 			<img src="${pageContext.request.contextPath}/resources/images/logo1.png" alt="UPMU-logo" />
 		</a>
 	</div>
@@ -16,8 +16,8 @@
 
 	<!-- BUTTONS -->
 	<div class="buttons">
-		<a href="${pageContext.request.contextPath}/employee/empLogin.do" id="google_search">Login</a>
-		<a href="${pageContext.request.contextPath}/employee/empEnroll.do" id="im_feeling_lucky">Sign Up</a>
+		<a href="${pageContext.request.contextPath}/employee/empLogin.do" id="upmu_login">Login</a>
+		<a href="${pageContext.request.contextPath}/employee/empEnroll.do" id="upmu_sign_up">Sign Up</a>
 	</div>
 </body>
 
