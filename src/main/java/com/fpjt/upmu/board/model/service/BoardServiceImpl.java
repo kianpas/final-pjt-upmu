@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> selectBoardList(Map<String, Object> param) {
+	public List<BoardExt> selectBoardList(Map<String, Object> param) {
 		return boardDao.selectBoardList(param);
 	}
 
@@ -73,4 +73,38 @@ public class BoardServiceImpl implements BoardService {
 	public BoardExt selectOneBoardCollection(int no) {
 		return boardDao.selectOneBoardCollection(no);
 	}
+
+	@Override
+	public Attachment selectOneAttachment(int no) {
+		
+		return boardDao.selectOneAttachment(no);
+	}
+
+	
+	
+	@Override
+	public int boardUpdate(BoardExt boardExt) {
+		
+		return boardDao.boardUpdate(boardExt);
+	}
+
+	@Override
+	public int boardDelete(int no) {
+		
+		return boardDao.boardDelete(no);
+	}
+
+	@Override
+	public List<BoardExt> boardSearch(String search) {
+		
+		return boardDao.boardSearch(search);
+	}
+
+	@Override
+	public void readCount(int no) {
+		boardDao.readCount(no);
+		
+	}
+	
+	
 }

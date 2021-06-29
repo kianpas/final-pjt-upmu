@@ -252,6 +252,7 @@
 		    join jobtitle j
 		        on e.emp_job = j.job_no
 		where doc_no = #{docNo}
+		order by no
 	</select>
 	<select id="selectOneDocForm" resultType="docForm">
 		select *

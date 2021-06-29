@@ -13,7 +13,7 @@ public class Board {
 
 	private int no;
 	private String title;
-	private String emp_no;
+	private String empNo;
 	private String content;
 	private Date regDate;
 	private int readCount;

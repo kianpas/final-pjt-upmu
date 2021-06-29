@@ -11,7 +11,7 @@ public interface BoardService {
 
 	List<Board> selectBoardList();
 
-	List<Board> selectBoardList(Map<String, Object> param);
+	List<BoardExt> selectBoardList(Map<String, Object> param);
 
 	int selectBoardTotalContents();
 
@@ -22,5 +22,17 @@ public interface BoardService {
 	BoardExt selectOneBoard(int no);
 
 	BoardExt selectOneBoardCollection(int no);
+
+	Attachment selectOneAttachment(int no);
+	
+	int boardUpdate(BoardExt boardExt);
+
+	int boardDelete(int no);
+
+	List<BoardExt> boardSearch(String search);
+
+	void readCount(int no);
+
+	
 
 }

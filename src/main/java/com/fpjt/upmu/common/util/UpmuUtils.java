@@ -60,7 +60,7 @@ public class UpmuUtils {
 			if(pageNo == cpage) {
 				//현재페이지 - 링크비활성화
 				pageBar.append("<li class=\"page-item active\">\r\n"
-						+ "      <a class=\"page-link\" href=\"#\">" + pageNo + "<span class=\"sr-only\">(current)</span></a>\r\n"
+						+ "      <a class=\"page-link\" href=\"#\">" + pageNo + "<span class=\"sr-only\"></span></a>\r\n"
 						+ "    </li>");
 			}
 			else {

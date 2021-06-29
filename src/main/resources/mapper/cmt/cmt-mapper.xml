@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmt">
+	<insert id="insertComment">
+		insert into cmt
+		values (seq_cmt_no.nextval, #{boardNo}, #{empNo}, #{cmtContent}, current_date)
+		<!-- 키 바로 입력 -->
+		<selectKey keyProperty="cmtNo" resultType="_int" order="AFTER">
+			select
+				seq_cmt_no.currval
+			from 
+				dual
+		</selectKey>
+	</insert>
+	<select id="selectCommentList" resultType="cmtExt">
+		select c.*, e.emp_name 
+		from cmt c left join employee e
+			on c.emp_no = e.emp_no
+		where board_no = #{boardNo}
+		order by cmt_time asc
+	</select>
+	
+	<delete id="deleteComment">
+		delete from cmt
+		where cmt_no = #{cmtNo}
+	</delete>
+	<update id="editComment">
+		update cmt
+		set cmt_content = #{cmtContent}
+		where cmt_no = #{cmtNo}
+	</update>
+	
+</mapper>
