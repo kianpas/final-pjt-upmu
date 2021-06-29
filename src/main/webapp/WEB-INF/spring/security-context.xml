@@ -14,7 +14,7 @@
 	<http security="none" pattern="/employee/josoPopup.do"/>
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
-		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/main.jsp" access="permitAll"/>
 		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>

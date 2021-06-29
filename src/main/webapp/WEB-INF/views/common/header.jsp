@@ -10,7 +10,6 @@
 	<head>
 		<meta charset="UTF-8">
 <title>${param.title}</title>
-
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!-- bootstrap js: jquery load 이후에 작성할것.-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -24,16 +23,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
 
-<!-- bootstrap css -->
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 <!-- bootstrap -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <%-- <c:if test="${not empty msg}">
-<script>							
+<script>
 	alert("${msg}");
 </script> 
 </c:if>--%>
@@ -41,11 +38,11 @@
 </head>
 <body>
 	<header class="header responsive-wrapper">
-  <a class="header-left" href="${pageContext.request.contextPath}">
+  <a class="header-left" href="${pageContext.request.contextPath}/index.jsp">
   <img alt="logo" src="${pageContext.request.contextPath }/resources/images/logo1.png"  width="200" height="150">
   </a>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: flex; width: 60%;" >
-    <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: flex; width: 60%; background-color: #f8f3eb;">
+    <div class="container-fluid" >
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
