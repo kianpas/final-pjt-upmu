@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.chat.model.dao.ChatDao;
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
+import com.fpjt.upmu.chat.model.vo.ChatMsgExt;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
 import com.fpjt.upmu.chat.model.vo.DirectMsg;
@@ -31,7 +32,7 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<ChatMsg> selectedRoomChatList(int chatroomNo) {
+	public List<ChatMsgExt> selectedRoomChatList(int chatroomNo) {
 		
 		return chatDao.selectedRoomChatList(chatroomNo);
 	}
@@ -61,7 +62,7 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<ChatRoomJoin> roomUserList(int chatroomNo) {
+	public List<Map<String, Object>> roomUserList(int chatroomNo) {
 		
 		return chatDao.roomUserList(chatroomNo);
 	}
@@ -118,6 +119,12 @@ public class ChatServiceImpl implements ChatService {
 	public List<Map<String, Object>> joinList(int empNo) {
 		
 		return chatDao.joinList(empNo);
+	}
+
+	@Override
+	public ChatRoomJoin selectOneJoin(ChatRoomJoin chatRoomJoin) {
+		
+		return chatDao.selectOneJoin(chatRoomJoin);
 	}
 
 	

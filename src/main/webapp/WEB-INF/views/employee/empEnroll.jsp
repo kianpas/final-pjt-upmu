@@ -100,7 +100,6 @@ $("#emp_email").keyup(e => {
 	const $regError = $(".reg.error");
 	const $ok = $(".guide.ok");
 	const $idValid = $("#idValid"); // 0 -> 1(중복검사 성공시)
-
 	var regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 		/* /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i; */
 
@@ -120,11 +119,13 @@ $("#emp_email").keyup(e => {
 		}
 		$regError.hide();
 	}
+
 	$.ajax({
 		url: "${pageContext.request.contextPath}/employee/checkIdDuplicate.do",
 		method: "GET",
 		data: {id},
 		success: (data) => {
+			
 			console.log(data);
 			const {available} = data;
 			if(available){

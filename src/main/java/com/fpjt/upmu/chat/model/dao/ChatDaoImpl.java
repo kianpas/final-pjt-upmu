@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
+import com.fpjt.upmu.chat.model.vo.ChatMsgExt;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
 import com.fpjt.upmu.chat.model.vo.DirectMsg;
@@ -34,7 +35,7 @@ public class ChatDaoImpl implements ChatDao {
 	}
 
 	@Override
-	public List<ChatMsg> selectedRoomChatList(int chatroomNo) {
+	public List<ChatMsgExt> selectedRoomChatList(int chatroomNo) {
 		
 		return session.selectList("chat.selectedRoomChatList", chatroomNo);
 	}
@@ -64,7 +65,7 @@ public class ChatDaoImpl implements ChatDao {
 	}
 
 	@Override
-	public List<ChatRoomJoin> roomUserList(int chatroomNo) {
+	public List<Map<String, Object>> roomUserList(int chatroomNo) {
 	
 		return session.selectList("chat.roomUserList", chatroomNo);
 	}
@@ -121,6 +122,12 @@ public class ChatDaoImpl implements ChatDao {
 	public List<Map<String, Object>> joinList(int empNo) {
 		
 		return session.selectList("chat.joinList", empNo);
+	}
+
+	@Override
+	public ChatRoomJoin selectOneJoin(ChatRoomJoin chatRoomJoin) {
+		
+		return session.selectOne("chat.selectOneJoin", chatRoomJoin);
 	}
 	
 	
