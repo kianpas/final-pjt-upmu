@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.address.model.dao.AddressDao;
 import com.fpjt.upmu.address.model.vo.Address;
+import com.fpjt.upmu.address.model.vo.AddressExt;
 
 @Service
 public class AddressImpl implements AddressService {
@@ -21,7 +22,7 @@ public class AddressImpl implements AddressService {
 	}
 
 	@Override
-	public List<Address> selectAddrList(int byEmp) {
+	public List<AddressExt> selectAddrList(int byEmp) {
 		
 		return addressDao.selectAddrList(byEmp);
 	}

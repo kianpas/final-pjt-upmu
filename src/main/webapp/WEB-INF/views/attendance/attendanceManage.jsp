@@ -1,17 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
+
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-	crossorigin="anonymous"></script>
 <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css'
 	rel='stylesheet'>
@@ -35,15 +28,11 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.5/pagination.css"
 	integrity="sha512-QmxybGIvkSI8+CGxkt5JAcGOKIzHDqBMs/hdemwisj4EeGLMXxCm9h8YgoCwIvndnuN1NdZxT4pdsesLXSaKaA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
-<div class="container-fluid col-10">
-
-	<!-- Page Heading -->
-
-	<!-- Bar Chart -->
+<sec:authentication property="principal" var="principal"/>
+<div class="container">
 	<div class="row justify-content-center">
 		<div class="col-12">
-			<h1 class="h3 mb-2 text-gray-800">근태관리</h1>
-			<p class="mb-4"></p>
+
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
 					<h6 class="m-0 font-weight-bold text-primary">출퇴근 신청</h6>
@@ -52,9 +41,9 @@
 					<div class="chart-bar">
 						<div id="now"></div>
 						<button type="button" class="btn btn-primary" id="start-work"
-							onclick="startWork(1);">출근</button>
+							onclick="startWork(${principal.empNo});">출근</button>
 						<button type="button" class="btn btn-secondary" id="end-work"
-							onclick="endWork(1)" disabled>퇴근</button>
+							onclick="endWork(${principal.empNo})" disabled>퇴근</button>
 
 					</div>
 				</div>
@@ -74,15 +63,15 @@
 				</div>
 				<div class="card-body">
 					<div id="week" class="d-flex justify-content-center"></div>
-					<div class="chart-area" >
-						<canvas id="mybarChart"></canvas>
+					<div class="chart-area" style="max-height:240px;">
+						<canvas id="mybarChart" style="max-height:210px;"></canvas>
 					</div>
 					<!-- <hr> -->
 				</div>
 			</div>
 		</div>
 		<!-- Donut Chart -->
-		<div class="col-xl-4 col-lg-4">
+		<div class="col-xl-4">
 			<div class="card shadow mb-4">
 				<!-- Card Header - Dropdown -->
 				<div class="card-header py-3">
@@ -90,8 +79,8 @@
 				</div>
 				<!-- Card Body -->
 				<div class="card-body ">
-					<div class="chart-pie pt-4" style="width: 250px; margin: 0 auto;">
-						<canvas id="myPieChart"></canvas>
+					<div class="chart-pie pt-4" style="width: 250px; max-height:240px; margin: 0 auto;">
+						<canvas id="myPieChart" style="max-height:210px;"></canvas>
 					</div>
 					<!-- <hr> -->
 				</div>
@@ -99,42 +88,42 @@
 
 		</div>
 	</div>
-	<!-- DataTales Example -->
 	<div class="row justify-content-center">
-		<div class="card shadow mb-4 col-12  px-0">
-			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">근무 내역</h6>
-			</div>
-			<div class="card-body">
-				<div class="table-responsive">
-					<div class="row col-12">
-						<div class="col-sm-4 col-md-4">
-							<div class="input-group mb-3">
-								<input type="text" id="search" class="form-control"
+		<div class="col-12">
+			
+			<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">근무 내역</h6>
+				</div>
+				<div class="card-body">
+					<div class="chart-bar">
+					<div class="input-group mb-3">
+					<input type="text" id="search" class="form-control"
 									placeholder="월/일 형식으로 검색" aria-label=""
 									aria-describedby="basic-addon2">
-								<button class="btn btn-primary" onclick="searchTable(1)">검색</button>
-							</div>
+									<button class="btn btn-primary" onclick="searchTable(${principal.empNo})">검색</button>
 						</div>
-					</div>
-				</div>
-				<table class="table table-bordered" id="dataTable" width="100%"
+				<table class="table table-bordered" id="dataTable"
 					cellspacing="0">
 				</table>
-			</div>
-			<div class="mb-3" style="margin: 0 auto;">
+					</div>
+					<div class="mb-3" style="margin: 0 auto;">
 				<div class="d-flex justify-content-center ">
 					<div id="pagination-container"></div>
 				</div>
 			</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<!-- DataTales Example -->
+	
 
 </div>
 
 <script>
 const now = () => {
-	const time = moment().format('MMMM Do YYYY, h:mm:ss a');
+	const time = moment().format('YYYY MMMM Do a h:mm:ss ');
 	let html = `<h5>\${time}</h5>`
 	$("#now").html(html)
 }
@@ -177,8 +166,7 @@ function simpleTemplating(data) {
 						<th>시작시간</th>
 						<th>종료시간</th>
 						<th>근무시간</th>
-						<th>신청일</th>
-						<th>상태</th>
+
 					</tr>
 				</thead>
 				<tbody>`;
@@ -263,8 +251,8 @@ const goLeft = () => {
 	startOfWeek = startOfWeek.subtract(7, 'days');
 	endOfWeek = endOfWeek.subtract(7, 'days');
 	console.log(startOfWeek.format("MMDD"));
-	workHour(1,startOfWeek, endOfWeek);
-	weekTotalWorkHour(1, startOfWeek, endOfWeek);
+	workHour(${principal.empNo},startOfWeek, endOfWeek);
+	weekTotalWorkHour(${principal.empNo}, startOfWeek, endOfWeek);
 	week(startOfWeek, endOfWeek)
 	
 }
@@ -274,8 +262,8 @@ const goRight = () => {
 	myPieChart.destroy();
 	startOfWeek = startOfWeek.add(7, 'days');
 	endOfWeek = endOfWeek.add(7, 'days');
-	workHour(1,startOfWeek, endOfWeek);
-	weekTotalWorkHour(1, startOfWeek, endOfWeek);
+	workHour(${principal.empNo},startOfWeek, endOfWeek);
+	weekTotalWorkHour(${principal.empNo}, startOfWeek, endOfWeek);
 	week(startOfWeek, endOfWeek)
 }
 
@@ -431,12 +419,10 @@ const weekTotalWorkHour = (empNo, startOfWeek, endOfWeek) => {
 
 
 
-
-
 week(startOfWeek, endOfWeek);
-workHour(1, startOfWeek, endOfWeek);
-workTable(1, '');	
-weekTotalWorkHour(1, startOfWeek, endOfWeek);
+workHour(${principal.empNo}, startOfWeek, endOfWeek);
+workTable(${principal.empNo}, '');	
+weekTotalWorkHour(${principal.empNo}, startOfWeek, endOfWeek);
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

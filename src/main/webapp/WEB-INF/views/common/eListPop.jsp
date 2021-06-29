@@ -3,15 +3,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+ <meta name="_csrf" content="${_csrf.token}"/>
+ <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <title>조직원 리스트</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eListPop.css" />
 </head>
 <body>
+<sec:authentication property="principal" var="principal"/>
 	<div class="list-form">
 		<div class="depart-list list">
 			<details>
@@ -153,15 +157,23 @@ function minusData(){
 	console.log("삭제용"  + $(".outChecked").remove());
 	html = $("#choice-emp").html();
 }
+//csrf
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 const saveAddress = () => {
-	const selectEmp = $("#choice-emp tr");
-	
+	const selectEmp = $("#choice-emp tr td:first-child");
 	$(selectEmp).each((key, value) => {
-		const savedEmp = $(value).attr("id").substr(1, 1);
-		const empName = $(value).children("td:eq(1)").attr("id");
-		const byEmp = 1;
+		console.log(value)
+		const savedEmp = $(value).attr("id");
+		const byEmp = ${principal.empNo};
 		
-		const address = {byEmp, savedEmp};
+		if(byEmp == savedEmp){
+			alert("자신을 주소록에 추가할 수 없습니다.")
+		} else {
+			//const address = {byEmp, savedEmp};
+		}
+		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/address/addressDuplicate",
 			data: {byEmp, savedEmp},
@@ -170,7 +182,7 @@ const saveAddress = () => {
 				console.log(data.available);
 				if(data.available){
 					
-					saveAddresssReal();
+					saveAddresssReal(byEmp, savedEmp);
 				}else {
 					const {addr:{addrNo, byEmp, savedEmp}} = data;
 					console.log(data)
@@ -188,29 +200,31 @@ const saveAddress = () => {
 }
 
 
-const saveAddresssReal = () => {
-	const selectEmp = $("#choice-emp tr");
+const saveAddresssReal = (byEmp, savedEmp) => {
+	const selectEmp = $("#choice-emp tr td:first-child");
 	
-	$(selectEmp).each((key, value) => {
-		const savedEmp = $(value).attr("id").substr(1, 1);
-		const empName = $(value).children("td:eq(1)").attr("id");
-		const byEmp = 1;
+		console.log(byEmp, savedEmp)
+		/* const savedEmp2 = $(value).attr("id"); */
+		
 		
 		const address = {byEmp, savedEmp};
-		$.ajax({
+		 $.ajax({
 			url : `${pageContext.request.contextPath}/address/save`,
 			method: 'POST',
 			contentType:"application/json; charset=utf-8",
 			data : JSON.stringify(address),
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader(header, token);
+			},
 			success(data){
 				console.log(data)
 
 			},
 			error:console.log,
 
-		})
+		}) 
 		
-	})
+	
 	
 } 
 </script>

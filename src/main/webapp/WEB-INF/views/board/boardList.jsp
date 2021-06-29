@@ -6,6 +6,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판" name="title"/>
 </jsp:include>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style>
 /*글쓰기버튼*/
 input#btn-add{float:right; margin: 0 0 15px;}
@@ -26,12 +29,74 @@ $(() => {
 		var no = $tr.data("no");
 		location.href = "${pageContext.request.contextPath}/board/boardDetail.do?no=" + no;
 	});
+
+	$("#searchTitle").autocomplete({
+		 source: function(request, response){
+			//사용자 입력값 전달 ajax 요청 -> success함수안에서 response호출
+			
+	  		$.ajax({
+		    	url:"${pageContext.request.contextPath}/board/boardSearch.do",
+		    	data : {
+		    			search : request.term
+		    			},
+		    		//메소드는 success(data)로 사용가능
+		    	success : function(data) {
+		    				console.log(data);
+							
+		    				const arr = data.map(({no, title})=>({
+								label:title,
+								value:title,
+								no :no
+						}));
+						
+							console.log(arr);
+	    		
+	    					response(arr); 
+	   					 
+		    			},
+		    	error : function(xhr, status, err) {
+		    				console.log(xhr, status, err);
+		    	}
+
+		    })
+		  },
+		    select:function(event, selected){
+		    			console.log(selected)
+		    			console.log(selected.item.no);
+		    			const {item:{no}} = selected;
+						console.log(no)
+		    			location.href="${pageContext.request.contextPath}/board/boardDetail.do?no="+no;
+		    			
+		   },
+		    focus:function(event, focused){
+		    	return false;
+
+			    	}
+				
+		    })
+
+	
 });
+
+
+
+
 </script>
 <section id="board-container" class="container">
-	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
-	<table id="tbl-board" class="table table-striped table-hover">
-		<tr>
+	<div class="row justify-content-center">
+		<div class="card shadow mb-4 col-12  px-0">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">게시판</h6>
+			</div>
+			<div class="card-body">
+			<input type="search" placeholder="검색" id="searchTitle" class="form-control col-3 d-inline"/>
+				<div class="table-responsive">
+
+					<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
+	
+	<table class="table table-hover">
+		<thead>
+			<tr class="text-center">
 			<th>번호</th>
 			<th>제목</th>
 			<th>작성자</th>
@@ -40,9 +105,40 @@ $(() => {
 			<th>조회수</th>
 		</tr>
 		<c:forEach items="${list}" var="board">
-		<tr data-no="${board.no}">
+		<tr data-no="${board.no}" class="text-center">
 			<td>${board.no}</td>
-			<td>${board.title}</td>
+			<td  class="text-start">${board.title}</td>
+			<td>${board.empName}</td>
+			<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd"/></td>
+			<td>
+				<c:if test="${board.hasAttachment}">
+					<img src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" />
+				</c:if>
+			</td>
+			<td>${board.readCount}</td>
+		</tr>
+		</c:forEach>
+		
+		</table>
+		${pageBar}
+	
+	
+	
+	<%-- 
+	<table id="tbl-board" class="table table-striped table-hover">
+	
+		<tr class="text-center">
+			<th>번호</th>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>작성일</th>
+			<th>첨부파일</th> <!-- 첨부파일 있을 경우, /resources/images/file.png 표시 width: 16px-->
+			<th>조회수</th>
+		</tr>
+		<c:forEach items="${list}" var="board">
+		<tr data-no="${board.no}" class="text-center">
+			<td>${board.no}</td>
+			<td  class="text-start">${board.title}</td>
 			<td>${board.emp_no}</td>
 			<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd"/></td>
 			<td>
@@ -56,18 +152,15 @@ $(() => {
 		
 	</table>
 	
-	${pageBar}
+	${pageBar} --%>
+	
+				</div>
+
+			</div>
+			
+		</div>
+	</div>
 	
 </section> 
-<script>
-var cssUrl = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css";
-var head = document.getElementsByTagName("head")[0];
-var link = document.createElement("link");
-link.rel = "stylesheet";
-link.type = "text/css";
-link.integrity = "sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4";
-link.setAttribute("crossorigin", "anonymous");
-link.href = cssUrl;
-document.head.appendChild(link);
-</script>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

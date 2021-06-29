@@ -11,7 +11,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BoardExt extends Board {
 	
+	
 	private boolean hasAttachment;
 	private List<Attachment> attachList;
+	private String empName;
 	
 }
