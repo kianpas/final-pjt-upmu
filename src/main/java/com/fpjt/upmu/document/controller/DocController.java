@@ -80,8 +80,10 @@ public class DocController {
 		int empNo = principal.getEmpNo();
 		
 		List<Notice> noticeList = noticeService.selectNoticeList(empNo);
+		int noticeCount = noticeService.countNoticeList(empNo);
 	
 		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("noticeCount", noticeCount);
 		return "document/docMain";
 	}
 	
