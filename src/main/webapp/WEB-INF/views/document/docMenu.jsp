@@ -9,31 +9,48 @@
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/docMenu.css" />
+<style>
+.list-group-item {
+	margin-bottom: 0px;
+}
+</style>
 
-<nav id="docNav">
+<main class="responsive-wrapper">
 
-	<div class="list-group" id="docEditorMenu">
-		<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>
-		<button type="button" class="list-group-item list-group-item-action" id="docFormAdd">새 문서양식 추가</button>
-		<button type="button" class="list-group-item list-group-item-action" id="docFormEdit">기존 문서양식 수정</button>
+<div class="row justify-content-center">
+	<div class="col-xl-3">
+		<!-- nav -->
+		<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">메뉴</h6>
+			</div>
+			
+			<!--  Body -->
+			<div class="card-body">
+			
+				<nav id="docNav">
+					<div class="list-group" id="docEditorMenu">
+						<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>
+						<button type="button" class="list-group-item list-group-item-action" id="docFormAdd">새 문서양식 추가</button>
+						<button type="button" class="list-group-item list-group-item-action" id="docFormEdit">기존 문서양식 수정</button>
+					</div>
+				
+					<hr />
+					<h4 align="center">결재문서 목록</h4>
+					<hr />
+				
+					<div class="list-group" id="docTypeMenu">
+						<button type="button" class="list-group-item list-group-item-action" id="notdecided">대기중</button>
+						<button type="button" class="list-group-item list-group-item-action" id="approved">진행중</button>
+						<button type="button" class="list-group-item list-group-item-action" id="completed">결재완료</button>
+						<button type="button" class="list-group-item list-group-item-action" id="afterview">열람</button>
+						<button type="button" class="list-group-item list-group-item-action" id="rejected">반려</button>
+					</div>
+				</nav>
+			</div>
+
+		</div>
 	</div>
-
-	<hr />
-	<h4 align="center">결재문서 목록</h4>
-	<hr />
-
-	<div class="list-group" id="docTypeMenu">
-		<button type="button" class="list-group-item list-group-item-action" id="notdecided">대기중</button>
-		<button type="button" class="list-group-item list-group-item-action" id="approved">진행중</button>
-		<button type="button" class="list-group-item list-group-item-action" id="completed">결재완료</button>
-		<button type="button" class="list-group-item list-group-item-action" id="afterview">열람</button>
-		<button type="button" class="list-group-item list-group-item-action" id="rejected">반려</button>
-	</div>
-	
-	
-</nav>
-
 <script>
 /* button activate */
 $( document ).ready(function() {

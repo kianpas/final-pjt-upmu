@@ -18,25 +18,15 @@
 }
 </style>
 
-<!--
-		docNo : 문서번호. 양식 찾아보기.
-		title : 문서제목
-		writer : 기안자. 로그인 사용자의 emp_no
-		content : 문서내용 by webEditor
-		requestDate : sysdate
-		docLine
-			docNo : 위의 docNo 그대로
-			approver : 조직도에서 이름선택하면 그거 value = emp_no 
-			approverType : 폼의 어디에 입력했냐에 따라 value를 4개로 나눠 부여
-			lv :
-				특정 approverType칸에 지금까지 몇개 추가했냐에 따라 값이 증가함.
-				ex) approver에 처음 입력하면 1, 2, 3, ...
-					agreer에 또 입력하면 다시 1, 2, 3, ...
-			status : approver, agreer -> notdecided
-					enforcer, referer -> afterview
-			maxAuthority 전결권자+최고레벨 결재자 둘다.
-							일단은 최고레벨 결재자만 Y로 부여. 언제? 창을 닫을때.
- -->
+<div class="col-xl-9">
+	<div class="card shadow mb-4">
+		<!-- Card Header - Dropdown -->
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">새 문서 작성</h6>
+		</div>
+		<!--  Body -->
+		<div class="card-body ">
+
 <section>
 	<article>
 		<div id="container">
@@ -115,6 +105,13 @@
 	</div>
 	</article>
 </section>
+
+		</div>
+	</div>
+</div>
+</div>
+		
+</main>
 
 <script>
 function bootAlert(str,dest){
