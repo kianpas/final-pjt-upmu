@@ -82,6 +82,11 @@ body {
     color: #fff;
     width: 277px;
 }
+
+.emp_name_input {
+	height:34px;	
+}
+
 .sign-up-htm .emp_addr .emp_addr_input2 {
     border-top: 2px solid #85b8cb;
     border-bottom: none;
