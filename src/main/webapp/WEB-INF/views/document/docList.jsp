@@ -8,6 +8,15 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
 
+<div class="col-xl-9">
+	<div class="card shadow mb-4">
+		<!-- Card Header - Dropdown -->
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">문서목록</h6>
+		</div>
+		<!--  Body -->
+		<div class="card-body ">
+
 <section>
 	<article>
 		<table class="table">
@@ -30,6 +39,12 @@
 	</article>
 </section>
 
+		</div>
+	</div>
+</div>
+</div>
+		
+</main>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 	
