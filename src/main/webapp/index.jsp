@@ -12,9 +12,6 @@
 <body style="width: 1280px;
     height: 768px;
     margin: auto;">
-
-  
-
 <main class="responsive-wrapper">
   <div class="page-title">
     <h1>Latest Updates</h1>
