@@ -1,81 +1,94 @@
 .header-right {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
+
 .header {
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
-  padding-top: 3rem;
-  padding-bottom: 4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
+	padding-top: 3rem;
+	padding-bottom: 4rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .header-left svg {
-  max-height: 40px;
-  width: auto;
+	max-height: 40px;
+	width: auto;
 }
 
 .header-middle {
-  display: none;
+	display: none;
 }
-@media (min-width: 1200px) {
-  .header-middle {
-    display: block;
-  }
+
+@media ( min-width : 1200px) {
+	.header-middle {
+		display: block;
+	}
 }
 
 .header-right {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .header-nav {
-  display: none;
+	display: none;
 }
-@media (min-width: 1200px) {
-  .header-nav {
-    display: block;
-  }
+
+@media ( min-width : 1200px) {
+	.header-nav {
+		display: block;
+	}
 }
 
 .header-link {
-  color: #000;
-  text-decoration: none;
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-  display: none;
-  font-weight: 500;
-  display: inline-block;
+	color: #000;
+	text-decoration: none;
+	margin-left: 0.75rem;
+	margin-right: 0.75rem;
+	display: none;
+	font-weight: 500;
+	display: inline-block;
 }
+
 .header-link--button {
-  background-color: #000;
-  color: #fff;
-  padding: 0.5rem 1.25rem;
+	background-color: #000;
+	color: #fff;
+	padding: 0.5rem 1.25rem;
 }
+
 .header-menu-button {
-  margin-left: 0.75rem;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  font: inherit;
-  position: relative;
-  padding-right: 30px;
-  font-weight: 500;
+	margin-left: 0.75rem;
+	border: 0;
+	padding: 0;
+	background-color: transparent;
+	font: inherit;
+	position: relative;
+	padding-right: 30px;
+	font-weight: 500;
 }
+
 .header-menu-button:after, .header-menu-button:before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 20px;
-  height: 2px;
-  background-color: currentcolor;
-  right: 0;
-  top: 8px;
+	content: "";
+	display: block;
+	position: absolute;
+	width: 20px;
+	height: 2px;
+	background-color: currentcolor;
+	right: 0;
+	top: 8px;
 }
+
 .header-menu-button:after {
-  top: 16px;
-  width: 12px;
-  right: 8px;
+	top: 16px;
+	width: 12px;
+	right: 8px;
+}
+
+.btn btn-outline-success my-2 my-sm-0 {
+	background-color: #000;
+	color: #fff;
+	padding: 0.5rem 1.5rem;
 }
