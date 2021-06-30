@@ -97,12 +97,32 @@ public class EmployeeController {
 			emp.put("empPhone", employee.getEmpPhone() + "  ");
 			
 			id = empService.selectId(emp);
-			if(id == null) {
-				model.addAttribute("아이디가 없습니다.");
-			}
+			
+			if(id == null) 
+				id = "아이디가 존재하지 않습니다.";
+			
 			model.addAttribute("id", id);
 		} catch (Exception e) {
 			log.error("아이디 찾기 오류!", e);
+		}
+	}
+	
+	@PostMapping("/mailPwSearch.do") 
+	public void mailIdPwSearch(Employee employee, Model model) {
+		log.debug("emppw = {}", employee); 
+		try {
+			String id = employee.getEmpEmail();
+			
+			String no = empService.selectCheckId(id);
+
+			if(no != null) {
+				
+			}
+			else {
+				model.addAttribute("noMsg", "아이디가 존재하지 않습니다.");
+			}
+		} catch (Exception e) {
+			log.error("비밀번호 찾기 오류!", e);
 		}
 	}
 	

@@ -2,7 +2,10 @@ package com.fpjt.upmu.employee.model.service;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.employee.model.dao.EmployeeDao;
@@ -14,6 +17,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	private EmployeeDao empDao;
 
+	@Autowired
+    JavaMailSender mailSender;
+	
 	@Override
 	public int insertEmployee(Employee employee) {
 		return	empDao.insertEmployee(employee);
