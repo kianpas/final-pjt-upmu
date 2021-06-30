@@ -28,9 +28,11 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 
 <!-- bootstrap -->
+<%-- <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script> --%>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 
 <%-- <c:if test="${not empty msg}">
@@ -38,7 +40,6 @@
 	alert("${msg}");
 </script> 
 </c:if>--%>
-
 </head>
 <body style="width: 1280px; height: 300px; margin: auto;">
 	<header class="header responsive-wrapper">
