@@ -36,6 +36,8 @@
 			</tr>
 			</c:forEach>
 		</table>
+		
+		${pageBar }
 	</article>
 </section>
 

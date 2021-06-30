@@ -49,4 +49,6 @@ public interface DocDao {
 
 	Document selectOnedocumentSimple(int docNo);
 
+	int selectDocCount(Map<String, Object> param);
+
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -37,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.common.util.HelloSpringUtils;
+import com.fpjt.upmu.common.util.UpmuUtils;
 import com.fpjt.upmu.document.model.service.DocService;
 import com.fpjt.upmu.document.model.vo.DocAttach;
 import com.fpjt.upmu.document.model.vo.DocForm;
@@ -93,23 +95,41 @@ public class DocController {
 	public String docList(
 			@RequestParam int empNo, 
 			@RequestParam String type, 
+			@RequestParam(required = true, defaultValue = "1") int cpage, 
+			HttpServletRequest request,
 			Model model
 			) {
+		//paging
+		//final int cpage = 1;	//임시값
+		
+		final int limit = 10; 
+		final int offset = (cpage-1)*limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		
 		//홍길동의 사번은 1, 이 메소드는 approver를 검색.
 		int id = empNo;
-		
-		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
 		param.put("status", type);
 		
 		List<String> docNoList = docService.selectDocNo(param);
-		List<Document> docList = new ArrayList<>();
 		
+		List<Document> docList = new ArrayList<>();
 		for (String docNo : docNoList) {
 			param.put("docNo", docNo);
 			docList.add(docService.selectOneDocumentByParam(param));
 		}
 		model.addAttribute("docList", docList);
+		
+		//===========pageBar시작===============
+		int totalContents = docService.selectDocCount(param);
+		String url = request.getRequestURI()+"?empNo="+empNo+"&type="+type;
+		String pageBar = UpmuUtils.getMvcPageBar(cpage, limit, totalContents, url);
+		model.addAttribute("pageBar",pageBar);
+		//============pageBar끝===============
+		log.debug("totalContents ={}",totalContents);
+		
 		return "document/docList";
 	}
 	
