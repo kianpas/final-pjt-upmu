@@ -6,7 +6,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <body>
 	<div class="UPMU">
-		<a href="${pageContext.request.contextPath}#" id="UPMU_logo">
+		<a href="${pageContext.request.contextPath}/index.jsp" id="UPMU_logo">
 			<img src="${pageContext.request.contextPath}/resources/images/logo1.png" alt="UPMU-logo" />
 		</a>
 	</div>
