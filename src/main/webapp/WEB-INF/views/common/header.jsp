@@ -7,7 +7,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <!DOCTYPE html>
 <html lang="ko">
-	<head>
+	<head >
 		<meta charset="UTF-8">
 <title>${param.title}</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -40,7 +40,7 @@
 </c:if>--%>
 
 </head>
-<body>
+<body style="width: 1280px; height: 300px; margin: auto;">
 	<header class="header responsive-wrapper">
   <a class="header-left" href="${pageContext.request.contextPath}/index.jsp">
   <img alt="logo" src="${pageContext.request.contextPath }/resources/images/logo1.png"  width="200" height="150">

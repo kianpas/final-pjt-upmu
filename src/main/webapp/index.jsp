@@ -9,7 +9,9 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<body>
+<body style="width: 1280px;
+    height: 768px;
+    margin: auto;">
 
   
 
