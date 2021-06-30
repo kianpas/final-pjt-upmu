@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,73 +25,106 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/employee")
 @Slf4j
 public class EmployeeController {
-	
+
 	@Autowired
 	private EmployeeService empService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
+
 	@GetMapping("/empLogin.do")
-	public void EmpLogin() {}
-	
+	public void EmpLogin() {
+	}
+
 	@GetMapping("/empEnroll.do")
-	public void EmpEnroll() {}
-	
+	public void EmpEnroll() {
+	}
+
 	@GetMapping("/empIdPwSearch.do")
-	public void EmpIdPwdSearch() {}
-	
+	public void EmpIdPwdSearch() {
+	}
+
 	@GetMapping("/jusoPopup.do")
-	public void jusoPopup() {}
-	
+	public void jusoPopup() {
+	}
+
 	@PostMapping("/jusoPopup.do")
-	public void jusoPost() throws Exception {}
-	
+	public void jusoPost() throws Exception {
+	}
+
 	@PostMapping("/empEnroll.do")
 	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {
 
 		try {
 			log.info("Employee = {}", employee);
-			//0. 비밀번호 암호화처리
+			// 0. 비밀번호 암호화처리
 			String rawPassword = employee.getEmpPw();
 			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
 			employee.setEmpPw(encodedPassword);
 			log.info("Employee(암호화처리이후) = {}", employee);
-			
-			//1. 업무로직
+
+			// 1. 업무로직
 			int result = empService.insertEmployee(employee);
-			//2. 사용자피드백
+			// 2. 사용자피드백
 			redirectAttr.addFlashAttribute("msg", "회원가입성공");
 		} catch (Exception e) {
 			log.error("회원가입 오류!", e);
 		}
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/checkIdDuplicate.do")
 	public ResponseEntity<Map<String, Object>> checkIdDuplicate(@RequestParam String id) {
-		log.debug(id);
-		Employee employee = empService.selectOneEmp(id);
-		boolean available = (employee == null);
-		
 		Map<String, Object> map = new HashMap<>();
-		map.put("available", available);
-		map.put("id", id);
-		
-		return ResponseEntity
-				.ok()
-				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
-				.body(map);
+		try {
+			Employee employee = empService.selectOneEmp(id);
+			boolean available = (employee == null);
+			
+			map.put("available", available);
+			map.put("id", id);			
+		} catch (Exception e) {
+			log.error("아이디 중복체크 오류!", e);
+		}
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).body(map);
 	}
+	 
+	@PostMapping("/empIdSearch.do")
+	public void empIdIdSearch(Employee employee, Model model) {
+		String id = null;
+		try {
+			Map<String, String> emp = new HashMap<>();
+			emp.put("empName", employee.getEmpName());
+			emp.put("empPhone", employee.getEmpPhone() + "  ");
+			
+			id = empService.selectId(emp);
+			if(id == null) {
+				model.addAttribute("아이디가 없습니다.");
+			}
+			model.addAttribute("id", id);
+		} catch (Exception e) {
+			log.error("아이디 찾기 오류!", e);
+		}
+	}
+	
+	@PostMapping("/empPwSearch.do") 
+	public void empIdPwSearch(Employee employee) {
+		log.debug("emppw = {}", employee); 
+		try {
+			String id = employee.getEmpEmail();
+			
+			String no = empService.selectCheckId(id);
 
-	/*
-	 * @PostMapping("/empIdPwSearch.do") public String empIdPwSearch(Employee
-	 * employee) {
-	 * 
-	 * log.debug("emp = {}", employee);
-	 * 
-	 * return "redirect:/"; }
-	 */
+			if(no != null) {
+				
+			}
+			else {
+				
+			}
+		} catch (Exception e) {
+			log.error("비밀번호 찾기 오류!", e);
+		}
+	}
+	 
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder) {
 //		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,7 +215,3 @@ public class EmployeeController {
 //	
 
 }
-
-
-
-
