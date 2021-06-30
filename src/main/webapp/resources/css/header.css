@@ -92,3 +92,7 @@
 	color: #fff;
 	padding: 0.5rem 1.5rem;
 }
+.navbar navbar-expand-lg navbar-light bg-light {
+	width: 60%; 
+	background-color: #f8f3eb;
+}
