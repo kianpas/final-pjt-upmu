@@ -8,6 +8,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chatRoomList.css" />
 <sec:authentication property="principal" var="principal"/>
     <div class="container" id="app">

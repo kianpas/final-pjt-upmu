@@ -7,7 +7,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" /> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/empLogin.css" />
 <body>
   <div class="login-wrap">
@@ -43,7 +43,6 @@
           </div>
         </div>
       </form:form>
-        <br /><br /><br />
       </div>
     </div>
   </div>

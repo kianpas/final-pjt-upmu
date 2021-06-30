@@ -8,6 +8,7 @@
 <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css'
 	rel='stylesheet'>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"
 	integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ=="

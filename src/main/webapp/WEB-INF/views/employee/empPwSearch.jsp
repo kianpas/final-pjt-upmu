@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/empIdPwSearch.css" />
 <body>
-<form:form action="${pageContext.request.contextPath}/employee/empIdPwSearch.do" name="form" id="form" method="post">
  <div class="sign-wrap">
     <div class="sign-in-html">
       <div class="sign-form">
@@ -33,25 +32,5 @@
       </div>
     </div>
   </div>
-      <br><br><br>
-   <div class="pw-wrap">
-    <div class="sign-in-html">
-      <div class="sign-form">
-        <div class="sign-up-htm">
-         <span class="pw-search">비밀번호 찾기</span>
-         <div class="hr id-search"></div>
-         <div class="emp_phone">
-            <label for="empEmail" class="emp_phone_">아이디</label>
-            <input id="empEmail" name="empEmail" type="text" class="emp_phone_input" placeholder="아이디">
-          </div>
-          <div class="hr"></div>
-          <div class="sign_up_button">
-            <input type="submit" class="sign_up_button_" value="보내기" formaction="${pageContext.request.contextPath}/employee/empPwSearch.do">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</form:form>
 </body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

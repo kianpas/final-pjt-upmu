@@ -14,12 +14,11 @@
 			#{empEmail},
 			#{empAddr},
 			#{empBirth},
-			'정상',
+			default,
 			default,
 			default,
 			default
 		)
-		<!-- enroll_date, enabled컬럼은 기본값처리 -->
 	</insert>
 	
 	<select id="selectOneEmp" resultType="employee">
@@ -30,5 +29,23 @@
 		where 
 			emp_email = #{id}
 	</select>
-
+	
+	<select id="selectId" resultType="string">
+		select
+			emp_email
+		from
+			employee
+		where
+			emp_name = #{empName}
+			AND emp_phone = #{empPhone}
+	</select>
+	
+	<select id="selectCheckId" resultType="string">
+		select
+			emp_no
+		from
+			employee
+		where
+			emp_email = #{id}
+	</select>
 </mapper>

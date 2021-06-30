@@ -7,7 +7,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <!DOCTYPE html>
 <html lang="ko">
-	<head>
+	<head >
 		<meta charset="UTF-8">
 <title>${param.title}</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -28,22 +28,25 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+
 <!-- bootstrap -->
+<%-- <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script> --%>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+
 <%-- <c:if test="${not empty msg}">
 <script>
 	alert("${msg}");
 </script> 
 </c:if>--%>
-
 </head>
-<body>
+<body style="width: 1280px; height: 300px; margin: auto;">
 	<header class="header responsive-wrapper">
   <a class="header-left" href="${pageContext.request.contextPath}/index.jsp">
   <img alt="logo" src="${pageContext.request.contextPath }/resources/images/logo1.png"  width="200" height="150">
   </a>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: flex; width: 60%; background-color: #f8f3eb;">
+  <nav class="navbar navbar-expand-lg navbar-light bg-lig" style="display: flex; width: 60%; background-color: #f8f3eb;">
     <div class="container-fluid" >
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
