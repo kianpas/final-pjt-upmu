@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.address.model.vo.Address;
+import com.fpjt.upmu.address.model.vo.AddressExt;
 
 @Repository
 public class AddressDaoImpl implements AddressDao {
@@ -21,7 +22,7 @@ public class AddressDaoImpl implements AddressDao {
 	}
 
 	@Override
-	public List<Address> selectAddrList(int byEmp) {
+	public List<AddressExt> selectAddrList(int byEmp) {
 		
 		return session.selectList("address.selectAddrList", byEmp);
 	}

@@ -22,8 +22,8 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
-		log.info("index 페이지 요청!");
-		return "forward:/index.jsp";
+		log.info("main 페이지 요청!");
+		return "forward:/main.jsp";
 	}
 	
 }

@@ -42,6 +42,7 @@ public class CommonCotroller {
 			Employee employee = elService.selectOneEmp(param);
 			List<Department> dList = elService.selectDeptList();
 			List<Job> jList = elService.selectJobList();
+			
 			model.addAttribute("dList", dList);
 			model.addAttribute("jList", jList);
 			model.addAttribute("employee", employee);

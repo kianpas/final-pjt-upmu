@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.HtmlUtils;
 
+import com.fpjt.upmu.address.model.vo.Address;
 import com.fpjt.upmu.chat.model.service.ChatService;
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
+import com.fpjt.upmu.chat.model.vo.ChatMsgExt;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
 import com.fpjt.upmu.chat.model.vo.DirectMsg;
@@ -122,7 +124,7 @@ public class ChatController {
 			// 기존에 저장된 채팅메세지
 			ChatRoom chatroom = chatService.selectOneChatRoom(chatroomNo);
 			// 유저리스트 가져오기
-			List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
+			List<Map<String, Object>> userList = chatService.roomUserList(chatroomNo);
 
 			log.debug("userList ---  {}", userList);
 			model.addAttribute("chatroom", chatroom);
@@ -138,14 +140,14 @@ public class ChatController {
 	// 채팅리스트 json으로
 	@GetMapping("/room/chatList/{chatroomNo}")
 	@ResponseBody
-	public List<ChatMsg> chatList(Model model, @PathVariable int chatroomNo) {
+	public List<ChatMsgExt> chatList(Model model, @PathVariable int chatroomNo) {
 
 		try {
 			log.debug("chatroomNo {}", chatroomNo);
 			// 기존에 저장된 채팅메세지
-			List<ChatMsg> chatMsgList = chatService.selectedRoomChatList(chatroomNo);
+			List<ChatMsgExt> chatMsgList = chatService.selectedRoomChatList(chatroomNo);
 			// 유저리스트 가져오기
-			List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
+			List<Map<String, Object>> userList = chatService.roomUserList(chatroomNo);
 
 			log.debug("userList ---  {}", userList);
 			// model.addAttribute("chatMsgList", chatMsgList);
@@ -160,12 +162,13 @@ public class ChatController {
 	// json으로 보낼경우 @ResponseBody 사용
 	@GetMapping("/userList/{chatroomNo}")
 	@ResponseBody
-	public List<ChatRoomJoin> userList(@PathVariable int chatroomNo) {
+	public List<Map<String, Object>> userList(@PathVariable int chatroomNo) {
 
 		try {
 			log.debug("chatroomNo +++{}", chatroomNo);
 			// 유저리스트 가져오기
-			List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
+			//List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
+			List<Map<String, Object>> userList = chatService.roomUserList(chatroomNo);
 			log.debug("userList +++  {}", userList);
 
 			return userList;
@@ -183,7 +186,7 @@ public class ChatController {
 
 			try {
 				log.debug("empNo +++{}", empNo);
-				// 유저리스트 가져오기
+				// 참여 리스트 가져오기
 				List<Map<String, Object>> joinList = chatService.joinList(empNo);
 				log.debug("joinList +++  {}", joinList);
 
@@ -217,6 +220,25 @@ public class ChatController {
 		}
 	}
 
-	// ----------------- 메세지 매핑 ---------------------
-
+	@GetMapping("/checkJoinDuplicate")
+	@ResponseBody
+	public Map<String, Object> checkIdDuplicate(@RequestParam int empNo, @RequestParam int chatroomNo) {
+		//1. 업무로직
+		try {
+			ChatRoomJoin chatRoomJoin = new ChatRoomJoin(0, empNo, chatroomNo, null);
+			ChatRoomJoin join = chatService.selectOneJoin(chatRoomJoin);
+			boolean available = join == null;
+			log.debug("empNo {}, chatroomNo {}", empNo, chatroomNo);
+			log.debug("join {}", join);
+			//2. Map에 속성 저장
+			Map<String, Object> map = new HashMap<>();
+			map.put("available", available);
+			map.put("join", join);		
+			
+			return map;
+		} catch (Exception e) {
+			log.error("중복여부 조회 오류", e);
+			throw e;
+		}
+	}
 }

@@ -48,4 +48,6 @@ public interface DocService {
 	List<DocForm> selectDocFormList();
 
 	Document selectOnedocumentSimple(int docNo);
+
+	int selectDocCount(Map<String, Object> param);
 }

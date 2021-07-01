@@ -3,16 +3,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시글 작성" name="title"/>
 </jsp:include>
-<style>
-div#board-container{width:400px; margin:0 auto; text-align:center;}
-div#board-container input{margin-bottom:15px;}
-/* 부트스트랩 : 파일라벨명 정렬*/
-div#board-container label.custom-file-label{text-align:left;}
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+	crossorigin="anonymous"></script>
+	
 
-</style>
 <script>
 /* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
 function boardValidate(){
@@ -37,38 +43,60 @@ $(() => {
 	});
 });
 
+
+function goBack(){
+	window.history.back();
+	
+}
 </script>
-<div id="board-container">
-	<form 
+<sec:authentication property="principal" var="principal"/>
+<div class="container">
+	<form:form 
 		name="boardFrm" 
-		action="${pageContext.request.contextPath}/board/boardEnroll.do" 
+		action="${pageContext.request.contextPath}/board/boardEnroll.do?${_csrf.parameterName}=${_csrf.token}" 
 		method="post"
 		enctype="multipart/form-data" 
 		onsubmit="return boardValidate();">
-		<input type="text" class="form-control" placeholder="제목" name="title" id="title" required>
-		<input type="text" class="form-control" name="emp_no" value="${loginMember.id}" readonly required>
-		<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
-		<div class="input-group mb-3" style="padding:0px;">
-		  <div class="input-group-prepend" style="padding:0px;">
-		    <span class="input-group-text">첨부파일1</span>
-		  </div>
-		  <div class="custom-file">
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1"  multiple />
-		    <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-		  </div>
+	<table class="table">
+		<tr>
+			<td style="width: 10%">작성자</td>
+			<td>${principal.empName}</td>
+		</tr>
+
+		<tr>
+			<td style="width: 10%">제목</td>
+			<td>
+				<input type="text" class="form-control" placeholder="제목" name="title" id="title" required>
+				<input type="hidden" class="form-control" name="empNo" value="${principal.empNo}" readonly required>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 10%">첨부</td>
+			<td>
+				
+				  <div class="input-group mb-3">
+					  <input type="file" class="form-control" name="upFile" id="inputGroupFile01">
+					</div>
+					<div class="input-group mb-3">
+					  <input type="file" class="form-control" name="upFile" id="inputGroupFile02">
+					</div>
+				
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><textarea class="form-control" name="content" rows="10"></textarea></td>
+		</tr>
+		</table>
+			
+		<div class="text-right">
+			<input type="submit" class="btn btn-outline-success" value="저장" >
+			<button type="button" class="btn btn-outline-danger" onclick="goBack();">취소</button>
 		</div>
-		<div class="input-group mb-3" style="padding:0px;">
-		  <div class="input-group-prepend" style="padding:0px;">
-		    <span class="input-group-text">첨부파일2</span>
-		  </div>
-		  <div class="custom-file">
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile2" >
-		    <label class="custom-file-label" for="upFile2">파일을 선택하세요</label>
-		  </div>
-		</div>
-	    <textarea class="form-control" name="content" placeholder="내용" required></textarea>
-		<br />
-		<input type="submit" class="btn btn-outline-success" value="저장" >
-	</form>
+
+	</form:form>
 </div>
+
+
+
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

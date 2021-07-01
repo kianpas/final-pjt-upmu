@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
+import com.fpjt.upmu.chat.model.vo.ChatMsgExt;
 import com.fpjt.upmu.chat.model.vo.ChatRoom;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
 import com.fpjt.upmu.chat.model.vo.DirectMsg;
@@ -14,7 +15,7 @@ public interface ChatDao {
 
 	int insertChatRoom(ChatRoom chatRoom);
 
-	List<ChatMsg> selectedRoomChatList(int chatroomNo);
+	List<ChatMsgExt> selectedRoomChatList(int chatroomNo);
 
 	int deleteChatRoom(int chatroomNo);
 
@@ -24,7 +25,7 @@ public interface ChatDao {
 
 	int disconnectChatRoom(ChatRoomJoin chatroomJoin);
 
-	List<ChatRoomJoin> roomUserList(int chatroomNo);
+	List<Map<String, Object>> roomUserList(int chatroomNo);
 
 	int insertDirectMsg(DirectMsg directMsg);
 
@@ -43,5 +44,7 @@ public interface ChatDao {
 	ChatRoom selectOneChatRoom(int chatroomNo);
 
 	List<Map<String, Object>> joinList(int empNo);
+
+	ChatRoomJoin selectOneJoin(ChatRoomJoin chatRoomJoin);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -45,5 +46,62 @@ public class NoticeController {
 			throw e;
 		}
 	}
+	
+	@PutMapping("/updateNotice")
+	public ResponseEntity<?> updateNotice(@RequestParam int no){
+		try {
+			log.debug("no = {}", no);
+			int result = noticeService.updateNotice(no);
+			
+			if(result > 0) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("msg", "알림 수정 성공!");
+				
+				return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+			}
+			else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+		} catch (Exception e) {
+			log.error("알림 삭제 실패!",e);
+			throw e;
+		}
+	}
+	@DeleteMapping("/deleteNoticeList")
+	public ResponseEntity<?> deleteNoticeList(
+			@RequestParam int empNo,
+			@RequestParam(required = false) String checked
+			){
+		try {
+			log.debug("empNo = {}", empNo);
+			log.debug("checked = {}", checked);
+			if(checked.equals("undefined"))
+				checked=null;
+			log.debug("checked = {}", checked);
+			
+			Map<String,Object> map = new HashMap<>();
+			map.put("empNo",empNo);
+			map.put("checked",checked);
+			
+			
+			int result = noticeService.deleteNoticeList(map);
+
+			Map<String, Object> map2 = new HashMap<>();
+			if(result > 0) {
+				map2.put("msg", "알림 삭제 성공!");
+				return new ResponseEntity<Map<String,Object>>(map2, HttpStatus.OK);
+			}
+			else {
+				//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				map2.put("msg", "해당하는 알림 없음");
+				return new ResponseEntity<Map<String,Object>>(map2, HttpStatus.OK);
+			}
+			
+		} catch (Exception e) {
+			log.error("알림 삭제 실패!",e);
+			throw e;
+		}
+	}	
 
 }

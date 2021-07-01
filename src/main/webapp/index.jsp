@@ -9,57 +9,9 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
- <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<body>
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0px 0 40px 20%; margin: -55px 0px 0px 0px;" >
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/attendance/attendanceManage.do">게시판</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/document/docMain.do">전자결재</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/board/boardList.do">근태관리</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              조직도
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/employeeList/eList.do">페이지이동</a>
-              </li>
-              <li><input value="새창으로이동" onclick="eListPop();" class="dropdown-item" /></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              메일함
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mail/sendMailList.do">보낸 메일함</a>
-              </li>
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은 메일함</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+<body style="width: 1280px;
+    height: 768px;
+    margin: auto;">
 <main class="responsive-wrapper">
   <div class="page-title">
     <h1>Latest Updates</h1>

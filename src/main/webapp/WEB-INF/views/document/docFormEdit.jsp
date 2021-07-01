@@ -37,6 +37,15 @@ h1{
 
 </style>
 
+<div class="col-xl-9">
+	<div class="card shadow mb-4">
+		<!-- Card Header - Dropdown -->
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">기존 문서양식 수정</h6>
+		</div>
+		<!--  Body -->
+		<div class="card-body ">
+		
 <section>
 <c:if test="${not empty msg}">
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -92,8 +101,8 @@ h1{
 			<!-- 테이블 임시 작성 -->
 			<div id="tempDiv">
 
-
-
+			
+			
 			
 			</div>
 
@@ -105,6 +114,13 @@ h1{
 	</div>
 	</article>
 </section>
+
+		</div>
+	</div>
+</div>
+</div>
+		
+</main>
 
 <script>
 function bootAlert(str,dest){

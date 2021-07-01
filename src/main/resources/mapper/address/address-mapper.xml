@@ -7,9 +7,10 @@
 		insert into address
 		values (seq_address_no.nextval, #{byEmp}, #{savedEmp})
 	</insert>
-	<select id="selectAddrList" resultType="address">
-		select * 
-		from address
+	<select id="selectAddrList" resultType="addressExt">
+		select a.*, e.emp_name
+		from address a left join employee e
+        on a.saved_emp = e.emp_no
 		where by_emp = #{byEmp}
 		order by addr_no
 	</select>

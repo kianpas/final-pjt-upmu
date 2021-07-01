@@ -3,6 +3,7 @@ package com.fpjt.upmu.document.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,7 +48,12 @@ public class DocDaoImpl implements DocDao {
 
 	@Override
 	public List<String> selectDocNo(Map<String, Object> param) {
-		return session.selectList("document.selectDocNo", param);
+		//paging added
+		int offset = (int) param.get("offset");
+		int limit = (int)param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset,limit);		
+		return session.selectList("document.selectDocNo", param,rowBounds);
+		//return session.selectList("document.selectDocNo", param);
 	}
 
 	@Override
@@ -113,6 +119,11 @@ public class DocDaoImpl implements DocDao {
 	@Override
 	public Document selectOnedocumentSimple(int docNo) {
 		return session.selectOne("document.selectOnedocumentSimple", docNo);
+	}
+
+	@Override
+	public int selectDocCount(Map<String, Object> param) {
+		return session.selectOne("document.selectDocCount", param);
 	}
 
 	

@@ -5,10 +5,11 @@
 <mapper namespace="board">
 	<select id="selectBoardList" resultMap="boardExtMap">
 		select
-			b.*,
+			b.*, e.emp_name,
 			(select count(*) from attachment where board_no = b.no) attach_count			
 		from 
-			board b
+			board b left join employee e
+            on b.emp_no = e.emp_no
 		order by
 			no desc
 	</select>
@@ -32,11 +33,11 @@
 		values (
 			seq_board_no.nextval,
 			#{title},
-			#{emp_no},
+			#{empNo},
 			#{content}
 		)
 		<!-- 발급받은 board pk no값을 파라미터 board객체의 property no에 저장한다. -->
-		<selectKey keyProperty="board_no" resultType="_int" order="AFTER">
+		<selectKey keyProperty="no" resultType="_int" order="AFTER">
 			select
 				seq_board_no.currval
 			from 
@@ -86,21 +87,26 @@
 		    a.renamed_filename,
 		    a.upload_date,
 		    a.download_count,
-		    a.status
+		    a.status,
+		    e.emp_name
 		from  
 		    board b
 		  left join 
 		    attachment a
 		      on b.no = a.board_no
+		   left join 
+            employee e
+              on b.emp_no = e.emp_no
 		where b.no = #{no}
 	</select>
 	<resultMap type="boardExt" id="boardCollectionMap">
 		<id column="no" property="no"/>
-		<result column="emp_no" property="emp_no"/>
+		<result column="emp_no" property="empNo"/>
 		<result column="title" property="title"/>
 		<result column="content" property="content"/>
 		<result column="reg_date" property="regDate"/>
 		<result column="read_count" property="readCount"/>
+		<result column="emp_name" property="empName"/>
 		<collection property="attachList" ofType="attachment">
 			<id column="attach_no" property="no"/>
 			<result column="board_no" property="boardNo"/>
@@ -111,4 +117,27 @@
 			<result column="status" property="status" typeHandler="booleanYnTypeHandler"/>
 		</collection>
 	</resultMap>
+	<select id="selectOneAttachment" resultMap="attachVoMap">
+		select *
+		from attachment
+		where no = #{no}
+	</select>
+	
+	<delete id="boardDelete">
+		delete from board
+		where no = #{no}
+	</delete>
+	<update id="boardUpdate">
+		update board
+		set title = #{title}, content = #{content}
+		where no = #{no} 
+	</update>
+	<select id="boardSearch" resultType="boardExt">
+		select * from board where title like '%'||#{search}||'%'
+	</select>
+	<update id="readCount">
+		update board
+		set read_count = read_count + 1
+		where no = #{no}
+	</update>
 </mapper>

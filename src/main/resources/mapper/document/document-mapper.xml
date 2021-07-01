@@ -252,6 +252,7 @@
 		    join jobtitle j
 		        on e.emp_job = j.job_no
 		where doc_no = #{docNo}
+		order by no
 	</select>
 	<select id="selectOneDocForm" resultType="docForm">
 		select *
@@ -298,4 +299,44 @@
 		where
 			doc_no = #{docNo}
 	</select>
+		
+	<select id="selectDocCount" resultType="_int">
+		select
+		count(*)
+	from
+		(
+		select doc_no from docline
+		<where>
+		    approver = #{id}
+		<if test="status == 'afterview'">
+			and approver_type in ('enforcer', 'referer')
+		</if>
+		<if test="status == 'notdecided'">
+			and approver_type in ('approver', 'agreer')
+			and status = #{status}
+		</if>
+		<if test="status == 'approved'">
+			and approver_type in ('approver', 'agreer')
+			and status = #{status}
+		</if>
+		</where>
+		<if test="status != 'afterview'">
+		intersect
+		select doc_no from docline
+		<where>
+			<if test="status == 'rejected' or status == 'notdecided'">
+		    status = #{status}
+			</if>
+			<if test="status == 'completed'">
+			max_authority = 'Y' and status = 'approved'
+			</if>
+			<if test="status == 'approved'">
+			max_authority = 'Y' and status = 'notdecided'
+			</if>
+			
+		</where>
+		</if>	
+	)
+	</select>
+	
 </mapper>

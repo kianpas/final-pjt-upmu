@@ -25,7 +25,7 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public List<Board> selectBoardList(Map<String, Object> param) {
+	public List<BoardExt> selectBoardList(Map<String, Object> param) {
 		int offset = (int)param.get("offset");
 		int limit = (int)param.get("limit");
 		RowBounds rowBounds = new RowBounds(offset, limit);
@@ -60,6 +60,38 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public BoardExt selectOneBoardCollection(int no) {
 		return session.selectOne("board.selectOneBoardCollection", no);
+	}
+
+	@Override
+	public Attachment selectOneAttachment(int no) {
+		
+		return session.selectOne("board.selectOneAttachment", no);
+	}
+
+	
+	@Override
+	public int boardUpdate(BoardExt boardExt) {
+		
+		return session.update("board.boardUpdate", boardExt);
+	}
+
+	@Override
+	public int boardDelete(int no) {
+		
+		return session.delete("board.boardDelete", no);
+	}
+
+	@Override
+	public List<BoardExt> boardSearch(String search) {
+		
+		return session.selectList("board.boardSearch", search);
+	}
+
+	@Override
+	public void readCount(int no) {
+		
+		session.update("board.readCount", no);
+		
 	}
 	
 	

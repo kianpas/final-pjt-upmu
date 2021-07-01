@@ -1,6 +1,7 @@
 package com.fpjt.upmu.notice.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,21 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int deleteNotice(int no) {
 		return noticeDao.deleteNotice(no);
+	}
+
+	@Override
+	public int updateNotice(int no) {
+		return noticeDao.updateNotice(no);
+	}
+
+	@Override
+	public int countNoticeList(int empNo) {
+		return noticeDao.countNoticeList(empNo);
+	}
+
+	@Override
+	public int deleteNoticeList(Map<String, Object> map) {
+		return noticeDao.deleteNoticeList(map);
 	}
 
 

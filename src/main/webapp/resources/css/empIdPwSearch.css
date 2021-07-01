@@ -1,0 +1,164 @@
+body {
+    margin: 0;
+    color: #6a6f8c;
+    background: #f8f3eb;
+    font: 600 16px/18px 'Open Sans', sans-serif;
+}
+
+*,
+:after,
+:before {
+    box-sizing: border-box;
+}
+
+.sign-wrap {
+    width: 500px;
+    margin: auto;
+    max-width: 50%;
+    min-height: 307px;
+    position: relative;
+    box-shadow: 0 12px 15px 0 rgb(0 0 0 / 24%), 0 17px 50px 0 rgb(0 0 0 / 19%);
+}
+
+.pw-wrap {
+    width: 500px;
+    margin: auto;
+    max-width: 50%;
+    min-height: 237px;
+    position: relative;
+    box-shadow: 0 12px 15px 0 rgb(0 0 0 / 24%), 0 17px 50px 0 rgb(0 0 0 / 19%);
+}
+
+.sign-in-html {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 20px 70px 45px 60px;
+    background-color: #85b8cb;
+}
+
+.sign-form {
+    min-height: 345px;
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.sign_up {
+    margin: 36px 0px 0px -195px;
+    display: block;
+    font-size: 90px;
+}
+.sign_up_ {
+    margin: 80px 0px -126px -147px;
+    display: block;
+    font-size: 90px;
+}
+
+/* 사번,비밀번호,이름,주소,.... */
+.sign-up-htm .emp_no,
+.sign-up-htm .emp_pw .emp_pw_,
+.sign-up-htm .emp_pw_re .emp_pw_re_,
+.sign-up-htm .emp_name,
+.emp_name_,
+.sign-up-htm .emp_addr .emp_addr_,
+.sign-up-htm .emp_email .emp_email_,
+.sign-up-htm .emp_birth .emp_birth_,
+.sign-up-htm .emp_hiredate .emp_hiredate_,
+.sign-up-htm .Department .Department_,
+.sign-up-htm .emp_phone .emp_phone_
+ {
+    line-height: 2;
+    color: #d1dddb;
+    font-size: 20px;
+}
+
+.sign-up-htm .emp_no .emp_no_input,
+.sign-up-htm .emp_pw .emp_pw_input,
+.sign-up-htm .emp_pw_re .emp_pw_re_input,
+.sign-up-htm .emp_name .emp_name_input,
+.sign-up-htm .emp_email .emp_email_input,
+.sign-up-htm .emp_hiredate .emp_hiredate_input,
+.sign-up-htm .Department .Department_input,
+.sign-up-htm .emp_birth .birth,
+.sign-up-htm .emp_addr .emp_addr_input2,
+.sign-up-htm .emp_phone .emp_phone_input {
+    border: none;
+    padding: 8px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, .1);
+    display: block;
+    color: #fff;
+    width: 277px;
+}
+.sign-up-htm .emp_addr .emp_addr_input2 {
+    border-top: 2px solid #85b8cb;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, .1);
+    display: block;
+    color: #fff;
+    width: 277px;
+}
+
+.sign-up-htm .emp_addr .emp_addr_input {
+    border: none;
+    padding: 5px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, .1);
+    display: block;
+    color: #fff;
+    width: 97px;
+}
+
+.hr {
+    height: 2px;
+    margin: 13px 0 13px 0;
+    background-color: rgba(255, 255, 255, .2);
+}
+
+/* sign up button */
+.sign-form .sign_up_button {
+    margin-bottom: 10px;
+}
+
+.sign-form .sign_up_button .sign_up_button_ {
+    background-color: #1161ee;
+    border: none;
+    margin: auto;
+    padding: 15px 15px;
+    border-radius: 25px;
+    width: 60%;
+    color: #fff;
+    display: block;
+    text-transform: uppercase;
+}
+
+.sign_up_button .sign_up_button_ {
+    box-sizing: border-box;
+    border: 0;
+    outline: 0;
+    height: 48px;
+    text-align: center;
+    margin: 11px 8px 8px 95px;
+}
+
+.id-search,
+.pw-search {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-size: 27px;
+	color: #fff;
+}
+
+.find-id {
+	font-size: 19px;
+	color: #fff;
+}
+
+.find-wrap {
+	min-height: 40px;
+}
