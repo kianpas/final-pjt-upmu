@@ -32,10 +32,7 @@ th, td{
 #docLineDiv{
 	float: right;
 }
-article{
-	background-color: white;
-	padding: 10px;
-}
+
 #attach-container{
 	width: 500px;
 }
@@ -49,196 +46,223 @@ textarea{
 #replyBtn{
 	float: right;
 }
+.doc-content>table{
+	width:100%;
+}
 </style>
 
-<section>
-	<article>
-		<%-- 로그인유저 사번을 loginEmpNo에 넣어 사용 --%>
-		<sec:authentication property="principal.empNo" var="loginEmpNo"/>
-		<h1 id="title">${document.title}</h1>
-		<br />
-		<div class="tableDiv" id="docColumn">
-			<table class="table table-sm">
-				<tr>
-					<td class="table-secondary" style="width: 100px;">기안자</td><td>${document.writerName}</td>
-				</tr>
-				<tr>
-					<td class="table-secondary">소속</td><td>${document.depName}</td>
-				</tr>
-				<tr>
-					<td class="table-secondary">직위</td><td>${document.jobName}</td>
-				</tr>
-				<tr>
-					<td class="table-secondary">기안일</td><td>${document.requestDate}</td>
-				</tr>
-				<tr>
-					<td class="table-secondary">문서번호</td><td>${document.docNo}</td>
-				</tr>
-			</table>
+<div class="col-xl-9">
+	<div class="card shadow mb-4">
+		<!-- Card Header - Dropdown -->
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">결재문서</h6>
 		</div>
-		
-		<div class="tableDiv" id="docLineDiv">
-			<table id="docLineTable">
-				<tr>
-					<td rowspan="4" align="center" class="table-secondary">결<br/>재</td>
-				</tr>
-				<c:forEach items="${document.docLine}" var="docLine">
-					<c:if test='${docLine.approverType eq "approver"}'>
-					<tr>
-						<td>${docLine.jobName}</td>
-						<c:choose>
-							<c:when test="${docLine.status eq 'notdecided' }">
-								<%-- 
-									결재자가 본인인 경우만 링크 활성화
-									임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
-								--%>
-								<c:if test="${docLine.approver == loginEmpNo }">
-								<td>
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
-									<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
-									<input type="hidden" id="lv" value="${docLine.lv}"/>
-								</td>
-								</c:if>
-								<c:if test="${docLine.approver != loginEmpNo }">
-								<td class="bg-warning text-white">미결재</td>
-								</c:if>
-							</c:when>
-							<c:when test="${docLine.status eq 'approved' }">
-								<td class="bg-success text-white">결재완료</td>
-							</c:when>
-							<c:when test="${docLine.status eq 'rejected' }">
-								<td class="bg-danger text-white">반려</td>
-							</c:when>
-							<c:when test="${docLine.status eq 'afterview' }">
-								<td class="bg-secondary text-white">후열</td>
-							</c:when>
-						</c:choose>
-						<td>${docLine.empName}</td>
-					</tr>
-					</c:if>
-				</c:forEach>
-				
-				<tr>
-					<td rowspan="4" align="center" class="table-secondary">협<br/>의</td>
-				</tr>
-				<c:forEach items="${document.docLine}" var="docLine">
-					<c:if test='${docLine.approverType eq "agreer"}'>
-					<tr>
-						<td>${docLine.jobName}</td>
-						<c:choose>
-							<c:when test="${docLine.status eq 'notdecided' }">
-								<%-- 
-									결재자가 본인인 경우만 링크 활성화
-									임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
-								--%>
-								<c:if test="${docLine.approver == loginEmpNo }">
-								<td>
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
-									<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
-									<input type="hidden" id="lv" value="${docLine.lv}"/>
-								</td>
-								</c:if>
-								<c:if test="${docLine.approver != loginEmpNo }">
-								<td class="bg-warning text-white">미결재</td>
-								</c:if>
-							</c:when>
-							<c:when test="${docLine.status eq 'approved' }">
-								<td class="bg-success text-white">결재완료</td>
-							</c:when>
-							<c:when test="${docLine.status eq 'rejected' }">
-								<td class="bg-danger text-white">반려</td>
-							</c:when>
-							<c:when test="${docLine.status eq 'afterview' }">
-								<td class="bg-secondary text-white">후열</td>
-							</c:when>
-						</c:choose>
-						<td>${docLine.empName}</td>
-					</tr>
-					</c:if>
-				</c:forEach>
-				<tr>
-					<td rowspan="4" align="center" class="table-secondary">시<br/>행</td>
-				</tr>
-				<c:forEach items="${document.docLine}" var="docLine">
-					<c:if test='${docLine.approverType eq "enforcer"}'>
-					<tr>
-						<td>${docLine.jobName}</td>
-						<c:if test="${docLine.status eq 'afterview' }">
-							<td class="bg-secondary text-white">후열</td>
-						</c:if>
-						<td>${docLine.empName}</td>
-					</tr>
-					</c:if>
-				</c:forEach>
-				<tr>
-					<td rowspan="4" align="center" class="table-secondary">수<br/>신<br/>참<br/>조</td>
-				</tr>
-				<c:forEach items="${document.docLine}" var="docLine">
-					<c:if test='${docLine.approverType eq "referer"}'>
-					<tr>
-						<td>${docLine.jobName}</td>
-						<c:if test="${docLine.status eq 'afterview' }">
-							<td class="bg-secondary text-white">후열</td>
-						</c:if>
-						<td>${docLine.empName}</td>
-					</tr>
-					</c:if>
-				</c:forEach>
-			</table>
-		</div>
-		<div style="width: 793px;">
-			${document.content}
-		</div>
-
-		<div id="attach-container">
-		
-		<c:forEach items="${docAttachList}" var="attach">
-		<button type="button" 
-				class="btn btn-outline-success btn-block"
-				onclick="location.href='${pageContext.request.contextPath}/document/fileDownload.do?no=${attach.no}';">
-			첨부파일 - ${attach.originalFilename }
-		</button>
-		</c:forEach>
-		</div>
-		
-
-	</article>
-	<footer>
-		<div id="reply-container">
-			댓글창<br />
-			<ul class="list-group">
-				
-			<c:forEach items="${docReplyList}" var="docReply" varStatus="">
-			<li class="list-group-item">
-				<div class="d-flex w-100 justify-content-between">
-					<p class="mb-1 font-weight-bold" >
-						${docReply.depName }
-						${docReply.jobName }
-						${docReply.writerName }
-					</p>
-					<small><fmt:formatDate value="${docReply.regDate }" pattern="yyyy-MM-dd hh:mm:ss"/></small>
+		<!--  Body -->
+		<div class="card-body ">
+		<section>
+			<article>
+				<%-- 로그인유저 사번을 loginEmpNo에 넣어 사용 --%>
+				<sec:authentication property="principal.empNo" var="loginEmpNo"/>
+				<h1 id="title">${document.title}</h1>
+				<br />
+				<div class="tableDiv" id="docColumn">
+					<table class="table table-sm">
+						<tr>
+							<td class="table-secondary" style="width: 100px;">기안자</td><td>${document.writerName}</td>
+						</tr>
+						<tr>
+							<td class="table-secondary">소속</td><td>${document.depName}</td>
+						</tr>
+						<tr>
+							<td class="table-secondary">직위</td><td>${document.jobName}</td>
+						</tr>
+						<tr>
+							<td class="table-secondary">기안일</td><td>${document.requestDate}</td>
+						</tr>
+						<tr>
+							<td class="table-secondary">문서번호</td><td>${document.docNo}</td>
+						</tr>
+					</table>
 				</div>
-				<p class="mb-1">${docReply.content }</p>
-			</li>
-			</c:forEach>
-			</ul>
+				
+				<div class="tableDiv" id="docLineDiv">
+					<table id="docLineTable">
+						<tr>
+							<td rowspan="4" align="center" class="table-secondary">결<br/>재</td>
+						</tr>
+						<c:forEach items="${document.docLine}" var="docLine">
+							<c:if test='${docLine.approverType eq "approver"}'>
+							<tr>
+								<td>${docLine.jobName}</td>
+								<c:choose>
+									<c:when test="${docLine.status eq 'notdecided' }">
+										<%-- 
+											결재자가 본인인 경우만 링크 활성화
+											임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
+										--%>
+										<c:if test="${docLine.approver == loginEmpNo }">
+										<td>
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
+											<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
+											<input type="hidden" id="lv" value="${docLine.lv}"/>
+										</td>
+										</c:if>
+										<c:if test="${docLine.approver != loginEmpNo }">
+										<td class="bg-warning text-white">미결재</td>
+										</c:if>
+									</c:when>
+									<c:when test="${docLine.status eq 'approved' }">
+										<td class="bg-success text-white">결재완료</td>
+									</c:when>
+									<c:when test="${docLine.status eq 'rejected' }">
+										<td class="bg-danger text-white">반려</td>
+									</c:when>
+									<c:when test="${docLine.status eq 'afterview' }">
+										<td class="bg-secondary text-white">후열</td>
+									</c:when>
+								</c:choose>
+								<td>${docLine.empName}</td>
+							</tr>
+							</c:if>
+						</c:forEach>
+						
+						<tr>
+							<td rowspan="4" align="center" class="table-secondary">협<br/>의</td>
+						</tr>
+						<c:forEach items="${document.docLine}" var="docLine">
+							<c:if test='${docLine.approverType eq "agreer"}'>
+							<tr>
+								<td>${docLine.jobName}</td>
+								<c:choose>
+									<c:when test="${docLine.status eq 'notdecided' }">
+										<%-- 
+											결재자가 본인인 경우만 링크 활성화
+											임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
+										--%>
+										<c:if test="${docLine.approver == loginEmpNo }">
+										<td>
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
+											<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
+											<input type="hidden" id="lv" value="${docLine.lv}"/>
+										</td>
+										</c:if>
+										<c:if test="${docLine.approver != loginEmpNo }">
+										<td class="bg-warning text-white">미결재</td>
+										</c:if>
+									</c:when>
+									<c:when test="${docLine.status eq 'approved' }">
+										<td class="bg-success text-white">결재완료</td>
+									</c:when>
+									<c:when test="${docLine.status eq 'rejected' }">
+										<td class="bg-danger text-white">반려</td>
+									</c:when>
+									<c:when test="${docLine.status eq 'afterview' }">
+										<td class="bg-secondary text-white">후열</td>
+									</c:when>
+								</c:choose>
+								<td>${docLine.empName}</td>
+							</tr>
+							</c:if>
+						</c:forEach>
+						<tr>
+							<td rowspan="4" align="center" class="table-secondary">시<br/>행</td>
+						</tr>
+						<c:forEach items="${document.docLine}" var="docLine">
+							<c:if test='${docLine.approverType eq "enforcer"}'>
+							<tr>
+								<td>${docLine.jobName}</td>
+								<c:if test="${docLine.status eq 'afterview' }">
+									<td class="bg-secondary text-white">후열</td>
+								</c:if>
+								<td>${docLine.empName}</td>
+							</tr>
+							</c:if>
+						</c:forEach>
+						<tr>
+							<td rowspan="4" align="center" class="table-secondary">수<br/>신<br/>참<br/>조</td>
+						</tr>
+						<c:forEach items="${document.docLine}" var="docLine">
+							<c:if test='${docLine.approverType eq "referer"}'>
+							<tr>
+								<td>${docLine.jobName}</td>
+								<c:if test="${docLine.status eq 'afterview' }">
+									<td class="bg-secondary text-white">후열</td>
+								</c:if>
+								<td>${docLine.empName}</td>
+							</tr>
+							</c:if>
+						</c:forEach>
+					</table>
+				</div>
+				<div class="doc-content">
+					${document.content}
+				</div>
+		
+				<div id="attach-container">
+				
+				<c:forEach items="${docAttachList}" var="attach">
+				<button type="button" 
+						class="btn btn-outline-success btn-block"
+						onclick="location.href='${pageContext.request.contextPath}/document/fileDownload.do?no=${attach.no}';">
+					첨부파일 - ${attach.originalFilename }
+				</button>
+				</c:forEach>
+				</div>
+				
+		
+			</article>
 			
-			새 댓글 작성
-			<form:form id="replyFrm" 
-				action="${pageContext.request.contextPath}/document/docReply"
-				method="post">
-			<!-- no docNo writer content regDate -->
-			<input type="hidden" name="docNo" value="${document.docNo}"/>
-			<!-- writer:댓글작성자 loginMember.getId -->
-			<input type="hidden" name="writer" value="${loginEmpNo}"/>
-			<textarea class="form-control" name="content"></textarea>
 			
-			<button type="submit" id="replyBtn" class="btn btn-primary">댓글등록</button>
-			</form:form>
-		</div>
-	</footer>
-</section>
 
+		</section>
+		
+		</div>
+	</div>
+	<!-- footer -->
+	<div class="card shadow mb-4">
+	<!-- Card Header - Dropdown -->
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">댓글</h6>
+	</div>
+	<!--  Body -->
+	<div class="card-body ">
+	
+			<footer>
+			<div id="reply-container">
+				<ul class="list-group">
+					
+				<c:forEach items="${docReplyList}" var="docReply" varStatus="">
+				<li class="list-group-item">
+					<div class="d-flex w-100 justify-content-between">
+						<p class="mb-1 font-weight-bold" >
+							${docReply.depName }
+							${docReply.jobName }
+							${docReply.writerName }
+						</p>
+						<small><fmt:formatDate value="${docReply.regDate }" pattern="yyyy-MM-dd hh:mm:ss"/></small>
+					</div>
+					<p class="mb-1">${docReply.content }</p>
+				</li>
+				</c:forEach>
+				</ul>
+				<br />
+				<form:form id="replyFrm" 
+					action="${pageContext.request.contextPath}/document/docReply"
+					method="post">
+				<input type="hidden" name="docNo" value="${document.docNo}"/>
+				<input type="hidden" name="writer" value="${loginEmpNo}"/>
+				<textarea class="form-control" name="content"></textarea>
+				
+				<button type="submit" id="replyBtn" class="btn btn-primary">댓글등록</button>
+				</form:form>
+			</div>
+		</footer>
+		
+	</div>
+</div>
+</div>
+		
+</main>
 <script>
 //결재선 가로정렬
 $("#docLineTable").each(function() {

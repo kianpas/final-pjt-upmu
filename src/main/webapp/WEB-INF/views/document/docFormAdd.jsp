@@ -33,6 +33,14 @@ th, td {
 
 </style>
 
+<div class="col-xl-9">
+	<div class="card shadow mb-4">
+		<!-- Card Header - Dropdown -->
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">새 문서양식 추가</h6>
+		</div>
+		<!--  Body -->
+		<div class="card-body ">
 
 <section>
 <c:if test="${not empty msg}">
@@ -81,6 +89,13 @@ th, td {
 	</div>
 	</article>
 </section>
+
+		</div>
+	</div>
+</div>
+</div>
+		
+</main>
 
 <script>
 function bootAlert(str,dest){
