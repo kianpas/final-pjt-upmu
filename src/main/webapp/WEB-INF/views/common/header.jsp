@@ -69,7 +69,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/document/docMain.do">전자결재</a>
+              href="${pageContext.request.contextPath}/document/docForm.do">전자결재</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"
@@ -123,6 +123,9 @@
       </sec:authorize>
       <!-- 로그인이후 -->
       <sec:authorize access="isAuthenticated()">
+      
+      <c:import url="/notice/noticeBtn"></c:import>
+      
       <sec:authentication property="principal" var="principal" />
 		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
 		   	<sec:authentication property="principal.username"/></a>님, 안녕하세요.			    
