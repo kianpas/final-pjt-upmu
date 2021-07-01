@@ -46,7 +46,7 @@
           </div>
           <div class="hr"></div>
           <div class="sign_up_button">
-            <input type="submit" class="sign_up_button_" value="보내기" formaction="${pageContext.request.contextPath}/employee/empPwSearch.do">
+            <input type="submit" class="sign_up_button_" value="보내기" formaction="${pageContext.request.contextPath}/employee/mailPwSearch.do">
           </div>
         </div>
       </div>

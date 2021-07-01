@@ -11,10 +11,12 @@
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<http security="none" pattern="/resources/**"/>
-	<http security="none" pattern="/employee/**"/>
+	<http security="none" pattern="/employee/empEnroll.do"/>
+	<http security="none" pattern="/employee/jusoPopup.do"/>
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
+		<intercept-url pattern="/employee/mailPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empIdPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empIdSearch.do" access="isAnonymous()"/>

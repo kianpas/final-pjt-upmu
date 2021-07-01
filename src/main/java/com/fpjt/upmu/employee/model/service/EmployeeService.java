@@ -13,4 +13,6 @@ public interface EmployeeService {
 	String selectId(Map<String, String> emp);
 
 	String selectCheckId(String id);
+
+	String sendMail(String id);
 }
