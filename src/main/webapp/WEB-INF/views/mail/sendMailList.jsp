@@ -15,7 +15,13 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
+
 <script>
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 function goMailForm(){
 	location.href = "${pageContext.request.contextPath}/mail/mailForm.do";
 }
@@ -69,6 +75,9 @@ $(() => {
 			data: 
 				searchMap
 			,
+			beforeSend: function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
 			success(data){
 				console.log(data);
 				const {list} = data;
@@ -128,6 +137,9 @@ function deleteMail(){
 				data: {
 					valueArr: valueArr,
 					who : who
+				},
+				beforeSend: function(xhr){
+					xhr.setRequestHeader(header, token);
 				},
 				success: function(result){
 					if(result == "OK"){
