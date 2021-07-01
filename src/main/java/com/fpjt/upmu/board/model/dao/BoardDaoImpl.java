@@ -93,6 +93,12 @@ public class BoardDaoImpl implements BoardDao {
 		session.update("board.readCount", no);
 		
 	}
+
+	@Override
+	public int deleteFile(int no) {
+		
+		return session.update("board.deleteFile", no);
+	}
 	
 	
 	

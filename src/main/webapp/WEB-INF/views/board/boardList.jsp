@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="게시판" name="title" />
+	<jsp:param value="게시판" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -14,11 +14,11 @@ body {
 }
 /*글쓰기버튼*/
 input#btn-add {
-	float: right;
+	float:right; 
 	margin: 0 0 15px;
 }
 
-tr[data-no] {
+tr[data-no]{
 	cursor: pointer;
 }
 </style>
@@ -95,47 +95,14 @@ $(() => {
 				<h6 class="m-0 font-weight-bold text-primary">게시판</h6>
 			</div>
 			<div class="card-body">
-				<input type="search" placeholder="검색" id="searchTitle" class="form-control col-3 d-inline" />
+			<input type="search" placeholder="검색" id="searchTitle" class="form-control col-3 d-inline"/>
 				<div class="table-responsive">
 
-					<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();" />
-
-					<table class="table table-hover">
-						<thead>
-							<tr class="text-center">
-								<th>번호</th>
-								<th>제목</th>
-								<th>작성자</th>
-								<th>작성일</th>
-								<th>첨부파일</th>
-								<!-- 첨부파일 있을 경우, /resources/images/file.png 표시 width: 16px-->
-								<th>조회수</th>
-							</tr>
-							<c:forEach items="${list}" var="board">
-								<tr data-no="${board.no}" class="text-center">
-									<td>${board.no}</td>
-									<td class="text-start">${board.title}</td>
-									<td>${board.empName}</td>
-									<td>
-										<fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd" />
-									</td>
-									<td>
-										<c:if test="${board.hasAttachment}">
-											<img src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" />
-										</c:if>
-									</td>
-									<td>${board.readCount}</td>
-								</tr>
-							</c:forEach>
-					</table>
-					${pageBar}
-
-
-
-					<%-- 
-	<table id="tbl-board" class="table table-striped table-hover">
+					<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
 	
-		<tr class="text-center">
+	<table class="table table-hover">
+		<thead>
+			<tr class="text-center">
 			<th>번호</th>
 			<th>제목</th>
 			<th>작성자</th>
@@ -144,31 +111,25 @@ $(() => {
 			<th>조회수</th>
 		</tr>
 		<c:forEach items="${list}" var="board">
-		<tr data-no="${board.no}" class="text-center">
-			<td>${board.no}</td>
-			<td  class="text-start">${board.title}</td>
-			<td>${board.emp_no}</td>
-			<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd"/></td>
-			<td>
-				<c:if test="${board.hasAttachment}">
-				<img src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" />
-				</c:if>
-			</td>
-			<td>${board.readCount}</td>
-		</tr>
+			<tr data-no="${board.no}" class="text-center">
+				<td>${board.no}</td>
+				<td  class="text-start">${board.title} (${board.cmtCount})</td>
+				<td>${board.empName}</td>
+				<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd"/></td>
+				<td>
+					<c:if test="${board.hasAttachment}">
+						<img class="mx-auto" src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" />
+					</c:if>
+				</td>
+				<td>${board.readCount}</td>
+			</tr>
 		</c:forEach>
-		
 	</table>
-	
-	${pageBar} --%>
-
+		${pageBar}
 				</div>
-
-			</div>
-
+			</div>	
 		</div>
 	</div>
-
-</section>
+</section> 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
