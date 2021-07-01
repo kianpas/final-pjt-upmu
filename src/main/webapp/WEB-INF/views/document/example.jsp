@@ -1,16 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> --%>
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
-
-<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-<jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <style>
 .notice-di.dropdown-item {
 	cursor: pointer;
@@ -49,59 +42,52 @@ button.close {
 	margin: 0 0 0 12%;
 }
 </style>
-<section>
-	<article>
-	<c:import url="/notice/noticeBtn"></c:import>
-<%-- 		<div class="dropdown">
-			<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				알림 &nbsp
-				<span class="badge badge-light" id="noticeCount">${noticeCount}</span>
-			</button>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-				<h6 class="dropdown-header" id="noticeHeader">
-					<span>알림 목록</span>
-					empNo checked
-					<button type="button" class="btn btn-outline-secondary btn-sm" data-empno='<sec:authentication property="principal.empNo"/>' data-checked='Y'>읽은 알림 삭제</button>
-					empNo
-					<button type="button" class="btn btn-outline-secondary btn-sm" data-empno='<sec:authentication property="principal.empNo"/>'>모두 삭제</button>
-				</h6>
-				<c:forEach items="${noticeList}" var="notice">
-					<div class="dropdown-row">
-						<div class="dropdown-item notice-di" data-no="${notice.no}" data-linkaddr="${notice.linkAddr}" data-checked="${notice.checked}">
-							<div class="small notice-date">
-								<fmt:formatDate value="${notice.regDate}" pattern="yyyy-MM-dd hh:mm" />
-							</div>
-							<div <c:if test="${notice.checked}">
-					 style="color: darkgray"
-					</c:if>>
-								<c:choose>
-									<c:when test="${notice.notiType eq 'docReply'}">
-					내 결재문서에 댓글이 달렸습니다.
-					</c:when>
-									<c:when test="${notice.notiType eq 'docLine'}">
-					확인이 필요한 결재문서가 추가되었습니다.
-					</c:when>
-								</c:choose>
-							</div>
-						</div>
-						<!-- deleteBtn -->
-						<button type="button" class="close" aria-label="Close" value="${notice.no}">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<div class="dropdown-divider"></div>
+<div class="dropdown">
+	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		알림 &nbsp
+		<span class="badge badge-light" id="noticeCount">${noticeCount}</span>
+	</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		<h6 class="dropdown-header" id="noticeHeader">
+			<span>알림 목록</span>
+			<%-- empNo checked --%>
+			<button type="button" class="btn btn-outline-secondary btn-sm" data-empno='<sec:authentication property="principal.empNo"/>' data-checked='Y'>읽은 알림 삭제</button>
+			<%-- empNo --%>
+			<button type="button" class="btn btn-outline-secondary btn-sm" data-empno='<sec:authentication property="principal.empNo"/>'>모두 삭제</button>
+		</h6>
+		<c:forEach items="${noticeList}" var="notice">
+			<div class="dropdown-row">
+				<div class="dropdown-item notice-di" data-no="${notice.no}" data-linkaddr="${notice.linkAddr}" data-checked="${notice.checked}">
+					<div class="small notice-date">
+						<fmt:formatDate value="${notice.regDate}" pattern="yyyy-MM-dd hh:mm" />
 					</div>
-				</c:forEach>
+					<div <c:if test="${notice.checked}">
+			 style="color: darkgray"
+			</c:if>>
+						<c:choose>
+							<c:when test="${notice.notiType eq 'docReply'}">
+			내 결재문서에 댓글이 달렸습니다.
+			</c:when>
+							<c:when test="${notice.notiType eq 'docLine'}">
+			확인이 필요한 결재문서가 추가되었습니다.
+			</c:when>
+						</c:choose>
+					</div>
+				</div>
+				<!-- deleteBtn -->
+				<button type="button" class="close" aria-label="Close" value="${notice.no}">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<div class="dropdown-divider"></div>
 			</div>
-		</div> --%>
-
-	</article>
-</section>
+		</c:forEach>
+	</div>
+</div>
 
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 
 <script>
-
 
 //읽은알림삭제 & 모두삭제
 $(".dropdown-header>button").on('click', function(e) {
@@ -215,4 +201,3 @@ $(".close").on('click', function(e) {
 	});
 });
 </script>
-<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

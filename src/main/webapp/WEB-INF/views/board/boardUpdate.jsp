@@ -94,15 +94,25 @@ function goBack(){
 						<div class="input-group mb-3">
 							  <input type="file" class="form-control" name="upFile" id="inputGroupFile01">
 							</div>
+							<div class="input-group mb-3">
+							  <input type="file" class="form-control" name="upFile" id="inputGroupFile02">
+							</div>
 					</c:when>
 					<c:otherwise>
-						<c:forEach items="${board.attachList}" var="attach">
-							<button type="button" 
-									class="btn btn-outline-success btn-block"
-									onclick="location.href='${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
-								첨부파일 - ${attach.originalFilename}
-							</button>
-						</c:forEach>
+						<c:forEach items="${board.attachList}" var="attach" varStatus="row">
+									<c:if test="${attach.originalFilename != null}">
+									<span class="me-3" id="attach${attach.no}">
+										<a href="#" onclick="location.href='${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
+										${attach.originalFilename}
+										</a>
+										<button type="button" class="btn btn-danger" onclick="deleteFile(${attach.no});">Danger</button>
+										<input name="IDX_${row.index }" id="IDX" type="hidden" value="${var.IDX }"/>
+										</span>
+									</c:if>
+								</c:forEach>
+								<div class="input-group mb-3">
+							  <input type="file" class="form-control" name="upFile" id="inputGroupFile01">
+							</div>
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -125,27 +135,64 @@ var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
 
+const deleteFile = no =>{
+	console.log(no)
+	const uploadedFile = $("#attach"+no);
+
+	const delConfirm = confirm("첨부파일을 지우시겠습니까?")
+	
+	if(delConfirm){
+	uploadedFile.remove();
+	
+	   $.ajax({
+			url : `${pageContext.request.contextPath}/board/deleteFile`,
+			data: JSON.stringify(no),
+			method:'POST',
+			contentType:"application/json; charset=utf-8",
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: data =>{
+				console.log(data)
+			
+				
+			},
+			error:console.log,
+
+		})   
+	}
+}
+
+
+
+
 const boardUpdate =()=>{
 	const no = ${board.no};
 	const title = $("[name=title]").val(); 
 	const content = $("[name=content]").val();
 	
-	const fil = $('[name=upFile]').get(0).files[0];
+	const upFile = $('[name=upFile]').get(0).files[0];
 	
-	console.log('${board.attachList}');
-	console.log(fil)
+	console.log(upFile)
+	
+	const attachList = '${board.attachList}';
+	const boardExt = '${board}';
+	console.log(boardExt)
+	console.log(attachList)
+	console.log(attachList != null)
 	
 	var formData = new FormData();
 	formData.append("no", no)
 	formData.append("title", title)
 	formData.append("content", content)
+	formData.append("upFile", upFile)
 	
-	if (fil != null){
+	if (upFile != null || attachList != null){
 		formData.append("hasAttachment", true);
 	} else {
-		formData.append("hasAttachment", false);
+		formData.append("hasAttachment", false)	;
 	}
-	
+
 	const board = {};
 	//가져옴 폼데이터를 foreach 저장
 	formData.forEach((value, key)=>{
@@ -153,7 +200,7 @@ const boardUpdate =()=>{
 	})
 	console.log(board)
 	
-	 $.ajax({
+	   $.ajax({
 		url : `${pageContext.request.contextPath}/board/boardUpdate`,
 		data:formData,
 		contentType: false,
@@ -170,7 +217,7 @@ const boardUpdate =()=>{
 		},
 		error:console.log,
 
-	}) 
+	})   
 	
 }
 

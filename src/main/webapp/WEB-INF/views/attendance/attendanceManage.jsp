@@ -5,9 +5,7 @@
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
-<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css'
-	rel='stylesheet'>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"

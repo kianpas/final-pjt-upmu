@@ -3,6 +3,7 @@ package com.fpjt.upmu.common.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ import com.fpjt.upmu.employeeList.model.service.EmployeeListService;
 import com.fpjt.upmu.employeeList.model.vo.Department;
 import com.fpjt.upmu.employeeList.model.vo.Employee;
 import com.fpjt.upmu.employeeList.model.vo.Job;
+import com.fpjt.upmu.notice.model.service.NoticeService;
+import com.fpjt.upmu.notice.model.vo.Notice;
 
 import lombok.extern.slf4j.Slf4j;
 
