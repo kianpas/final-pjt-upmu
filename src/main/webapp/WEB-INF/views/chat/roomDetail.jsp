@@ -6,82 +6,89 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
-<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js" integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/sidebars.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/directMsg.css">  
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/directMsg.css">
+<%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/roomDetail.css"> --%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" /> 
+<style>
+#chat-list-container li{
+  border: 0 none;
+}
+</style>
+
 <sec:authentication property="principal" var="principal"/>
-
-
-
 <div class="container">
 	<div class="row justify-content-start">
-	<div class="flex-shrink-0 p-3 bg-white col-md-2" >
-    <!-- <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"> -->
-      <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-      <span class="fs-5 fw-semibold">${chatroom.title}</span>
- <!--    </a> -->
-    <ul class="list-unstyled ps-0">
-   
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#join-collapse" aria-expanded="false">
-          채널 리스트
-        </button>
-        <div class="collapse" id="join-collapse">
-        </div>
-      </li>
-      <li class="border-top my-3"></li>
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          유저 리스트
-        </button>
-        <div class="collapse" id="account-collapse">
-        </div>
-      </li>
-    </ul>
-     <button class="btn btn-primary" type="button" id="disconnect">나가기</button>
-  </div>
+		<div class="flex-shrink-0  col-md-2" >
+	     	<div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary">${chatroom.title}</h6>
+				</div>
+				<div class="card-body">
+					<ul class="list-unstyled ps-0">
+			      		<li class="mb-1">
+				       	<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#join-collapse" aria-expanded="false">
+				          채널 리스트
+				        </button>
+				        <div class="collapse" id="join-collapse">
+				        </div>
+			      		</li>
+			     		 <li class="border-top my-3"></li>
+				      <li class="mb-1">
+				        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+				          유저 리스트
+				        </button>
+				        <div class="collapse" id="account-collapse">
+				       </div>
+			   		 </li>
+	    			</ul>
+	     		<button class="btn btn-primary" type="button" id="disconnect">나가기</button>
+					</div>
+				</div>
+	  	</div>
 
-	
-	
 	<div class="col-md-10">
-	        <div class="col-md-8">
-	          <input type="hidden" id="receive_username"/>
+	   <div class="col-md-12">
+	      <input type="hidden" id="receive_username"/>
+	         <div class="card shadow mb-4">
+				<div class="card-header py-3">
+					<h6 class="m-0 font-weight-bold text-primary"></h6>
+				</div>
+				<div class="card-body">
+					<div id="cont" class="mb-3" style="height: 500px; overflow: auto; border:1px solid #fff;  border-radius: .55rem;">
+						<ul class="list-group list-group" id="chat-list-container">
+						</ul>
+					</div>
+					<div class="input-group mb-3" id="msg-input">
+					  <input type="text" id="msg" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+					  <button class="btn btn-primary" type="button" id="msgSend"><i class='bx bxs-send' ></i></button>
+					</div>
+					<div class="input-group mb-3" id="update-container" style="display:none;">
+					  <input type="text" class="form-control" placeholder="" id="updateInput" aria-label="Recipient's username" aria-describedby="button-addon2">
+					  <input type="hidden" name="msgNo" value="">
+						<button class="btn btn-info" type="button" id="button-addon2" onclick="updateMsgReal()"><i class='bx bxs-send' ></i></button>
+					</div>
+				</div>
+			</div>
 	        </div>
-		<div id="cont" class="mb-3" style="height: 500px; overflow: auto; border:1px solid;">
-			
-			<ul class="list-group list-group" id="greetings">
-			
-			</ul>
-		</div>
-			<div class="input-group mb-3" id="msg-input">
-			  <input type="text" id="msg" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <button class="btn btn-primary" type="button" id="msgSend"><i class='bx bxs-send' ></i></button>
-			</div>
-			<div class="input-group mb-3" id="update-container" style="display:none;">
-			  <input type="text" class="form-control" placeholder="" id="updateInput" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <input type="hidden" name="msgNo" value="">
-			  <button class="btn btn-info" type="button" id="button-addon2" onclick="updateMsgReal()"><i class='bx bxs-send' ></i></button>
-			</div>
-	
 		</div>
 	</div>
 	<!-- 오프캔버스 버튼 -->
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">주소록 오프캔버스</button>
-<button type="button" class="btn btn-primary" onclick="openChat();"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
+<!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><box-icon name='book' type='solid' color='#ffffff' ></box-icon></button>
+<button type="button" class="btn btn-primary" onclick="openChat();"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon> -->
 </button>
 </div>
 
 
 	<!-- 주소록 오프캔버스 -->
-	<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+	<!-- <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 	  <div class="offcanvas-header">
 	    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">주소록</h5>
 	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -102,9 +109,9 @@
 	     </div> 
 	    </div>
 	  </div>
-	</div>
+	</div> -->
 
-</div>
+
 
  <!-- 개인채팅창 -->
 <div class="card card-bordered" id="chat-pop">
@@ -128,15 +135,14 @@
     	<input type="hidden" name="messageNo" value="">
     	<span class="publisher-btn file-group"><i class='bx bxs-send' onclick="updateDmReal()"></i></span>
     </div>
-
 </div>
  
 <!-- 토스트 -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
   <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
-      <strong class="me-auto">Bootstrap</strong>
-      <small id="joinDate">11 mins ago</small>
+      <strong class="me-auto"></strong>
+      <small id="joinDate"></small>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body">
@@ -212,7 +218,7 @@
     	}		
 
     	//개인메세지 구독
-    	function dconnect() {
+    	/* function dconnect() {
     		const socket = new SockJS(
     				'${pageContext.request.contextPath}/websocket-chat');
     		stompClient = Stomp.over(socket);
@@ -275,7 +281,7 @@
     			
 
     		    })
-    		}			
+    		}			 */
 
 				
     			//채팅방에 참여한 인원 가져오는 펑션
@@ -345,7 +351,7 @@
 						contentType:"application/json; charset=utf-8",
 						success(data){
 							
-							const $container = $("#greetings");
+							const $container = $("#chat-list-container");
 							let html = '';
 						
 							$.each(data, function(key, value){
@@ -426,7 +432,7 @@
 
 
 				//개인메세지 가져오기
-    			const showDmList = (type, height) => {
+    			/* const showDmList = (type, height) => {
     				const username = ${principal.empNo};
     				const recvname = $("#receive_username").val();
 						$.ajax({
@@ -534,7 +540,7 @@
 					 }));
 
 				}
-    	
+    	 */
 				//입장
 				const sendUser = () => {
 					stompClient.send("/app/join", {}, JSON.stringify({
@@ -562,16 +568,18 @@
 
     				}));
     			}
-
+				
 				//dm 보내기
-    			const sendDM = (msg) => {
+    		/* 	const sendDM = (msg) => {
+    				
 					stompClient.send("/app/directMsg", {}, JSON.stringify({
     					'messageContent': $("#directMsg").val(),
     					'messageSender' : ${principal.empNo},
 						'messageReceiver' : $("#receive_username").val()
     				}));
-					$("#directMsg").val('');
-    			}
+    				
+					
+    			} */
 
     			
 				 	
@@ -618,8 +626,8 @@
 								
 							html += `</li>`;
 							
-	    			$("#greetings").append(html);
-	    			$("#cont").scrollTop($("#greetings")[0].scrollHeight);
+	    			$("#chat-list-container").append(html);
+	    			$("#cont").scrollTop($("#chat-list-container")[0].scrollHeight);
 	    		}
 
 	    		
@@ -664,9 +672,9 @@
 					
 	    		}
 
-	    		
+
 				//주소록리스트
-				const showAddrList = () => {
+				/* const showAddrList = () => {
 					
 					$.ajax({
 						url : `${pageContext.request.contextPath}/address/addrList/${principal.empNo}`,
@@ -696,14 +704,17 @@
 					})
 
 				};
+ */
+
+				
 				
 				//주소록에서 dm을 전달
-				const addDm = (id, name) =>{
+			/* 	const addDm = (id, name) =>{
 					$("#receive_username").val(id);
 					$("#dmName").text(name)
-					sendDM();
+					
 					showDmList();
-				}
+				} */
 
 				$("#dropdwonIcon", ".dropdown-item").click(e => {
 					console.log(e);
@@ -711,8 +722,8 @@
 				});
 
 				//주소록 삭제
-				const addrDelete = (addrNo) =>{
-					//임시 사번
+				/* const addrDelete = (addrNo) =>{
+					
 					const byEmp = ${principal.empNo};
 					const address = {addrNo};
 					console.log(address);
@@ -770,7 +781,7 @@
 						$icon.hide();
 						
 					})
-				}
+				} */
         	
 
 //챗룸 조인 여부 확인
@@ -805,11 +816,11 @@ const checkJoin = () => {
     			$(function() {
         			
     				chatList();
-    						
+    			/* 			
 					$("#dmSub").click(function(){
 						dconnect();
 						showDmList();
-					})
+					}) */
 		    				    				
     				$("#disconnect").click(function() {
     					sendDisconnect();
@@ -817,17 +828,19 @@ const checkJoin = () => {
     				}); 
     				
     				$("#nameSend").click(function() {
-    					
     					chatList();
-    					
-    					
+
     				});
+
+					$("#dmSend").click(e=> {
+						sendDM();
+						showDmList();
+					})
+    				
     				$("#msgSend").click(function() {
     					sendMessage();
     				});
 
-    				
-        		
         			
     			});
 

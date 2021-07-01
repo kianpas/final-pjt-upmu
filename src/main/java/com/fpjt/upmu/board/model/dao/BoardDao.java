@@ -35,5 +35,7 @@ public interface BoardDao {
 
 	void readCount(int no);
 
+	int deleteFile(int no);
+
 
 }

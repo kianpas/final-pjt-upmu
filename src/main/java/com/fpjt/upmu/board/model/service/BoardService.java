@@ -33,6 +33,8 @@ public interface BoardService {
 
 	void readCount(int no);
 
+	int deleteFile(int no);
+
 	
 
 }

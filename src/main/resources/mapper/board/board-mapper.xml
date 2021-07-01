@@ -6,7 +6,8 @@
 	<select id="selectBoardList" resultMap="boardExtMap">
 		select
 			b.*, e.emp_name,
-			(select count(*) from attachment where board_no = b.no) attach_count			
+			(select count(*) from attachment where board_no = b.no) attach_count,
+			(select count(*) from cmt where board_no = b.no) cmt_count		
 		from 
 			board b left join employee e
             on b.emp_no = e.emp_no
@@ -88,16 +89,17 @@
 		    a.upload_date,
 		    a.download_count,
 		    a.status,
-		    e.emp_name
+		    e.emp_name,
+		    (select count(*)from cmt where board_no = b.no) cmt_count
 		from  
 		    board b
 		  left join 
-		    attachment a
+		    (select * from attachment where status = 'Y') a
 		      on b.no = a.board_no
 		   left join 
             employee e
               on b.emp_no = e.emp_no
-		where b.no = #{no}
+		where b.no = #{no} 
 	</select>
 	<resultMap type="boardExt" id="boardCollectionMap">
 		<id column="no" property="no"/>
@@ -107,6 +109,7 @@
 		<result column="reg_date" property="regDate"/>
 		<result column="read_count" property="readCount"/>
 		<result column="emp_name" property="empName"/>
+		<result column="cmt_count" property="cmtCount"/>
 		<collection property="attachList" ofType="attachment">
 			<id column="attach_no" property="no"/>
 			<result column="board_no" property="boardNo"/>
@@ -138,6 +141,11 @@
 	<update id="readCount">
 		update board
 		set read_count = read_count + 1
+		where no = #{no}
+	</update>
+	<update id="deleteFile">
+		update attachment
+		set status = 'N'
 		where no = #{no}
 	</update>
 </mapper>

@@ -7,6 +7,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
  <meta name="_csrf" content="${_csrf.token}"/>
  <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <style>
@@ -25,34 +27,45 @@ button {
 div#board-container label.custom-file-label {
 	text-align: left;
 }
+.card-body{
+font-size: 0.8rem
+}
+box-icon{
+font-size: 10px!important;
+}
+
+#btn-container button{
+	margin-bottom: 0;
+}
 </style>
 <sec:authentication property="principal" var="principal" />
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="card shadow mb-4 col-10  px-0">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">${board.title}
-					${board.readCount}</h6>
+				<h6 class="m-0 fw-bold text-primary">${board.title}
+					(${board.cmtCount})</h6>
 			</div>
 			<div class="card-body">
-
 				<table class="table">
 					<tbody>
 						<tr>
 							<td>작성자</td>
-							<%-- <td>${mail.senderNo}</td> --%>
 							<td>${board.empName}</td>
 						</tr>
 						<tr>
-							<%-- <td>첨부파일</td>
-							<td><c:forEach items="${mail.attachList}" var="attach">
+							<td>첨부파일</td>
+							<td>
+								<c:forEach items="${board.attachList}" var="attach" varStatus="row">
 									<c:if test="${attach.originalFilename != null}">
-										<button type="button"
-											class="btn btn-outline-secondary btn-block"
-											onclick="location.href='${pageContext.request.contextPath}/mail/fileDownload.do?no=${attach.attachNo}';">
-											${attach.originalFilename}</button>
+									<span class="me-3">
+										<a href="#" onclick="location.href='${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
+										${attach.originalFilename}
+										</a>
+										</span>
 									</c:if>
-								</c:forEach></td> --%>
+								</c:forEach>
+							</td>
 						</tr>
 						<tr>
 							<td>등록일</td>
@@ -60,25 +73,22 @@ div#board-container label.custom-file-label {
 									dateStyle="full" /></td>
 						</tr>
 						<tr>
-							<td colspan="2" style="height: 50vh; overflow: auto">
+							<td>조회수</td>
+							<td>${board.readCount}</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="p-3" style="font-size:1rem; height: 50vh; overflow: auto">
 								<p>${board.content}</p>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 
-				<div class="table-responsive">
-					<c:forEach items="${board.attachList}" var="attach">
-						<button type="button" class="btn btn-outline-success btn-block"
-							onclick="location.href='${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
-							첨부파일 - ${attach.originalFilename}</button>
-					</c:forEach>
-				</div>
 				<c:if test="${board.empNo eq principal.empNo}">
-					<button type="button" class="btn btn-primary"
-						onclick="boardUpPage(${board.no});">수정</button>
-					<button type="button" class="btn btn-danger"
-						onclick="boardDelete(${board.no});">삭제</button>
+					<button type="button" class="btn btn-primary btn-sm"
+						onclick="boardUpPage(${board.no});"><box-icon name='edit-alt' color='#ffffff' ></box-icon></button>
+					<button type="button" class="btn btn-danger btn-sm"
+						onclick="boardDelete(${board.no});"><box-icon name='eraser' color='#ffffff' ></box-icon></button>
 				</c:if>
 
 				<div class="card mb-2">
@@ -152,12 +162,16 @@ const commentList = (boardNo) =>{
 					console.log(cmtNo, cmtContent, empNo, empName)
 					
 					html += `<li class="list-group-item">
-							<p>\${empName}</p>
+							<p class="fw-bold">\${empName}</p>
 							<p id="cmt\${cmtNo}">\${cmtContent}</p>`;
 						if(empNo == ${principal.empNo})	{
-						html +=	`<p id="btn-container">
-							<button type="button" id="edit-btn" class="btn btn-primary btn-sm" onClick="editComment(\${cmtNo});">수정</button>
-							<button type="button" class="btn btn-danger btn-sm" onClick="delComment(\${cmtNo});">삭제</button>
+						html +=	`<p id="btn-container" class="mb-0">
+							<button type="button" id="edit-btn" class="btn btn-primary btn-sm" onClick="editComment(\${cmtNo});">
+								<box-icon name='edit-alt'  color='#ffffff' ></box-icon>
+							</button>
+							<button type="button" class="btn btn-danger btn-sm" onClick="delComment(\${cmtNo});">
+								<box-icon name='eraser' color='#ffffff' >
+							</button>
 							</p>`;
 						}
 					   html+= `</li>`;

@@ -208,6 +208,7 @@ public class BoardController {
 			for (MultipartFile upFile : upFiles) {
 				log.debug("upFiles = {}", upFiles);
 				// input[name=upFile]로부터 비어있는 upFile이 넘어온다.
+				// 수정하고 첨부파일이 추가로 없으면 컨티뉴 처리됨
 				if (upFile.isEmpty())
 					continue;
 
@@ -225,6 +226,8 @@ public class BoardController {
 			}
 
 			log.debug("attachList = {}", attachList);
+			// board객체에 설정
+			boardExt.setAttachList(attachList);
 
 			int result = boardService.boardUpdate(boardExt);
 
@@ -259,5 +262,13 @@ public class BoardController {
 		return list;
 	}
 
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public int deleteFile(@RequestBody int no) {
+		log.debug("no {}", no);
+		
+		int result = boardService.deleteFile(no);
+		return 0;
+	}
 	
 }
