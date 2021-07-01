@@ -29,6 +29,7 @@
 			<div class="card-body">
 			
 				<nav id="docNav">
+					<a href="${pageContext.request.contextPath}/document/docMain">임시 메인버튼</a>
 					<div class="list-group" id="docEditorMenu">
 						<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>
 						<button type="button" class="list-group-item list-group-item-action" id="docFormAdd">새 문서양식 추가</button>
