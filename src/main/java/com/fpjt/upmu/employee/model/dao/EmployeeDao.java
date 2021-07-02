@@ -13,5 +13,15 @@ public interface EmployeeDao {
 	String selectId(Map<String, String> emp);
 
 	String selectCheckId(String id);
+
+	int insertPwSearch(Map<String, String> map);
+
+	String selectCheckPw(String id);
+
+	void deleteSearchPw(String id);
+
+	String selectPwSearchId(String authVal);
+
+	int updatePw(Map<String, String> map);
 	
 }

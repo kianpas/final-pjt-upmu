@@ -15,7 +15,7 @@
       <div class="sign-form">
         <div class="sign-up-htm">
          <div class="emp_phone">
-			<span class="find-id">이메일을 확인해주세요</span>
+			<span class="find-id">${msg}</span>
           </div>
         </div>
       </div>
