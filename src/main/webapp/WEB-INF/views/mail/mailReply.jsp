@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 <!-- bootstrap js: jquery load 이후에 작성할것.-->
@@ -15,7 +17,11 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mail.css" />
+
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 
 <%
 	String s = null;
@@ -35,6 +41,8 @@
 
 <script>
 var receiverArr = [];
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
 
 $(function(){
 	var sArr = new Array(<%= ss.length %>);
@@ -109,10 +117,22 @@ $(() => {
 			$("#toInput").val('');
 			let c = currentVal.split(',');
 			var a = c[0];
+
+			//공백 제거
+			if(a.indexOf(" ") != -1){
+				a = a.replace(/ /gi,"");
+			}
+			
+			if(a == ""){
+				alert("아무것도 입력하지 않으셨습니다.");
+
+				$(this).val("");
+				return false;	
+			}
 			
 			if(a.indexOf('@') != -1){
-				b = a.replace('@', '').split('.')[0];
-
+				b = "a" + a.replace('@', '').split('.')[0];
+				
 				for(var i = 0; i < $('.tf_edit').length; i++){
 					if($('.tf_edit').eq(i).attr("value") == a){
 							alert("받는 사람이 중복되었습니다.");
@@ -123,9 +143,9 @@ $(() => {
 				}
 
 				$("#toInput").before(
-						"<div class='box_address box_out' id=a" + b + ">" + 
+						"<div class='box_address box_out' id=" + b + ">" + 
 						"<em class='txt_address'>" + a + "</em>" + 
-						"<a href='javascript:delBtn(a" + b + ", 3);' class='btn_del' title='" + a + " 삭제'>" +
+						"<a href='javascript:delBtn(" + b + ");' class='btn_del' title='" + a + " 삭제'>" +
 							"<span> X</span>" + 
 						"</a>" + 
 						"<input class='tf_edit' type='hidden' value=" + a + ">" +
@@ -134,14 +154,23 @@ $(() => {
 
 			}
 			else {
-				//b = a;
+				for(var i = 0; i < $('.temp').length; i++){
+					if($('.temp').eq(i).attr("value") == a){
+							alert("받는 사람이 중복되었습니다.");
+
+							$(this).val("");
+							return false;
+						}
+				}
+				b = "a" + a;
+				
 				$("#toInput").before(
-						"<div class='box_address box_invalid' id=" + a + ">" + 
+						"<div class='box_address box_invalid' id=" + b + ">" + 
 						"<em class='txt_address'>" + a + "</em>" + 
-						"<a href='javascript:delBtn(" + a + ", 2);' class='btn_del' title='" + a + " 삭제'>" +
+						"<a href='javascript:delBtn(" + b + ");' class='btn_del' title='" + a + " 삭제'>" +
 							"<span> X</span>" + 
 						"</a>" + 
-						/* "<input class='tf_edit' type='hidden' value=" + a + ">" + */
+						"<input class='temp' type='hidden' value=" + a + " disabled>" +
 					"</div>"
 					);
 			}
@@ -155,6 +184,9 @@ $(() => {
 			url: "${pageContext.request.contextPath}/mail/searchReceiver.do",
 			data: {
 				searchReceiver: request.term
+			},
+			beforeSend: function(xhr){
+				xhr.setRequestHeader(header, token);
 			},
 			success(data){
 				console.log(data);
@@ -223,18 +255,9 @@ function beforeSubmit(){
 
 	mailFrm.submit();
 }
-function delBtn(b, i){
-	if(i == 1){
-		//console.log(b.id);
-		$("#" + b.id).remove();
-	}
-	else if (i == 2){
-		$("#" + b).remove();
-	}
-	else if (i == 3){
-		//console.log(b.id);
-		$("#" + b.id).remove();
-	}
+
+function delBtn(b){
+	$("#" + b.id).remove();
 }
 
 function goBack(){
@@ -244,53 +267,58 @@ function goBack(){
 </script>
 
 <div class="container">
-	<h4 class="page-header">메일 보내기</h4>
-	<form
-		name="mailFrm"
-		action="${pageContext.request.contextPath}/mail/mailEnroll.do"
-		method="post"
-		enctype="multipart/form-data"
-		onsubmit="return mailValidate();">
-		
-		<table class="table">
-		<tr>
-			<td style="width: 10%">보내는 사람</td>
-			<td>1</td> <%-- ${이름} --%>
-		</tr>
-		<tr>
-			<td style="width: 10%">받는 사람</td>
-			<td>
-				<div class = "address_info">
-					<!-- <input class="hiddenForBubble" type="text" aria-hidden="true" style="left: -10000px;width: 1px; position: absolute;" value> -->
-					<!-- <textarea id="toTextarea" class="tf-address"></textarea> -->
-					<input style="width: 40%" id="toInput" class="tf-address"/>
-					<br><span style="border: 1px; font-size:1px; color: #848485">사내 메일은 선택, 외부 이메일은 ,로 구분합니다.</span>
-					<input type="hidden" name="receiverArr" id="receiverArr" value=''>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width: 10%">제목</td>
-			<td><input type="text" name="mailTitle" id="mailTitle" style="width: 60%" required></td>
-		</tr>
-		<tr>
-			<td style="width: 10%">첨부</td>
-			<td>
-				 <div class="custom-file">
-				   <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple />
-				   <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-				 </div>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2"><textarea class="form-control" name="mailContent" rows="10"></textarea></td>
-		</tr>
-		</table>
-		<div class="text-right">
-			<input type="button" class="btn btn-outline-primary" onclick="beforeSubmit();"value="전송"/>
-			<button type="button" class="btn btn-outline-danger" onclick="goBack();">취소</button>
+	<div class="card">
+		<div class="card-header">
+			메일 보내기
 		</div>
-	</form>
+		<form:form
+			name="mailFrm"
+			action="${pageContext.request.contextPath}/mail/mailEnroll.do?${_csrf.parameterName}=${_csrf.token}"
+			method="post"
+			enctype="multipart/form-data"
+			onsubmit="return mailValidate();">
+		<div class="card-body">
+			<table class="table">
+			<tr>
+				<td style="width: 15%">보내는 사람</td>
+				<td><sec:authentication property="principal.empName"/></td> <%-- ${이름} --%>
+			</tr>
+			<tr>
+				<td>받는 사람</td>
+				<td>
+					<div class = "address_info">
+						<!-- <input class="hiddenForBubble" type="text" aria-hidden="true" style="left: -10000px;width: 1px; position: absolute;" value> -->
+						<!-- <textarea id="toTextarea" class="tf-address"></textarea> -->
+						<input style="width: 40%" id="toInput" class="tf-address"/>
+						<br><span style="border: 1px; font-size:1px; color: #848485">사내 메일은 선택, 외부 이메일은 ,로 구분합니다.</span>
+						<input type="hidden" name="receiverArr" id="receiverArr" value=''>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>제목</td>
+				<td><input type="text" name="mailTitle" id="mailTitle" style="width: 60%" required></td>
+			</tr>
+			<tr>
+				<td>첨부</td>
+				<td>
+					 <div class="custom-file">
+					   <input type="file" class="custom-file-input" name="upFile" id="upFile1" multiple />
+					   <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
+					 </div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><textarea class="form-control" name="mailContent" rows="10"></textarea></td>
+			</tr>
+			</table>
+			<div class="text-right">
+				<input type="button" class="btn btn-outline-primary" onclick="beforeSubmit();"value="전송"/>
+				<button type="button" class="btn btn-outline-danger" onclick="goBack();">취소</button>
+			</div>
+		</div>
+		</form:form>
+	</div>
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

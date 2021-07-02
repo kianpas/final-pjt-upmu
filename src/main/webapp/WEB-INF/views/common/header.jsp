@@ -106,6 +106,10 @@
        		<li class="nav-item">
               <a class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
+          </li>
        		
        		
        		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>

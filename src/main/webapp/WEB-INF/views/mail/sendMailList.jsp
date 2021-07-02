@@ -17,7 +17,13 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
+
 <script>
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+
 function goMailForm(){
 	location.href = "${pageContext.request.contextPath}/mail/mailForm.do";
 }
@@ -51,26 +57,27 @@ function chkAll(){
 }
 
 $(() => {
+
 	$("tr[data-no]").click(e=> {
 
 		var $tr = $(e.target).parents();
 		var no = $tr.data("no");
+		console.log("No : " + no);
 		//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + no;
 		location.href = "${pageContext.request.contextPath}/mail/sendMailView.do?no=" + no;
 	});
 
 	$( "#searchMail" ).autocomplete({
  		source: function(request, response){	 		
-  			var searchMap= {
- 		 			"searchTerm": request.term,
- 		 			"who": 1
-			
- 		 	};
+
  	 	  $.ajax({
 			url: "${pageContext.request.contextPath}/mail/searchMail.do",
-			data: 
-				searchMap
-			,
+			data: {
+				searchTerm: request.term,
+			},
+			beforeSend: function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
 			success(data){
 				console.log(data);
 				const {list} = data;
@@ -107,7 +114,7 @@ $(() => {
 });
 
 function deleteMail(){
-	//보낸 사람 삭제 구분 변수
+	//삭제 구분 변수
 	//1 : sender, 2 : receiver
 	var who = 1;
 	var valueArr = new Array();
@@ -131,11 +138,13 @@ function deleteMail(){
 					valueArr: valueArr,
 					who : who
 				},
+				beforeSend: function(xhr){
+					xhr.setRequestHeader(header, token);
+				},
 				success: function(result){
 					if(result == "OK"){
 						alert("삭제하였습니다.");
 						location.reload();
-						//window.location.href='${pageContext.request.contextPath}/mail/sendMailList.do?sender_no=1'
 					}
 					else {
 						alert("삭제 실패하였습니다.");	
@@ -149,44 +158,46 @@ function deleteMail(){
 </script>
 
 <div class="container">
-	<h4 class="page-header">보낸 메일함</h4>
+	<div class="card">
+		<div class="card-header">
+			보낸 메일함
+		</div>
+		<div class="card-body">
+			<input type="search" placeholder="메일 제목, 받은 사람, 내용 검색" id="searchMail" class="form-control col-sm-3 d-inline"/>
+			<div class="text-right"> 
+				<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
+				<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail();"/>
+			</div>
 	
-	<input type="search" placeholder="메일 제목, 받은 사람, 내용 검색" id="searchMail" class="form-control col-sm-3 d-inline"/>
-	<div class="text-right"> 
-		<input type="button" value="메일 보내기" id="writeBtn" class="btn btn-outline-primary" onclick="goMailForm();"/>
-		<input type="button" value="삭제" id="delBtn" class="btn btn-outline-danger" onclick="deleteMail();"/>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col" style="width: 10%">
+							선택
+							<input type="checkbox" id="checkAll" onchange="chkAll();">
+						</th>
+						<th scope="col" style="width: 30%">받은 사람</th>
+						<th scope="col" style="width: 40%">제목</th>
+						<th scope="col">발신일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${list}" var="mail">
+						<tr data-no="${mail.mailNo}">
+							<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
+							<td>
+								<c:set var="receiverAdd" value="${fn:replace(mail.receiverAdd, ':', '')}"/>
+								${receiverAdd}
+							</td>
+							<td>${mail.mailTitle}</td>
+							<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd HH:mm:ss"/></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		${pageBar}
+		</div>
 	</div>
-	
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th scope="col">
-					선택
-					<input type="checkbox" id="checkAll" onchange="chkAll();">
-				</th>
-				<th scope="col">받은 사람</th>
-				<th scope="col">제목</th>
-				<th scope="col">발신일</th>
-			</tr>
-			</thead>
-			<tbody>
-			<c:forEach items="${list}" var="mail">
-				<tr data-no="${mail.mailNo}">
-					<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
-					<%-- <td>${mail.receiverNo}</td> --%>
-					<%-- <td>${mail.receiverAdd}</td> --%>
-					<td>
-						<c:set var = "receiverAdd" value="${fn:replace(mail.receiverAdd, ':', '')}"/>
-						${receiverAdd}
-					</td>
-					<td>${mail.mailTitle}</td>
-					<td><fmt:formatDate value="${mail.sendDate}" pattern="yy-MM-dd HH:mm:ss"/></td>
-				</tr>
-			</c:forEach>
-			</tbody>
-		</table>
-	${pageBar}
-	
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

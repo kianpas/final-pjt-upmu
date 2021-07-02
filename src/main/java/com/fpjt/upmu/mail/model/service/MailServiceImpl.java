@@ -43,23 +43,23 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int selectMailTotalContents1(String i) {
-		return mailDao.selectMailTotalContents1(i);
+	public int selectReceiveTotalContents(String i) {
+		return mailDao.selectReceiveTotalContents(i);
 	}
 
 	@Override
-	public int selectMailTotalContents2(int i) {
-		return mailDao.selectMailTotalContents2(i);
+	public int selectSendTotalContents(int i) {
+		return mailDao.selectSendTotalContents(i);
 	}
 	
 	@Override
-	public List<Mail> selectMailList1(Map<String, Object> param, String i) {
-		return mailDao.selectMailList1(param, i);
+	public List<Mail> selectReceiveList(Map<String, Object> param, String i) {
+		return mailDao.selectReceiveList(param, i);
 	}
 
 	@Override
-	public List<Mail> selectMailList2(Map<String, Object> param, int i) {
-		return mailDao.selectMailList2(param, i);
+	public List<Mail> selectSendList(Map<String, Object> param, int i) {
+		return mailDao.selectSendList(param, i);
 	}
 
 	@Override
