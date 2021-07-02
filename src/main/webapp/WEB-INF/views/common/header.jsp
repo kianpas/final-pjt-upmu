@@ -108,7 +108,7 @@
           </li>
        		
        		
-       		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
+       		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
 </button>	
         </ul>
       </div>

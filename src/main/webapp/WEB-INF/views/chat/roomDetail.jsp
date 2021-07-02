@@ -29,13 +29,13 @@
 		<div class="flex-shrink-0  col-md-2" >
 	     	<div class="card shadow mb-4">
 				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">${chatroom.title}</h6>
+					<h6 class="m-0 fw-bold text-primary">${chatroom.title}</h6>
 				</div>
 				<div class="card-body">
 					<ul class="list-unstyled ps-0">
 			      		<li class="mb-1">
 				       	<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#join-collapse" aria-expanded="false">
-				          채널 리스트
+				          내가 참여한 채팅
 				        </button>
 				        <div class="collapse" id="join-collapse">
 				        </div>
@@ -43,7 +43,7 @@
 			     		 <li class="border-top my-3"></li>
 				      <li class="mb-1">
 				        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-				          유저 리스트
+				         현재 참여 직원
 				        </button>
 				        <div class="collapse" id="account-collapse">
 				       </div>
@@ -80,63 +80,9 @@
 	        </div>
 		</div>
 	</div>
-	<!-- 오프캔버스 버튼 -->
-<!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><box-icon name='book' type='solid' color='#ffffff' ></box-icon></button>
-<button type="button" class="btn btn-primary" onclick="openChat();"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon> -->
-</button>
 </div>
 
 
-	<!-- 주소록 오프캔버스 -->
-	<!-- <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-	  <div class="offcanvas-header">
-	    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">주소록</h5>
-	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-	  </div>
-	  <div class="offcanvas-body">
-	    <p></p>
-	    <div class="list-group list-group-flush border-bottom scrollarea" id="addrList">
-	      <div class="list-group-item list-group-item-action py-3 lh-tight" > 
-	        <div class="d-flex w-80 align-items-center justify-content-between">
-	          <strong class="mb-1">사람이름 </strong>
-	          <i id="dropdwonIcon" class='bx bx-dots-vertical-rounded bx-sm' data-bs-toggle="dropdown"></i>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-			    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateModal" data-no="" data-title="" id="updateBtn">방 이름 변경</a></li>
-			      <li><hr class="dropdown-divider"></li>
-			    <li><a class="dropdown-item">주소록 삭제</a></li>
-			  </ul>
-	        </div>
-	     </div> 
-	    </div>
-	  </div>
-	</div> -->
-
-
-
- <!-- 개인채팅창 -->
-<!-- <div class="card card-bordered" id="chat-pop">
- 	<div class="card-header">
- 		<h4 class="card-title"><strong id="dmName"></strong></h4>
-	</div>
-	<div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">               
-		<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-			<div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-        </div>
-        <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">
-            <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>
-        </div>
-    </div>
-    <div class="publisher bt-1 border-light" id="dm-input"> 
-    	<input class="publisher-input" type="text" placeholder="" id="directMsg"> 
-    	<span class="publisher-btn file-group"><i class='bx bxs-send' id="dmSend"></i></span>
-    </div>
-    <div class="publisher bt-1 border-light" id="dm-update" style="display:none;"> 
-    	<input class="publisher-input" type="text" placeholder="" id="updateDmInput" >
-    	<input type="hidden" name="messageNo" value="">
-    	<span class="publisher-btn file-group"><i class='bx bxs-send' onclick="updateDmReal()"></i></span>
-    </div>
-</div>
-  -->
 <!-- 토스트 -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
   <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">

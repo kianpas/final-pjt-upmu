@@ -7,15 +7,15 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
  <meta name="_csrf" content="${_csrf.token}"/>
  <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <style>
 div#board-container {
-	width: 800px;
+	
 }
 
-input, button, textarea {
+input, textarea {
 	margin-bottom: 15px;
 }
 
@@ -36,11 +36,14 @@ font-size: 10px!important;
 #btn-container button{
 	margin-bottom: 0;
 }
+.editDel-btn{
+	margin-bottom: 15px;
+}
 </style>
 <sec:authentication property="principal" var="principal" />
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="card shadow mb-4 col-10  px-0">
+		<div class="card shadow mb-4  px-0">
 			<div class="card-header py-3">
 				<h6 class="m-0 fw-bold text-primary">${board.title}
 					(${board.cmtCount})</h6>
@@ -82,12 +85,14 @@ font-size: 10px!important;
 						</tr>
 					</tbody>
 				</table>
-
+				
 				<c:if test="${board.empNo eq principal.empNo}">
+				<div class="editDel-btn">
 					<button type="button" class="btn btn-primary btn-sm"
 						onclick="boardUpPage(${board.no});"><box-icon name='edit-alt' color='#ffffff' ></box-icon></button>
 					<button type="button" class="btn btn-danger btn-sm"
 						onclick="boardDelete(${board.no});"><box-icon name='eraser' color='#ffffff' ></box-icon></button>
+				</div>
 				</c:if>
 
 				<div class="card mb-2">
