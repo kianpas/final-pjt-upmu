@@ -48,47 +48,4 @@
   </div>
   <br /><br /><br />
 </body>
-<script>
-/* $("#emp_no1").keyup(e => {
-	const emp_no = $(e.target).val();
-	const $error = $(".guide.error");
-	const $ok = $(".guide.ok");
-	const $emp_noValid = $("#emp_noValid");
-	
-	if(emp_no.length <4) {
-		$(".guide").hide();
-		$emp_noValid.val(0);
-		return;
-	}
-	
-	$.ajax({
-		url: "${pageContext.request.contextPath}/member/checkemp_noDuplicate3.do",
-		data: {emp_no},
-		success: (data) => {
-			console.log(data);
-			const {available} = data;
-			if(available){
-				$ok.show();
-				$error.hide();
-				$emp_idValid.val(1);
-			}
-			else {
-				$ok.hide();
-				$error.show();
-				$emp_idValid.val(0);
-			}
-		},
-		error: (xhr, statusText, err) => {
-			console.log(xhr, statusText, err);
-		}
-	});
-});
-$("#passwordCheck").blur(function() {
-	var $password = $("#password"), $passwordCheck = $("#passwordCheck");
-	if($password.val() != $passwordCheck.val()){
-		alert("비밀번호가 일치하지 않습니다.");
-		$password.select();
-	}
-}); */
-</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

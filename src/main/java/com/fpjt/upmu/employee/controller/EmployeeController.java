@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,35 +34,31 @@ public class EmployeeController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	@GetMapping("/empLogin.do")
-	public void EmpLogin() {
-	}
+	public void EmpLogin() {}
 
 	@GetMapping("/empEnroll.do")
-	public void EmpEnroll() {
-	}
+	public void EmpEnroll() {}
 
 	@GetMapping("/empIdPwSearch.do")
-	public void EmpIdPwdSearch() {
-	}
+	public void EmpIdPwdSearch() {}
 
 	@GetMapping("/jusoPopup.do")
-	public void jusoPopup() {
-	}
-
+	public void jusoPopup() {}
+	
+	@GetMapping("/empPwSearch")
+	public void empPwSearch() {}
+	
 	@PostMapping("/jusoPopup.do")
-	public void jusoPost() throws Exception {
-	}
-
+	public void jusoPost() throws Exception {}
+	
 	@PostMapping("/empEnroll.do")
 	public String EmployeeEnroll(Employee employee, RedirectAttributes redirectAttr) {
 
 		try {
-			log.info("Employee = {}", employee);
 			// 0. 비밀번호 암호화처리
 			String rawPassword = employee.getEmpPw();
 			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
 			employee.setEmpPw(encodedPassword);
-			log.info("Employee(암호화처리이후) = {}", employee);
 
 			// 1. 업무로직
 			int result = empService.insertEmployee(employee);
@@ -111,124 +108,67 @@ public class EmployeeController {
 	public void mailIdPwSearch(Employee employee, Model model) {
 		log.debug("emppw = {}", employee); 
 		String msg;
+		Map<String, String> map = new HashMap<>();
+		String id = employee.getEmpEmail();
+		String no = empService.selectCheckId(id);
+		
 		try {
-			//Id체크
-			String id = employee.getEmpEmail();
-			String no = empService.selectCheckId(id);
-			String encodedid = bcryptPasswordEncoder.encode(id);
+			//권한 중복 체크(중복 시 삭제)
+			String checkId = empService.selectCheckPwSearch(id);
+			
+			if(checkId != null) {
+				empService.deleteSearchPw(id);
+			}
+			//id체크
 			if(no != null) {
-				int authRandNum = (int)Math.random();
-				msg = empService.sendMail(id);
+				//패스워드 변경 권한 번호 생성
+				int authRandNum = (int)(Math.random() + 1)*10000;
+				String num = Integer.toString(authRandNum);
+				String encodedNum = bcryptPasswordEncoder.encode(num);
+				
+				//권한 번호 DB저장
+				map.put("num", encodedNum);
+				map.put("id", id);
+				int result = empService.insertPwSearch(map);
+				
+				//메일 보내기
+				msg = empService.sendMail(id, encodedNum);
 				model.addAttribute("msg", msg);
 			}
 			else {
-				model.addAttribute("noMsg", "아이디가 존재하지 않습니다.");
+				model.addAttribute("msg", "아이디가 존재하지 않습니다.");
 			}
 		} catch (Exception e) {
 			log.error("비밀번호 찾기 오류!", e);
 		}
 	}
-	/*
-	 * @PostMapping("/empPwSearch.do") public void empIdPwSearch(Employee employee)
-	 * { log.debug("emppw = {}", employee); try { String id =
-	 * employee.getEmpEmail();
-	 * 
-	 * String no = empService.selectCheckId(id);
-	 * 
-	 * if(no != null) {
-	 * 
-	 * } else {
-	 * 
-	 * } } catch (Exception e) { log.error("비밀번호 찾기 오류!", e); } }
-	 */
-	 
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//		PropertyEditor editor = new CustomDateEditor(format, true);
-//		binder.registerCustomEditor(Date.class, editor);
-//	}
-//	
-//	@PostMapping("/EmployeeLogin.do")
-//	public String EmployeeLogin(
-//					@RequestParam int emp_no, 
-//					@RequestParam String password,
-//					@SessionAttribute(required = false) String next,
-//					Model model,
-//					RedirectAttributes redirectAttr) {
-//		
-//		//1. 업무로직
-//		Employee Employee = EmployeeService.selectOneEmployee(emp_no);
-//		log.info("Employee = {}", Employee);
-////		log.info("encryptedPassword = {}", bcryptPasswordEncoder.encode(password));
-//		
-//		
-//		//2. 로그인여부 분기처리
-//		if(Employee != null && bcryptPasswordEncoder.matches(password, Employee.getEmp_pw())) {
-//			// 로그인 성공
-//			// loginEmployee 세션속성으로 저장하려면, class에 @SessionAttributes로 등록
-//			model.addAttribute("loginEmployee", Employee);
-//			//사용한 next값은 제거
-//			model.addAttribute("next", null);
-//		}
-//		else {
-//			// 로그인 실패
-//			redirectAttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 틀립니다.");
-//			return "redirect:/Employee/EmployeeLogin.do";
-//		}
-//		
-//		
-//		return "redirect:" + (next != null ? next : "/");
-//	}
-//	
-//	@GetMapping("/EmployeeLogout.do")
-//	public String EmployeeLogout(SessionStatus status) {
-//		if(!status.isComplete())
-//			status.setComplete();
-//		return "redirect:/";
-//	}
-//	
-//	@GetMapping("/EmployeeDetail.do")
-//	public ModelAndView EmployeeDetail(ModelAndView mav, @SessionAttribute(name = "loginEmployee") Employee loginEmployee) {
-//		log.info("loginEmployee = {}", loginEmployee);
-//		//속성 저장
-//		mav.addObject("time", System.currentTimeMillis());
-//		//viewName 설정
-//		mav.setViewName("Employee/EmployeeDetail");
-//		return mav;
-//	}
-//	
-//	@PostMapping("/EmployeeUpdate.do")
-//	public ModelAndView EmployeeUpdate(
-//								@ModelAttribute Employee Employee,
-//								@ModelAttribute("loginEmployee") Employee loginEmployee,
-//								ModelAndView mav, 
-//								HttpServletRequest request
-//							) {
-//		log.debug("Employee = {}", Employee);
-//		log.debug("loginEmployee = {}", loginEmployee);
-//		
-//		try {
-//			int result = EmployeeService.updateEmployee(Employee);
-//			
-//			
-//			//리다이렉트시 자동생성되는 queryString 방지
-//			RedirectView view = new RedirectView(request.getContextPath() + "/Employee/EmployeeDetail.do");
-//			view.setExposeModelAttributes(false);
-//			mav.setView(view);
-//			
-//			
-//			//ModelAndView와 RedirectAttributes 충돌시 FlashMap을 직접 사용
-//			FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
-//			flashMap.put("msg", "사용자 정보 수정 성공!!!!!!");
-////			redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공!");
-//			
-//		} catch (Exception e) {
-//			log.error("사용자 정보 수정 오류!", e);
-//			throw e;
-//		}
-//		return mav;
-//	}
-//	
+	
+	  @PostMapping("/empPwSearch.do") 
+	  public String empPwSearch(String empPw, String authVal, RedirectAttributes redirectAttr){		  
+		log.debug(empPw); 
+		log.debug(authVal); 
+		// 0. 비밀번호 암호화처리
+		String rawPassword = empPw;
+		String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+		
+		try {
+			// 1. 업무로직
+			String id = empService.selectPwSearchId(authVal);
+			log.debug(id);
+			empService.deleteSearchPw(id);
+
+			Map<String, String> map = new HashMap<>();
+			map.put("pw", encodedPassword);
+			map.put("id", id);
+			
+			int result = empService.updatePw(map);
+			// 2. 사용자피드백
+			redirectAttr.addFlashAttribute("msg", "비밀번호 재설정 완료");			
+		} catch (Exception e) {
+			log.error("비밀번호 찾기 후 재설정 오류", e);
+			return "redirect:/common/accessDenied.do";
+		}
+		return "redirect:/";
+	  }
 
 }

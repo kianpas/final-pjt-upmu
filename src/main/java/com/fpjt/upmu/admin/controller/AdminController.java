@@ -22,7 +22,7 @@ public class AdminController {
 	EmployeeListService elService;
 	
 	//부서목록 불러오기
-	@GetMapping("/eListAdmin")
+	@GetMapping("/eListAdmin.do")
 	public void eListAdmin(Model model) {	
 		try {
 			List<Department> dList = elService.selectDeptList();

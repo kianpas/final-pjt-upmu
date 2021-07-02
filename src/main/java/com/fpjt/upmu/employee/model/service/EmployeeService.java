@@ -14,5 +14,16 @@ public interface EmployeeService {
 
 	String selectCheckId(String id);
 
-	String sendMail(String id);
+	String sendMail(String id, String encodedNum);
+
+	int insertPwSearch(Map<String, String> map);
+
+	String selectCheckPwSearch(String id);
+
+	void deleteSearchPw(String id);
+
+	String selectPwSearchId(String authVal);
+
+	int updatePw(Map<String, String> map);
+
 }
