@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +18,7 @@
 </head>
 <body>
 <input id="pw-check" type="hidden" value="${msg}">
+<input name="empNoPrin" type="hidden" value="<sec:authentication property="principal.empNo"/>">
 <form:form action="${pageContext.request.contextPath}/common/myProfile.do" id="form" method="POST">
 <div class="container">
     <div class="input-form-backgroud row">
@@ -124,8 +126,16 @@
   </div>
 </form:form>
 <script>
-if($("#pw-check").val() != '')
+//잘못된 처리됐을 경우 처리
+if($("#pw-check").val() != ''){	
 	alert($("#pw-check").val());
+	
+	if($("#pw-check").val().includes("접근")){
+		location.href="${pageContext.request.contextPath}"
+	}
+}
+
+//절취선
   window.addEventListener('load', () => {
     const forms = document.getElementsByClassName('validation-form');
 
@@ -140,6 +150,7 @@ if($("#pw-check").val() != '')
       }, false);
     });
   }, false);
+  
 //현재 비밀번호 유효성 검사
 var pwValid = 1;
 $("#now_pw").keyup(e => {
@@ -168,7 +179,6 @@ $("#now_pw").keyup(e => {
 
 //변경 비밀번호 유효성 검사
 var pwValid2 = 0;
-console.log(pwValid2);
 $("#emp_pw").keyup(e => {
 	const pw = $(e.target).val();
 	const $pwError1 = $(".pwError1");

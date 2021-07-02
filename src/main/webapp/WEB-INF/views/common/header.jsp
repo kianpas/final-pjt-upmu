@@ -106,10 +106,12 @@
        		<li class="nav-item">
               <a class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/admin/eListAdmin.do" style="width: 100px;">관리페이지</a>
-          </li>
+          <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+	          <li class="nav-item">
+	            <a class="nav-link active" aria-current="page"
+	              href="${pageContext.request.contextPath}/admin/eListAdmin.do" style="width: 100px;">관리페이지</a>
+	          </li>
+          </sec:authorize>
        		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
 			</button>	
         </ul>
@@ -186,7 +188,6 @@
 	
 	
 <input type="hidden" id="receive_username"/>
-
 <script>
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
