@@ -81,11 +81,21 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	
-	
 	@Override
 	public int boardUpdate(BoardExt boardExt) {
+		int result = 0; 
+		//1.board 등록
+		result = boardDao.boardUpdate(boardExt);
+		log.debug("boardExt = {}", boardExt);
+		//2.attachment 등록
+		if(boardExt.getAttachList().size() > 0) {
+			for(Attachment attach : boardExt.getAttachList()) {
+				attach.setBoardNo(boardExt.getNo()); 
+				result = insertAttachment(attach);
+			}
+		}
+		return result;
 		
-		return boardDao.boardUpdate(boardExt);
 	}
 
 	@Override
@@ -104,6 +114,12 @@ public class BoardServiceImpl implements BoardService {
 	public void readCount(int no) {
 		boardDao.readCount(no);
 		
+	}
+
+	@Override
+	public int deleteFile(int no) {
+		
+		return boardDao.deleteFile(no);
 	}
 	
 	

@@ -9,7 +9,9 @@
 <meta charset="UTF-8">
 <title>조직원 리스트</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eListForDoc.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eListForDoc.css?after" />
 </head>
 <body>
 
@@ -35,7 +37,7 @@
 			<c:set var="approverTypeArray">approver,agreer,enforcer,referer</c:set>
 			<c:forEach var="approverType" items="${approverTypeArray}">
 			<div class="listBox">
-				<button name="approver-btn" value="${approverType}">
+				<button type="button" class="btn btn-outline-primary btn-block" name="approver-btn" value="${approverType}">
 					<c:choose>
 						<c:when test="${approverType eq 'approver'}">결재자</c:when>
 						<c:when test="${approverType eq 'agreer'}">합의자</c:when>
@@ -44,17 +46,18 @@
 					</c:choose>
 				▼</button>
 				<select id="${approverType}" size="5" ></select>
-				<div>
-					<span id="optUp" style="cursor: pointer;">▲</span>&nbsp&nbsp
-					<span id="optDown"  style="cursor: pointer;">▼</span>&nbsp&nbsp
-					<span id="optDel"  style="cursor: pointer;">X</span>
+				<div>			
+					<button class="btn btn-outline-secondary" id="optUp">▲</button>
+					<button class="btn btn-outline-secondary" id="optDown">▼</button>
+					<button class="btn btn-outline-secondary" id="optDel">Ｘ</button>
 				</div>
 			</div>
 			</c:forEach>
 		</div>
-		
-		<button type="button" onclick="saveBtn();">저장</button>
-		<button type="button" onclick="window.close();">닫기</button>
+		<div class="right-down">
+			<button type="button" class="btn btn-outline-success" onclick="saveBtn();">저장</button>
+			<button type="button" class="btn btn-outline-danger" onclick="window.close();">닫기</button>
+		</div>
 	</div>
 	
 </div>
@@ -76,7 +79,6 @@ $(document).on('click', '#optDel', function(e) {
 
 
 function saveBtn(){
-	//let html = `<table><tr><th>결재종류</th><th>직위</th><th>이름</th></tr>`;
 	let html = `<table class="table" id="docLineTable">
 					<tr>
 						<th scope="col">결재종류</th>
@@ -85,7 +87,6 @@ function saveBtn(){
 					</tr>
 				`;
 
-	//dataset : empno empName approvertype empjob
 	$optArr = $("option")
 	let apvCnt = 0;
 	
@@ -124,8 +125,6 @@ function saveBtn(){
 		html+=`<input type="hidden" name="docLines[\${apvCnt-1}].maxAuthority" value="Y"/>`;
 		
 	}
-	
-	
 
 	html += "</table>";
 	$(opener.document).find("#docLineDiv").html(html);

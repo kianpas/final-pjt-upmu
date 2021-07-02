@@ -69,6 +69,28 @@ public class DocController {
 	//Notice 임시출력을 위한 코드
 	@Autowired
 	private NoticeService noticeService;
+
+	//testCode
+	@GetMapping("/docMenu")
+	public String docMenu(Authentication authentication, Model model) {
+		log.debug("test");
+		
+		int tempVal = 382;
+		model.addAttribute("tempVal", tempVal);
+		return "document/docMenu";
+	}
+	@GetMapping("/example")
+	public String example(Authentication authentication, Model model) {
+		Employee principal = (Employee) authentication.getPrincipal();
+		int empNo = principal.getEmpNo();
+		
+		List<Notice> noticeList = noticeService.selectNoticeList(empNo);
+		int noticeCount = noticeService.countNoticeList(empNo);
+	
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("noticeCount", noticeCount);
+		return "document/example";
+	}		
 	
 	//원래 docMain코드
 //	@GetMapping("/docMain")

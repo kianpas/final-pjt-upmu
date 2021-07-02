@@ -38,6 +38,9 @@
 			onsubmit="return documentValidate();">
 
 			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="inputGroupSelect01">문서양식</label>
+				</div>
 				<select class="custom-select" id="docFrmSelect">
 					<option selected>문서양식을 선택하세요</option>
 					<c:forEach items="${docFormList }" var="docForm">
@@ -228,7 +231,7 @@ $(document).on('change', '[name=upFile]', function(e) {
 /* docLine Popup */
 $("#docLineBtn").click(function(){
 	// 새창에 대한 세팅(옵션)
-    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,height=400,width=800,left=0,top=0';
+    var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,height=520,width=970,left=0,top=0';
     // 자식창을 열고 자식창의 window 객체를 windowObj 변수에 저장
     windowObj = window.open("${pageContext.request.contextPath}/employeeList/eListForDoc","자식창",settings);
     

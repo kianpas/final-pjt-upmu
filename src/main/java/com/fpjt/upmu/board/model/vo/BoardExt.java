@@ -15,5 +15,6 @@ public class BoardExt extends Board {
 	private boolean hasAttachment;
 	private List<Attachment> attachList;
 	private String empName;
+	private int cmtCount;
 	
 }
