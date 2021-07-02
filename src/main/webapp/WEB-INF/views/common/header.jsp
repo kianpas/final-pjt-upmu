@@ -414,7 +414,7 @@ const updateDmReal = () => {
 	stompClient.send("/app/updateDm", {}, JSON.stringify({
 		'messageContent': messageContent,
 		'messageNo' : messageNo,
-		'messageReceiver' : localStorage.getItem("recvname")
+		'messageReceiver' : localStorage.getItem("dmId")
 	}));
 
 	$("#dm-input").show();
@@ -426,7 +426,7 @@ const deleteDm = (messageNo) => {
 	console.log(messageNo);
 	
 	 stompClient.send("/app/deleteDm", {}, JSON.stringify({
-		 'messageReceiver' : localStorage.getItem("recvname"),
+		 'messageReceiver' : localStorage.getItem("dmId"),
 			'messageNo' : messageNo
 			
 	 }));
@@ -438,7 +438,7 @@ const sendDM = (msg) => {
 	stompClient.send("/app/directMsg", {}, JSON.stringify({
 		'messageContent': $("#directMsg").val(),
 		'messageSender' : ${principal.empNo},
-		'messageReceiver' : localStorage.getItem("recvname")
+		'messageReceiver' : localStorage.getItem("dmId")
 	}));
 	
 	
