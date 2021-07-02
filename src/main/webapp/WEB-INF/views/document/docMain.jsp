@@ -52,6 +52,7 @@ button.close {
 <section>
 	<article>
 	<c:import url="/notice/noticeBtn"></c:import>
+	test
 <%-- 		<div class="dropdown">
 			<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				알림 &nbsp
