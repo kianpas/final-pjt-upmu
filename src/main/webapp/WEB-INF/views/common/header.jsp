@@ -124,7 +124,7 @@
       <!-- 로그인이후 -->
       <sec:authorize access="isAuthenticated()">
       
-      <c:import url="notice/noticeBtn"></c:import>
+      <c:import url="/notice/noticeBtn"></c:import>
       
       <sec:authentication property="principal" var="principal" />
 		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
