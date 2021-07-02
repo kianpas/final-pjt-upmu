@@ -8,15 +8,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
  <meta name="_csrf" content="${_csrf.token}"/>
  <meta name="_csrf_header" content="${_csrf.headerName}"/>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <style>
 div#board-container {
 	width: 400px;
@@ -105,8 +97,8 @@ function goBack(){
 										<a href="#" onclick="location.href='${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
 										${attach.originalFilename}
 										</a>
-										<button type="button" class="btn btn-danger" onclick="deleteFile(${attach.no});">Danger</button>
-										<input name="IDX_${row.index }" id="IDX" type="hidden" value="${var.IDX }"/>
+										<button type="button" class="btn btn-danger btn-sm" onclick="deleteFile(${attach.no});"><box-icon name='x-circle' size="xs"></box-icon></button>
+										
 										</span>
 									</c:if>
 								</c:forEach>

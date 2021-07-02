@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 public class Mail {
 	
 	private int mailNo;
-//	private int senderNo;
-	private String senderAdd;
-//	private int receiverNo;
+	private int senderAdd;
 	private String receiverAdd;
 	private String mailTitle;
 	private String mailContent;
@@ -23,6 +21,9 @@ public class Mail {
 	//
 	private int senderDel;
 	private int receiverDel;
+	
+	//
+	private String senderName;
 	
 
 }

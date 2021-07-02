@@ -6,11 +6,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-<script
+<!-- <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
+ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js" integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/sidebars.css">
@@ -29,13 +29,13 @@
 		<div class="flex-shrink-0  col-md-2" >
 	     	<div class="card shadow mb-4">
 				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">${chatroom.title}</h6>
+					<h6 class="m-0 fw-bold text-primary">${chatroom.title}</h6>
 				</div>
 				<div class="card-body">
 					<ul class="list-unstyled ps-0">
 			      		<li class="mb-1">
 				       	<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#join-collapse" aria-expanded="false">
-				          채널 리스트
+				          내가 참여한 채팅
 				        </button>
 				        <div class="collapse" id="join-collapse">
 				        </div>
@@ -43,7 +43,7 @@
 			     		 <li class="border-top my-3"></li>
 				      <li class="mb-1">
 				        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-				          유저 리스트
+				         현재 참여 직원
 				        </button>
 				        <div class="collapse" id="account-collapse">
 				       </div>
@@ -73,70 +73,16 @@
 					<div class="input-group mb-3" id="update-container" style="display:none;">
 					  <input type="text" class="form-control" placeholder="" id="updateInput" aria-label="Recipient's username" aria-describedby="button-addon2">
 					  <input type="hidden" name="msgNo" value="">
-						<button class="btn btn-info" type="button" id="button-addon2" onclick="updateMsgReal()"><i class='bx bxs-send' ></i></button>
+						<button class="btn btn-info" type="button" id="up-btn" onclick="updateMsgReal()"><i class='bx bxs-send' ></i></button>
 					</div>
 				</div>
 			</div>
 	        </div>
 		</div>
 	</div>
-	<!-- 오프캔버스 버튼 -->
-<!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><box-icon name='book' type='solid' color='#ffffff' ></box-icon></button>
-<button type="button" class="btn btn-primary" onclick="openChat();"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon> -->
-</button>
 </div>
 
 
-	<!-- 주소록 오프캔버스 -->
-	<!-- <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-	  <div class="offcanvas-header">
-	    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">주소록</h5>
-	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-	  </div>
-	  <div class="offcanvas-body">
-	    <p></p>
-	    <div class="list-group list-group-flush border-bottom scrollarea" id="addrList">
-	      <div class="list-group-item list-group-item-action py-3 lh-tight" > 
-	        <div class="d-flex w-80 align-items-center justify-content-between">
-	          <strong class="mb-1">사람이름 </strong>
-	          <i id="dropdwonIcon" class='bx bx-dots-vertical-rounded bx-sm' data-bs-toggle="dropdown"></i>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-			    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateModal" data-no="" data-title="" id="updateBtn">방 이름 변경</a></li>
-			      <li><hr class="dropdown-divider"></li>
-			    <li><a class="dropdown-item">주소록 삭제</a></li>
-			  </ul>
-	        </div>
-	     </div> 
-	    </div>
-	  </div>
-	</div> -->
-
-
-
- <!-- 개인채팅창 -->
-<div class="card card-bordered" id="chat-pop">
- 	<div class="card-header">
- 		<h4 class="card-title"><strong id="dmName"></strong></h4>
-	</div>
-	<div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">               
-		<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-			<div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-        </div>
-        <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">
-            <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>
-        </div>
-    </div>
-    <div class="publisher bt-1 border-light" id="dm-input"> 
-    	<input class="publisher-input" type="text" placeholder="" id="directMsg"> 
-    	<span class="publisher-btn file-group"><i class='bx bxs-send' id="dmSend"></i></span>
-    </div>
-    <div class="publisher bt-1 border-light" id="dm-update" style="display:none;"> 
-    	<input class="publisher-input" type="text" placeholder="" id="updateDmInput" >
-    	<input type="hidden" name="messageNo" value="">
-    	<span class="publisher-btn file-group"><i class='bx bxs-send' onclick="updateDmReal()"></i></span>
-    </div>
-</div>
- 
 <!-- 토스트 -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
   <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
@@ -197,8 +143,8 @@
     				
 				});
 				//삭제 구독
-				stompClient.subscribe(`/topic/chat/deleted/${chatroomNo}`, frame => {
-					    				
+				stompClient.subscribe(`/topic/chat/deleted/${chatroomNo}`, frame => {			
+					console.log(frame)
     				chatList();
     				
 				});
@@ -351,36 +297,47 @@
 						contentType:"application/json; charset=utf-8",
 						success(data){
 							
-							const $container = $("#chat-list-container");
-							let html = '';
-						
-							$.each(data, function(key, value){
-								const username = ${principal.empNo};
-								//console.log(value);
-								const {msgNo, chatroomNo, writerNo, msg, regDate, empName} = value;
-								const location = $container[0].scrollHeight;
-								console.log(username)
-								console.log(writerNo)
-								html += `<li class="list-group-item d-flex justify-content-between align-items-start" 
-											id="\${msgNo}" data-lo="\${location}" onmouseover="showIcon(\${msgNo})">
-											    <div class="ms-2 me-auto">
-											      <div class="fw-bold">\${empName}</div>
-											      \${msg}
-											    </div>`;
-										if(username == writerNo){    
-												html += `<div class="icon-container"><box-icon type='solid' name='edit'
-													onclick="updateMsg(\${msgNo}, '\${msg}')"></box-icon>
-													<box-icon name='x'  
-												    onclick="deleteMsg(\${msgNo})"></box-icon></div>`;
-											}
-											
-										html += `</li>`;
+							if(data!=null){
+							
+								const $container = $("#chat-list-container");
+								let html = '';
+								$.each(data, function(key, value){
+									
+									const username = ${principal.empNo};
+									//console.log(value);
+									const {msgNo, chatroomNo, writerNo, msg, regDate, empName} = value;
+									const location = $container[0].scrollHeight;
+									
+									html += `<li class="list-group-item d-flex justify-content-between align-items-start" 
+												id="\${msgNo}" data-lo="\${location}" onmouseenter="showIcon(\${msgNo})">
+												    <div class="ms-2 me-auto">
+												      <div class="fw-bold">\${empName}</div>
+												      \${msg}
+												    </div>`;
+											if(username == writerNo){    
+													html += `<div class="icon-container"><box-icon type='solid' name='edit'
+														onclick="updateMsg(\${msgNo}, '\${msg}')"></box-icon>
+														<box-icon name='x'  
+													    onclick="deleteMsg(\${msgNo})"></box-icon></div>`;
+												}
+												
+											html += `</li>`;
+									
+								})
 								
 								$container.html(html);
+							} else {
 								
-							})
+								const $container = $("#chat-list-container");
+								html = '';
+								$container.html(html);
+							}
+							
+							
 							//업데이트한 경우 업데이트한 메세지 위치로 이동
+							const $container = $("#chat-list-container");
 							if(type=="up"){
+								
 								$("#cont").scrollTop(height);
 							} else {
 								$("#cont").scrollTop($container[0].scrollHeight);
@@ -416,6 +373,7 @@
 	        			
 	        		 $("#msg-input").show();
 	        		 $("#update-container").hide();
+	        		 $("#updateInput").val('');
 				}
         		
 				
@@ -567,6 +525,7 @@
     					'msg' : $("#msg").val()
 
     				}));
+    				$("#msg").val('');
     			}
 				
 				//dm 보내기
@@ -633,7 +592,7 @@
 	    		
 
 	    		//개인메세지 출력
-	    		const showDm = ({body}) => {
+	    		/* const showDm = ({body}) => {
 		    		console.log(body)
 	    			const value = JSON.parse(body);
 	    			const {messageNo, messageContent, messageTime, messageSender, messageReceiver, readCheck} = value;
@@ -671,7 +630,7 @@
 
 					
 	    		}
-
+ */
 
 				//주소록리스트
 				/* const showAddrList = () => {
@@ -749,7 +708,7 @@
 					    $("#chat-pop").hide();
 					}
 					
-				}
+				}*/
 				
 				//대화창 수정, 삭제 아이콘 표시
 				const showIcon = (msgNo) => {
@@ -766,7 +725,7 @@
 					})
 				}
 				
-				//개인대화창 수정, 삭제 아이콘 표시
+			/*	//개인대화창 수정, 삭제 아이콘 표시
 				const showDmIcon = (messageNo) => {
 					
 					const $list = $(`#dm\${messageNo}`);
@@ -810,7 +769,6 @@ const checkJoin = () => {
 }
 
 
-
 				
 			
     			$(function() {
@@ -840,6 +798,21 @@ const checkJoin = () => {
     				$("#msgSend").click(function() {
     					sendMessage();
     				});
+					$("#msg").keydown(function(key) {
+		               
+		                if (key.keyCode == 13) {
+		                	sendMessage();
+		                  
+		                }
+		            });
+		            
+					$("#updateInput").keydown(function(key) {
+			               
+		                if (key.keyCode == 13) {
+		                	updateMsgReal();
+		                  
+		                }
+		            });
 
         			
     			});

@@ -35,29 +35,29 @@ public class MailDaoImpl implements MailDao {
 	}
 
 	@Override
-	public int selectMailTotalContents1(String i) {
-		return session.selectOne("mail.selectMailTotalContents1", i);
+	public int selectReceiveTotalContents(String i) {
+		return session.selectOne("mail.selectReceiveTotalContents", i);
 	}
 
 	@Override
-	public int selectMailTotalContents2(int i) {
-		return session.selectOne("mail.selectMailTotalContents2", i);
+	public int selectSendTotalContents(int i) {
+		return session.selectOne("mail.selectSendTotalContents", i);
 	}
 
 	@Override
-	public List<Mail> selectMailList1(Map<String, Object> param, String i) {
+	public List<Mail> selectReceiveList(Map<String, Object> param, String i) {
 		int offset = (int)param.get("offset");
 		int limit = (int)param.get("limit");
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("mail.selectMailList1", i, rowBounds);
+		return session.selectList("mail.selectReceiveList", i, rowBounds);
 	}
 
 	@Override
-	public List<Mail> selectMailList2(Map<String, Object> param, int i) {
+	public List<Mail> selectSendList(Map<String, Object> param, int i) {
 		int offset = (int)param.get("offset");
 		int limit = (int)param.get("limit");
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("mail.selectMailList2", i, rowBounds);
+		return session.selectList("mail.selectSendList", i, rowBounds);
 	}
 
 	@Override

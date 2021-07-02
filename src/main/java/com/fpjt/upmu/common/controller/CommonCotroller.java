@@ -109,6 +109,8 @@ public class CommonCotroller {
 					}
 				}
 				log.debug("rawEmp={}",rawEmp);
+				empService.updateEmp(rawEmp);
+				
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
