@@ -285,19 +285,17 @@ function goBack(){
 			</tr>
 			<tr>
 				<td>받는 사람</td>
-				<td>
-					<div class = "address_info">
-						<!-- <input class="hiddenForBubble" type="text" aria-hidden="true" style="left: -10000px;width: 1px; position: absolute;" value> -->
-						<!-- <textarea id="toTextarea" class="tf-address"></textarea> -->
+				<td style="height: 0.5vh">
+					<div class="address_info" id="address_info" style="cursor:text;">
 						<input style="width: 40%" id="toInput" class="tf-address"/>
-						<br><span style="border: 1px; font-size:1px; color: #848485">사내 메일은 선택, 외부 이메일은 ,로 구분합니다.</span>
-						<input type="hidden" name="receiverArr" id="receiverArr" value=''>
 					</div>
+					<span class="s1"style="border: 1px; font-size:1px; color: #848485">사내 메일 주소는 선택, 외부 메일 주소는 ,로 구분합니다.</span>
+					<input type="hidden" name="receiverArr" id="receiverArr" value=''>
 				</td>
 			</tr>
 			<tr>
 				<td>제목</td>
-				<td><input type="text" name="mailTitle" id="mailTitle" style="width: 60%" required></td>
+				<td><input id="toTitle" type="text" name="mailTitle" id="mailTitle" style="width: 100%" required></td>
 			</tr>
 			<tr>
 				<td>첨부</td>

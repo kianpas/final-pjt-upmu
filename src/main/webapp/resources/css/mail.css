@@ -50,13 +50,37 @@
 
 input {
 	border-width: 0px;
+}
+/* 
+input {
+	border-width: 0px;
     border-bottom : 1px solid #efefef;
-   /*  border-radius: 1px; */
+    //border-radius: 1px;
 }
 
 input:focus {
 	outline: none;
 	border-bottom-color: #7bb2f5;
+} */
+ 
+#toTitle {
+	border-width: 0px;
+    border-bottom : 1px solid #efefef;
+}
+
+#toTitle:focus {
+	outline: none;
+	border-bottom-color: #7bb2f5;
+}
+
+#address_info{
+	border-width: 0px;
+    border-bottom : 1px solid #efefef;
+}
+
+#address_info:focus-within{
+	border-width: 0px;
+	border-bottom : 1px solid #7bb2f5;
 }
 
 textarea {
