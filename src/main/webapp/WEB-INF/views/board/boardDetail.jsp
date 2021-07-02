@@ -7,8 +7,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
-<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
  <meta name="_csrf" content="${_csrf.token}"/>
  <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <style>
@@ -99,7 +98,7 @@ font-size: 10px!important;
 								<div class="form-inline mb-2">
 									<textarea class="form-control" id="comment" rows="3"></textarea>
 									<button type="button" class="btn btn-primary"
-										onClick="addComment(${board.no});">comment</button>
+										onClick="addComment(${board.no});">등록</button>
 								</div>
 
 							</li>

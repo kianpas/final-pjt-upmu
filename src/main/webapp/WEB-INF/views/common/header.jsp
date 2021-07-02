@@ -132,8 +132,10 @@
 			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 			   	</form:form>
+			   	 <c:import url="notice/noticeBtn"></c:import>
     	</sec:authorize>
-      <c:import url="/notice/noticeBtn"></c:import>
+    
+ 
     </nav>
   </div>
   <!-- 주소록 오프캔버스 -->
@@ -261,7 +263,8 @@ function dconnect() {
 			
 			
 			const username = ${principal.empNo};
-			const recvname = $("#receive_username").val();
+			//const recvname = $("#receive_username").val();
+			const recvname = localStorage.getItem("dmId");
 			stompClient.subscribe(`/user/\${username}/directMsg`, frame => {
 				console.log(frame)
 				//showDm(frame);
@@ -318,7 +321,8 @@ function dconnect() {
 //개인메세지 가져오기
 const showDmList = (type, height) => {
 	const username = ${principal.empNo};
-	const recvname = $("#receive_username").val();
+	//const recvname = $("#receive_username").val();
+	const recvname = localStorage.getItem("dmId");
 		$.ajax({
 			url : `${pageContext.request.contextPath}/chat/dmList/\${username}/\${recvname}`,
 			method: 'GET',
@@ -406,7 +410,7 @@ const updateDmReal = () => {
 	stompClient.send("/app/updateDm", {}, JSON.stringify({
 		'messageContent': messageContent,
 		'messageNo' : messageNo,
-		'messageReceiver' : $("#receive_username").val()
+		'messageReceiver' : localStorage.getItem("recvname")
 	}));
 
 	$("#dm-input").show();
@@ -418,7 +422,7 @@ const deleteDm = (messageNo) => {
 	console.log(messageNo);
 	
 	 stompClient.send("/app/deleteDm", {}, JSON.stringify({
-		 'messageReceiver' : $("#receive_username").val(),
+		 'messageReceiver' : localStorage.getItem("recvname"),
 			'messageNo' : messageNo
 			
 	 }));
@@ -430,7 +434,7 @@ const sendDM = (msg) => {
 	stompClient.send("/app/directMsg", {}, JSON.stringify({
 		'messageContent': $("#directMsg").val(),
 		'messageSender' : ${principal.empNo},
-		'messageReceiver' : $("#receive_username").val()
+		'messageReceiver' : localStorage.getItem("recvname")
 	}));
 	
 	
@@ -439,11 +443,32 @@ const sendDM = (msg) => {
 //주소록에서 dm을 전달
 const addDm = (id, name) =>{
 	$("#receive_username").val(id);
-	$("#dmName").text(name)
+	//로컬스토리지에 dm id 저장
+	localStorage.setItem("dmId", id);
+	localStorage.setItem("recvname", name);
+	const storeName = localStorage.getItem("recvname");
+	$("#dmName").text(storeName)
 	dconnect();
 	showDmList();
 	$("#chat-btn").show();
 }
+
+const storeId = localStorage.getItem("dmId");
+console.log(storeId)
+const storeName = localStorage.getItem("recvname");
+console.log(storeName)
+
+if(storeId !=null){
+	$("#chat-btn").css("display", "block");
+}
+
+if(storeName != null && storeName !=''){
+	$("#dmName").text(storeName)
+	dconnect();
+	showDmList();
+}
+
+
 
 //개인메세지 창 열기
 const openChat = () => {
@@ -478,7 +503,7 @@ $(function(){
 		sendDM();
 		showDmList();
 	})
-	$("#chat-btn").hide();
+
 	
 })
 

@@ -105,8 +105,8 @@ function goBack(){
 										<a href="#" onclick="location.href='${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
 										${attach.originalFilename}
 										</a>
-										<button type="button" class="btn btn-danger" onclick="deleteFile(${attach.no});">Danger</button>
-										<input name="IDX_${row.index }" id="IDX" type="hidden" value="${var.IDX }"/>
+										<button type="button" class="btn btn-danger btn-sm" onclick="deleteFile(${attach.no});"><box-icon name='x-circle' size="xs"></box-icon></button>
+										
 										</span>
 									</c:if>
 								</c:forEach>

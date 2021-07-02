@@ -114,7 +114,7 @@
 
 
  <!-- 개인채팅창 -->
-<div class="card card-bordered" id="chat-pop">
+<!-- <div class="card card-bordered" id="chat-pop">
  	<div class="card-header">
  		<h4 class="card-title"><strong id="dmName"></strong></h4>
 	</div>
@@ -136,7 +136,7 @@
     	<span class="publisher-btn file-group"><i class='bx bxs-send' onclick="updateDmReal()"></i></span>
     </div>
 </div>
- 
+  -->
 <!-- 토스트 -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
   <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
