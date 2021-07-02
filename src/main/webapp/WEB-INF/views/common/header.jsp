@@ -419,6 +419,7 @@ const updateDmReal = () => {
 
 	$("#dm-input").show();
 	$("#dm-update").hide();
+	$("#updateDmInput").val('');
 }
 
 //메세지 삭제
@@ -441,7 +442,7 @@ const sendDM = (msg) => {
 		'messageReceiver' : localStorage.getItem("dmId")
 	}));
 	
-	
+	$("#directMsg").val('');
 }
 
 //주소록에서 dm을 전달
