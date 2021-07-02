@@ -33,10 +33,6 @@
 	margin: 7px;
 }
 
-#docNav {
-	text-align: center;
-	margin: 0 0 0 12%;
-}
 </style>
 <div class="dropdown">
 	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

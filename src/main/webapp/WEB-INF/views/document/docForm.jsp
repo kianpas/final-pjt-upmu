@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-<jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
+<c:import url="/document/docMenu"></c:import>
 
 <script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
