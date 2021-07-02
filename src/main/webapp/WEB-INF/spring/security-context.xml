@@ -17,10 +17,10 @@
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/mailPwSearch.do" access="isAnonymous()"/>
+		<intercept-url pattern="/employee/empPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empIdPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empIdSearch.do" access="isAnonymous()"/>
-		<intercept-url pattern="/employee/empPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/checkIdDuplicate.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
 		

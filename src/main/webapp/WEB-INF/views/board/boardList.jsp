@@ -92,7 +92,7 @@ $(() => {
 	<div class="row justify-content-center">
 		<div class="card shadow mb-4 col-12  px-0">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">게시판</h6>
+				<h6 class="m-0 fw-bold text-primary">게시판</h6>
 			</div>
 			<div class="card-body">
 			<input type="search" placeholder="검색" id="searchTitle" class="form-control col-3 d-inline"/>

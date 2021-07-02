@@ -48,4 +48,43 @@
 		where
 			emp_email = #{id}
 	</select>
+	
+	<insert id="insertPwSearch">
+		insert into
+			searchpwauth
+		values(
+			#{num},
+			#{id},
+			default
+		)
+	</insert>
+	
+	<select id="selectCheckPw" resultType="string">
+		select
+			id
+		from
+			searchpwauth
+		where
+			id = #{id}
+	</select>
+	
+	<delete id="deleteSearchPw">
+		delete from searchpwauth
+		where id = #{id}
+	</delete>
+	
+	<select id="selectPwSearchId" resultType="String">
+		select
+			id
+		from
+			searchpwauth
+		where
+			auth_num = #{authVal}
+	</select>
+	
+	<update id="updatePw">
+		update employee
+		set emp_pw = #{pw}
+		where emp_email = #{id}
+	</update>
 </mapper>

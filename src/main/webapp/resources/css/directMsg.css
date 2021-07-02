@@ -38,7 +38,7 @@
 	width:400px; 
 	max-width : 400px; 
 	position:fixed !important; 
-	bottom: 20px;  
+	bottom: 25px;  
 	right: 15px; 
 	z-index:999; 
 	display:none ;
@@ -88,13 +88,13 @@ h4.card-title {
     margin-right: 8px
 }
 
-.btn-secondary {
+/* .btn-secondary {
     color: #4d5259 !important;
     background-color: #e4e7ea;
     border-color: #e4e7ea;
     color: #fff
 }
-
+ */
 .btn-xs {
     font-size: 11px;
     padding: 2px 8px;

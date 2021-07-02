@@ -33,5 +33,31 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public String selectCheckId(String id) {
 		return session.selectOne("employee.selectCheckId", id);
 	}
+
+	@Override
+	public int insertPwSearch(Map<String, String> map) {
+		return session.insert("employee.insertPwSearch", map);
+	}
+
+	@Override
+	public String selectCheckPw(String id) {
+		return session.selectOne("employee.selectCheckPw", id);
+	}
+
+	@Override
+	public void deleteSearchPw(String id) {
+		session.delete("employee.deleteSearchPw", id);
+	}
+
+	@Override
+	public String selectPwSearchId(String authVal) {
+		return session.selectOne("employee.selectPwSearchId", authVal);
+	}
+
+	@Override
+	public int updatePw(Map<String, String> map) {
+		return session.update("employee.updatePw", map);
+	}
+	
 	
 }

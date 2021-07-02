@@ -47,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public String sendMail(String id) {
+	public String sendMail(String id, String encodedNum) {
 		//이메일 객체
 		MimeMessage ms = mailSender.createMimeMessage();
 		
@@ -61,14 +61,39 @@ public class EmployeeServiceImpl implements EmployeeService {
 			//이메일 제목
 			ms.setSubject("UPMU 비밀번호 재설정", "utf-8");
 			//이메일 내용
-			ms.setContent("<a href='http://localhost:9090/upmu/employee/mailPwSearch.do'>클릭하시면 비밀번호를 다시 설정할 수 있습니다.</a>", "text/html;charset=euc-kr");
-			
+			ms.setContent("<h2>안녕하세요. UPMU팀입니다.</h2>"
+						+ "<a href='http://localhost:9090/upmu/employee/empPwSearch.do?num=" + encodedNum + "'>클릭하시면 비밀번호를 다시 설정할 수 있습니다.</a>", "text/html;charset=UTF-8");
 			mailSender.send(ms);
 		} catch (Exception e) {
 			log.error("비번찾기 이메일 송신 오류");
 		}
 
-		return "";
+		return "이메일을 확인해주세요.";
+	}
+	
+	@Override
+	public int insertPwSearch(Map<String, String> map) {
+		return empDao.insertPwSearch(map);
+	}
+
+	@Override
+	public String selectCheckPwSearch(String id) {
+		return empDao.selectCheckPw(id);
+	}
+
+	@Override
+	public void deleteSearchPw(String id) {
+		empDao.deleteSearchPw(id);
+	}
+
+	@Override
+	public String selectPwSearchId(String authVal) {
+		return empDao.selectPwSearchId(authVal);
+	}
+
+	@Override
+	public int updatePw(Map<String, String> map) {
+		return empDao.updatePw(map);
 	}
 	
 	
