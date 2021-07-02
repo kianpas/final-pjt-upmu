@@ -16,11 +16,11 @@ public interface MailDao {
 
 	int insertAttachment(MailAttach attach);
 
-	int selectMailTotalContents1(String i);
-	int selectMailTotalContents2(int i);
+	int selectReceiveTotalContents(String i);
+	int selectSendTotalContents(int i);
 
-	List<Mail> selectMailList1(Map<String, Object> param, String i);
-	List<Mail> selectMailList2(Map<String, Object> param, int i);
+	List<Mail> selectReceiveList(Map<String, Object> param, String i);
+	List<Mail> selectSendList(Map<String, Object> param, int i);
 
 	MailAttach selectOneAttachment(int no);
 	

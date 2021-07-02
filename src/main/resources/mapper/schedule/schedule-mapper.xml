@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="schedule">
+	<insert id="insertSchedule" parameterType="hashmap">
+		insert into
+			schedule
+		values (
+			seq_sch.nextval,
+			#{empNo},
+			#{schTitle},
+			#{schContent},
+			#{schStart},
+			#{schEnd},
+			#{schType}	
+		)
+
+		<selectKey keyProperty="schNo" resultType="_int" order="AFTER">
+			select
+				 seq_sch.currval
+			from 
+				dual
+		</selectKey>
+	</insert>
+	
+	<select id="selectScheduleList" resultMap="schMap">
+		select
+			*
+		from
+			schedule
+		where
+			emp_no = #{i}
+	</select>
+	<resultMap type="schedule" id="schMap">
+		<id column="sch_no" property="schNo"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="sch_title" property="schTitle"/>
+		<result column="sch_content" property="schContent"/>
+		<result column="sch_start" property="schStart"/>
+		<result column="sch_end" property="schEnd"/>
+		<result column="sch_type" property="schType"/>
+	</resultMap>
+	
+	<update id="updateSchedule">
+		update
+			schedule
+		set
+			emp_no = #{empNo},
+			sch_title = #{title},
+			sch_content = #{content},
+			sch_start = #{start},
+			sch_end = #{end},
+			sch_type = #{type}
+		where
+			sch_no = #{no}
+	</update>
+	
+	<update id="updateSchDate">
+		update
+			schedule
+		set
+			sch_start = #{start},
+			sch_end = #{end}
+		where
+			sch_no = #{no}
+	</update>
+	
+	<delete id="deleteSchedule">
+		delete
+		from 
+			schedule
+		where sch_no = #{schNo}
+			
+	</delete>
+
+</mapper>

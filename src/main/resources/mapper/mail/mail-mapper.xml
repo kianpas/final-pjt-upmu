@@ -6,11 +6,10 @@
 
 	<insert id="insertMail">
 		insert into
-			mail2
+			mail
 		values (
-			seq_mail_test.nextval,
-			1,
-			<!-- 2, -->
+			seq_mail_no.nextval,
+			#{senderAdd},
 			#{receiverAdd},
 			#{mailTitle},
 			#{mailContent},
@@ -22,51 +21,57 @@
 
 		<selectKey keyProperty="mailNo" resultType="_int" order="AFTER">
 			select
-				 seq_mail_test.currval
+				 seq_mail_no.currval
 			from 
 				dual
 		</selectKey>
 	</insert>
 	<insert id="insertAttachment">
 		insert into
-			mailAttach2(
+			mailAttach(
 				attach_no,
 				mail_no,
 				original_filename,
 				renamed_filename
 			)
 		values(
-			seq_mail_attach_test.nextval,
+			seq_mail_attach_no.nextval,
 			#{mailNo},
 			#{originalFilename},
 			#{renamedFilename}
 		)
 	</insert>
 	
-	<select id="selectMailList1" resultMap="mailExtMap">
+	<select id="selectReceiveList" resultMap="mailExtMap">
 		select
 			m.*,
-			(select count (*) from mailAttach2 where mail_no = m.mail_no) attach_count
+			e.emp_name,
+			(select count (*) from mailAttach where mail_no = m.mail_no) attach_count
 		from
-			mail2 m
+			mail m
+		left join
+			employee e
+		on
+			m.sender_add = e.emp_no
 		where
 			receiver_add like '%' || #{i} || '%' and receiver_del = 0
 		order by
 			mail_no desc
 	</select>
 
-	<select id="selectMailList2" resultMap="mailExtMap">
+	<select id="selectSendList" resultMap="mailExtMap">
 		select
 			m.*,
-			(select count (*) from mailAttach2 where mail_no = m.mail_no) attach_count
+			(select count (*) from mailAttach where mail_no = m.mail_no) attach_count
 		from
-			mail2 m
+			mail m
 		where
 			sender_add = #{i} and sender_del = 0
 		order by
 			mail_no desc
 	</select>
 	<resultMap type="mailExt" id="mailExtMap">
+		<result column="emp_name" property="senderName"/>
 		<result column="attach_count" property="hasAttachment"/>
 	</resultMap>
 	
@@ -74,7 +79,7 @@
 		select
 			*
 		from
-			mailAttach2
+			mailAttach
 		where
 			mail_no = #{mailNo}	
 	</select>
@@ -82,20 +87,20 @@
 		<result column="attachment_status" property="attachmentStatus" typeHandler="booleanYnTypeHandler"/>
 	</resultMap>
 
-	<select id="selectMailTotalContents1" resultType="_int">
+	<select id="selectReceiveTotalContents" resultType="_int">
 		select
 			count(*)
 		from
-			mail2
+			mail
 		where
 			receiver_add like '%' || #{i} || '%' and receiver_del = 0
 	</select>
 	
-	<select id="selectMailTotalContents2" resultType="_int">
+	<select id="selectSendTotalContents" resultType="_int">
 		select
 			count(*)
 		from
-			mail2
+			mail
 		where
 			sender_add = #{i} and sender_del = 0
 	</select>
@@ -107,13 +112,20 @@
 			a.mail_no,
 			a.original_filename,
 			a.renamed_filename,
-			a.attachment_status
+			a.attachment_status,
+			e.emp_name
 		from
-			mail2 m
-			left join
-				mailAttach2 a
-					on m.mail_no = a.mail_no
-		where m.mail_no = #{mail_no}
+			mail m
+		left join
+			mailAttach a
+		on
+			m.mail_no = a.mail_no
+		left join
+			employee e
+		on
+			m.sender_add = e.emp_no
+		where
+			m.mail_no = #{mail_no}
 	</select>
 	<resultMap type="mailExt" id="mailCollectionMap">
 		<id column="mail_no" property="mailNo"/>
@@ -125,6 +137,7 @@
 		<result column="read_chk" property="readChk"/>
 		<result column="sender_del" property="senderDel"/>
 		<result column="receiver_del" property="receiverDel"/>
+		<result column="emp_name" property="senderName"/>
 		<collection property="attachList" ofType="mailAttach">
 			<id column="attach_no" property="attachNo"/>
 			<result column="mail_no" property="mailNo"/>
@@ -138,7 +151,7 @@
 		select
 			*
 		from
-			 mailAttach2
+			 mailAttach
 		where
 			attach_no = #{no}
 	</select>
@@ -147,9 +160,13 @@
 		select 
 			*
 		from 
-			mail2
+			mail m
+		left join
+			employee e
+		on
+			m.sender_add = e.emp_no
 		where
-			(mail_title like '%' || #{searchTerm} || '%' OR mail_content like '%' || #{searchTerm} || '%' OR sender_add like '%' || #{searchTerm} || '%')
+			(mail_title like '%' || #{searchTerm} || '%' OR mail_content like '%' || #{searchTerm} || '%' OR emp_name like '%' || #{searchTerm} || '%')
 			and
 			receiver_add like '%' || #{who} || '%'
 	</select>
@@ -158,7 +175,7 @@
 		select 
 			*
 		from 
-			mail2
+			mail
 		where
 			(mail_title like '%' || #{searchTerm} || '%' OR mail_content like '%' || #{searchTerm} || '%' OR receiver_add like '%' || #{searchTerm} || '%')
  			and
@@ -169,15 +186,15 @@
 		select
 			e.emp_no, e.emp_name, j.job_name, d.dep_name
 		from
-			employee_mail_test e
+			employee e
 		left join
-			jobtitle_mail j
+			jobtitle j
 		on 
 			e.emp_job = j.job_no
 		left join
-			dept_mail d
+			department d
 		on
-			e.emp_dep =  d.dep_no
+			e.emp_dept =  d.dep_no
 		where
 			e.emp_no like '%' || #{searchReceiver} || '%' OR e.emp_name like '%' || #{searchReceiver} || '%' OR j.job_name like '%' || #{searchReceiver} || '%' OR d.dep_name like '%' || #{searchReceiver} || '%'
 	</select>
@@ -191,13 +208,13 @@
 	<delete id="deleteMail">
 		delete
 		from 
-			mail2
+			mail
 		where mail_no = #{str}
 	</delete>
 	
 	<update id="hideSendMail">
 		update
-			mail2
+			mail
     	set
     		sender_del = 1
 		where
@@ -205,7 +222,7 @@
 	</update>
 	<update id="hideReceiveMail">
 		update
-			mail2
+			mail
     	set
     		receiver_del = 1
 		where
