@@ -106,10 +106,6 @@
        		<li class="nav-item">
               <a class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
-          </li>
        		
        		
        		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
@@ -128,7 +124,6 @@
       <!-- 로그인이후 -->
       <sec:authorize access="isAuthenticated()">
       
-      <c:import url="/notice/noticeBtn"></c:import>
       
       <sec:authentication property="principal" var="principal" />
 		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
@@ -137,6 +132,7 @@
 			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 			   	</form:form>
+			   	 <c:import url="notice/noticeBtn"></c:import>
     	</sec:authorize>
     
  
@@ -414,12 +410,11 @@ const updateDmReal = () => {
 	stompClient.send("/app/updateDm", {}, JSON.stringify({
 		'messageContent': messageContent,
 		'messageNo' : messageNo,
-		'messageReceiver' : localStorage.getItem("dmId")
+		'messageReceiver' : localStorage.getItem("recvname")
 	}));
 
 	$("#dm-input").show();
 	$("#dm-update").hide();
-	$("#updateDmInput").val('');
 }
 
 //메세지 삭제
@@ -427,7 +422,7 @@ const deleteDm = (messageNo) => {
 	console.log(messageNo);
 	
 	 stompClient.send("/app/deleteDm", {}, JSON.stringify({
-		 'messageReceiver' : localStorage.getItem("dmId"),
+		 'messageReceiver' : localStorage.getItem("recvname"),
 			'messageNo' : messageNo
 			
 	 }));
@@ -439,10 +434,10 @@ const sendDM = (msg) => {
 	stompClient.send("/app/directMsg", {}, JSON.stringify({
 		'messageContent': $("#directMsg").val(),
 		'messageSender' : ${principal.empNo},
-		'messageReceiver' : localStorage.getItem("dmId")
+		'messageReceiver' : localStorage.getItem("recvname")
 	}));
 	
-	$("#directMsg").val('');
+	
 }
 
 //주소록에서 dm을 전달
