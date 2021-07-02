@@ -93,6 +93,7 @@
 			employee
 		set
 			emp_name = #{empName},
+			emp_pw = #{empPw},
 			emp_phone = #{empPhone},
 			emp_addr = #{empAddr},
 			emp_birth = #{empBirth},

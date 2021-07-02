@@ -8,12 +8,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.employee.model.service.EmployeeService;
 import com.fpjt.upmu.employeeList.model.service.EmployeeListService;
@@ -33,6 +35,9 @@ public class CommonCotroller {
 	
 	@Autowired
 	EmployeeService empService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@PostMapping("accessDenied.do")
 	public void error() {}
@@ -64,12 +69,27 @@ public class CommonCotroller {
 	}
 	
 	@PostMapping("/myProfile")
-	public void myProfile(Employee employee) {
+	public String myProfile(
+							@RequestParam(value = "empPw")String empPw, 
+							@RequestParam(value = "changePw")String changePw, 
+							RedirectAttributes redirectAttr,
+							Employee employee) {
 		
 		String email = employee.getEmpEmail();
 		Employee rawEmployee = empService.selectOneEmp(email);
-		log.debug("employee={}",employee);
-		log.debug("rawEmp={}",rawEmployee);
+
+		//비밀번호값이 들어올 경우 처리
+		if(empPw != "") {
+			if(bcryptPasswordEncoder.matches(empPw, rawEmployee.getEmpPw())) {
+				String encodedPw = bcryptPasswordEncoder.encode(changePw);
+				rawEmployee.setEmpPw(encodedPw);
+			}
+			else {
+				redirectAttr.addFlashAttribute("msg", "현재 비밀번호가 틀립니다.");
+				return "redirect:/common/myProfile.do?empNo=" + rawEmployee.getEmpNo();
+			}
+		}
+			
 		//Employee객체들끼리 비교를 위해 맵에 담는다.
 		try {
 			Map<String, Object> emp = new HashMap<>();
@@ -80,16 +100,13 @@ public class CommonCotroller {
 	            Object value;
 				value = field.get(employee);
 				emp.put(field.getName(), value);
-				System.out.println(field.getName()+","+value);
 			}
 			for (Field field : rawEmployee.getClass().getDeclaredFields()){
 	            field.setAccessible(true);
 	            Object value;
 				value = field.get(rawEmployee);
 				rawEmp.put(field.getName(), value);
-				System.out.println(field.getName()+","+value);
 			}
-			
 			Set<String> aKeys = emp.keySet();
 			Set<String> bKeys = rawEmp.keySet();
 			
@@ -97,24 +114,23 @@ public class CommonCotroller {
 			if(bKeys .equals(aKeys)) {
 				for(String key : bKeys) {
 					//두 맵의 키를 이용하여 값들을 비교
+					//변경불가값들
 					if(key == "empNo" || key == "empPw" || key == "empState" || key == "authorities") {
-						System.out.println("제외 키 key = " + key + "value = " + emp.get(key));
-						System.out.println("--------------------------------------------------");
 						break;
 					}
+					//비교하여 값을 바꿔줌
 					else if(!(emp.get(key)).equals(rawEmp.get(key)) ){
-						System.out.println("key = " + key + "///rawvalue = " + rawEmp.get(key));
-						System.out.println("key = " + key + "///value = " + emp.get(key));
 						rawEmp.put(key, emp.get(key));
 					}
+					rawEmp.put("empDept", emp.get("empDept"));
 				}
-				log.debug("rawEmp={}",rawEmp);
+				//내 정보를 없데이트
 				empService.updateEmp(rawEmp);
-				
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+			log.error("내 정보 업데이트 오류!");
 		}
+		return "redirect:/common/myProfile.do?empNo=" + rawEmployee.getEmpNo();
 	}
 	
 }
