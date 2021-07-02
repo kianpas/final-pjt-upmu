@@ -57,7 +57,7 @@ img {
 }
 
 .magazine-column {
-  padding: 0 1.5rem;
+  padding: 0 0.7rem;
   grid-column: span 5;
 }
 @media (min-width: 1200px) {
