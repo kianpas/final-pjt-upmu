@@ -149,9 +149,6 @@ $(".keyLabel").hide();
 			});
 			html += `</tbody>`
 		}
-		else {
-/* 			html += "<td colspan='6'>결과가 없습니다.</td></tr>" */
-		}
 		html += "</table>";
 		$(".employee-list").html(html).trigger("create");
 	}
