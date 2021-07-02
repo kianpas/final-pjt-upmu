@@ -1,6 +1,5 @@
 @charset "UTF-8";
 body{
-	/* position: fixed; */
 	background-color: #f8f3eb;
 }
 h2 {
@@ -13,6 +12,7 @@ h2 {
 }
 .list-form {
 	display: flex;
+	justify-content: center;
 }
 .list {
 	outline : solid 1px #c8c8c8;
@@ -30,16 +30,16 @@ h2 {
 	height:450px;
 }
 .depart-name {
-	width: 90px;
+	width: 120px;
 }
 .depart-code {
-	width: 55px;
+	width: 80px;
 }
 #depart-enroll {
 	position: absolute;
 	outline : solid 1px #c8c8c8;
 	width:170px; 
-	height:130px;
+	height:160px;
 	left: 0px;
 	bottom: 0px;
 }
@@ -59,11 +59,13 @@ label {
 
 .search-form{
 	display: flex;
-	margin-left:170px;
+	margin-left:375px;
 	position: relative;
+	margin-bottom: 1px;
 }
 .search-form label {
 	margin-right: 5px; 
+	
 }
 #context-menu{
 	border: 1px solid #c8c8c8;

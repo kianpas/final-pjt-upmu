@@ -58,6 +58,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public int updatePw(Map<String, String> map) {
 		return session.update("employee.updatePw", map);
 	}
+
+	@Override
+	public void updateEmp(Map<String, Object> rawEmp) {
+		session.update("employee.updateEmp", rawEmp);
+	}
 	
 	
 }
