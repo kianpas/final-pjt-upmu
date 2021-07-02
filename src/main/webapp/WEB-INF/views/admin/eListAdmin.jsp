@@ -3,10 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eList.css" />
 <div class="search-form">
 		<label class="keyLabel" for="keyword"></label>
 		<select id="keyword">
@@ -31,7 +32,7 @@
 	        	부서목록
 	        </summary>
 		    <c:forEach items="${dList}" var="dept">
-				<p class="${dept.depNo} dept">${dept.depName}</p>
+				<p class="${dept.depNo} dept" oncontextmenu='return false'>${dept.depName}</p>
 			</c:forEach>
     	</details>
     	<div id="depart-enroll">
@@ -46,20 +47,18 @@
     		</form>
     	</div>
 	</div>
-	
 	<div class="employee-list list">
 	</div>
 </div>
-
 <script>
 //css 동적 추가
-var cssUrl = "${pageContext.request.contextPath}/resources/css/eList.css";
+/* var cssUrl = "${pageContext.request.contextPath}/resources/css/eList.css";
 var head = document.getElementsByTagName("head")[0];
 var link = document.createElement("link");
 link.rel = "stylesheet";
 link.type = "text/css";
 link.href = cssUrl;
-document.head.appendChild(link);
+document.head.appendChild(link); */
 
 //색상 초기화
 function colorReset() {	
@@ -153,7 +152,7 @@ function displayTable(data) {
 				<tr>
 				<td>\${empNo}</td>
 				<td><a href='${pageContext.request.contextPath}/common/myProfile?empNo=\${empNo}' 
-						onclick="window.open(this.href, '_blank', 'width=800, height=600'); return false;">\${empName}</td>
+						onclick="window.open(this.href, '_blank', 'width=770, height=900'); return false;">\${empName}</td>
 				<td>\${empJob}</td>
 				<td>\${empDept}</td>
 				<td>\${empPhone}</td>
@@ -162,18 +161,15 @@ function displayTable(data) {
 		});
 		html += `</tbody>`
 	}
-	else {
-		/* html += "<td colspan='6'>결과가 없습니다.</td></tr>" */
-		}
 		html += "</table>";
 		$(".employee-list").html(html).trigger("create");
-	}
-	
-//마우스 오른쪽 버튼 끄기
-$(".dept").on('contextmenu', () => {
- 		return false;
-});
+}
 
+//마우스 오른쪽 버튼 끄기
+$("body").on('contextmenu', () => {
+  		return false;
+});
+	
 //부서 마우스 오른쪽 클릭 이벤트
 var depNo;
 $(".dept").on('mousedown', (e) => {

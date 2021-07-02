@@ -16,6 +16,7 @@
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/employee/empLogin.do" access="isAnonymous()"/>
+		<intercept-url pattern="/common/myProfile.do" access="hasRole('USER')"/>
 		<intercept-url pattern="/employee/mailPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empEnroll.do" access="isAnonymous()"/>

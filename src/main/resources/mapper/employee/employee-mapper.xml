@@ -87,4 +87,18 @@
 		set emp_pw = #{pw}
 		where emp_email = #{id}
 	</update>
+	
+	<update id="updateEmp">
+		update
+			employee
+		set
+			emp_name = #{empName},
+			emp_phone = #{empPhone},
+			emp_addr = #{empAddr},
+			emp_birth = #{empBirth},
+			emp_dept = #{empDept},
+			emp_job = #{empJob}
+		where
+			emp_no = #{empNo}
+	</update>
 </mapper>

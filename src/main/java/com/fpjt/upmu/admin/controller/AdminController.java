@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fpjt.upmu.employeeList.model.service.EmployeeListService;
@@ -31,4 +32,5 @@ public class AdminController {
 			log.error("부서목록 오류!");
 		}
 	}
+	
 }

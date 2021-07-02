@@ -106,10 +106,12 @@
        		<li class="nav-item">
               <a class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
           </li>
-       		
-       		
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/admin/eListAdmin.do">관리페이지</a>
+          </li>
        		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
-</button>	
+			</button>	
         </ul>
       </div>
     </div>
@@ -122,20 +124,17 @@
       <a href="${pageContext.request.contextPath}/employee/empEnroll.do" class="header-link header-link--button">Sign Up</a> 
       </sec:authorize>
       <!-- 로그인이후 -->
-      <sec:authorize access="isAuthenticated()">
+       <sec:authorize access="isAuthenticated()"> 
       
-      
-      <sec:authentication property="principal" var="principal" />
-		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
-		   	<sec:authentication property="principal.username"/></a>님, 안녕하세요.			    
-		   		&nbsp;
+       <sec:authentication property="principal" var="principal" />
+		    <a href="${pageContext.request.contextPath}/common/myProfile.do?empNo=${principal.empNo}" style="text-decoration: none; font-weight: bold; color: black;" onclick="window.open(this.href, '_blank', 'width=770, height=900'); return false;">
+		   	<sec:authentication property="principal.empName"/></a>님, 안녕하세요.			    
+		    		&nbsp;
 			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 			   	</form:form>
-			   	 <c:import url="/notice/noticeBtn"></c:import>
+			   	<c:import url="/notice/noticeBtn"></c:import>
     	</sec:authorize>
-    
- 
     </nav>
   </div>
   <!-- 주소록 오프캔버스 -->
