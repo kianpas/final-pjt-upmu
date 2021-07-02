@@ -16,91 +16,46 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myProfile.css" />
 </head>
 <body>
-
-<%--<div id="profile-form">
-	<div id="photo-form">
-		<img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}/resources/images/7.jpg">
-		
-	</div>
-	<div id="profile">
-		<h1>사원정보</h1>
-		
-			<label for="emp_name">이름  
-			<input name="emp_name" type="text" value="${employee.empName}">
-			</label>
-			
-			<label for="emp_phone">전화번호  
-			<input name="emp_phone" type="text" value="${employee.empPhone}">
-			</label>
-			
-			<label for="emp_email">EMAIL  
-			<input name="emp_email" type="text" value="${employee.empEmail}">
-			</label>
-			
-			<label for="emp_addr">주소  
-			<input name="emp_addr" type="text" value="${employee.empAddr}">
-			</label>
-			
-			<label for="emp_birth">생년월일  
-			<input name="emp_birth" type="date" value="${employee.empBirth}">
-			</label>
-			
-			<label for="emp_job">직급  
-			<select id="emp_job">
-				<option value="emp_job" selected>${employee.empJob}</option>
-				<c:forEach items="${jList}" var="job">
-					<c:if test="${job.jobName != employee.empJob}">
-						<option value="emp_job">${job.jobName}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			</label>
-			
-			<label for="emp_dept">부서  
-			<select id="emp_dept">
-				<option value="emp_dept" selected>${employee.empDept}</option>
-				<c:forEach items="${dList}" var="dept">
-					<c:if test="${dept.depName != employee.empDept}">
-						<option id="empDept" value="emp_dept">${dept.depName}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			</label>
-			
-			<label for="emp_hiredate">입사일  
-			<input name="emp_hiredate" type="date" value="${employee.empHiredate}">
-			</label>
-			
-	</div>
-</div>
-<div id="btn-form">
-	<input type="button" value="변경" onclick="checkInfo();">
-	<input type="button" value="삭제" onclick="deleteProfile();">
-	<input type="button" value="취소">
-</div>
-<script>
-function checkInfo(){
-	var empInpo = document.getElement
-	if(true) {
-		console.log("${employee.empDept}");
-		console.log($empInpo);
-	}
-}
-</script> --%>
-        <form:form action="${pageContext.request.contextPath}/common/myProfile.do" class="validation-form" method="POST">
+<input id="pw-check" type="hidden" value="${msg}">
+<form:form action="${pageContext.request.contextPath}/common/myProfile.do" id="form" method="POST">
 <div class="container">
     <div class="input-form-backgroud row">
-      <div class="input-form col-md-9 mx-auto">
-        <h4 class="mb-3 text-center">내 정보</h4>
+      <div class="input-form col-md-12 mx-auto">
+        <h4 class="mb-3">내 정보</h4>
           <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="name">프로필 사진 자리</label>
-              <img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}/resources/images/7.jpg">
+            <div class="col-md-3 mb-3">
+              <label for="name"></label>
+              <img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}/resources/images/증명사진.jpg">
               <div class="invalid-feedback">
                 프로필 사진 자리
               </div>
             </div>
-            <div class="col-md-8 mb-3">
+            <div class="col-md-4.5 mb-3">
+			<label for="email">이메일</label>
+              <input type="text" class="form-control" id="email" name="empEmail" value="${employee.empEmail}" readonly>
+              <div class="invalid-feedback">
+                이메일을 입력해주세요.
+              </div>
+              <label for="now_pw">현재 비밀번호</label>
+              <input type="password" class="form-control" id="now_pw" name="empPw">
+              <div class="invalid-feedback">
+                현재 비밀번호를 입력해주세요.
+              </div>
+              <div class="pwErrorNow" style="display: none; color: red;">비밀번호 사용불가</div>
+              <label for="emp_pw">변경 비밀번호</label>
+              <input type="password" class="form-control" id="emp_pw" name="changePw">
+              <div class="invalid-feedback">
+                변경 비밀번호를 입력해주세요.
+              </div>
+              <div class="pwError1" style="display: none; color: red;">비밀번호 사용불가</div>
+              <label for="re_emp_pw_check">변경 비밀번호 확인</label>
+              <input type="password" class="form-control" id="re_emp_pw_check">
+              <div class="invalid-feedback">
+                변경 비밀번호를 다시 입력해주세요.
+              </div>
+              <span class="pwError2" style="display: none; color: red;">비밀번호 불일치</span>
+            </div>
+            <div class="col-md-5 mb-3">
               <label for="name">이름</label>
               <input type="text" class="form-control" id="name" name="empName" value="${employee.empName}" required>
               <div class="invalid-feedback">
@@ -110,11 +65,6 @@ function checkInfo(){
               <input type="text" class="form-control" id="phone" name="empPhone" value="${employee.empPhone}" required>
               <div class="invalid-feedback">
                 연락처를 입력해주세요.
-              </div>
-              <label for="email">이메일</label>
-              <input type="text" class="form-control" id="email" name="empEmail" value="${employee.empEmail}" required readonly>
-              <div class="invalid-feedback">
-                이메일을 입력해주세요.
               </div>
               <label for="addr">주소</label>
               <input type="text" class="form-control" id="addr" name="empAddr" value="${employee.empAddr}" required>
@@ -127,7 +77,7 @@ function checkInfo(){
                 별명을 입력해주세요.
               </div>
               <label for="job">직급</label>
-                  <select id="job" name="empJob" class="form-control">
+                  <select id="job" name="empJob" class="form-control" onFocus="this.initialSelect = this.selectedIndex;" onChange="this.selectedIndex = this.initialSelect;">
                   		<c:forEach items="${jList}" var="job">
                       		<c:if test="${job.jobName == employee.empJob}">
                       			<option value="${job.jobNo}" selected>${employee.empJob}</option>
@@ -141,8 +91,7 @@ function checkInfo(){
                         직급을 입력해주세요.
                     </div>
               <label for="dept">부서</label>
-                <select id="dept" name="empDept" class="form-control">
-				    
+                <select id="dept" name="empDept" class="form-control"  onFocus="this.initialSelect = this.selectedIndex;" onChange="this.selectedIndex = this.initialSelect;">
                     <c:forEach items="${dList}" var="dept">
                     	<c:if test="${dept.depName == employee.empDept}">
                     		<option value="${dept.depNo}" selected>${employee.empDept}</option>
@@ -173,22 +122,112 @@ function checkInfo(){
       <p class="mb-1">&copy; 2021 UPMU</p>
     </footer>
   </div>
-        </form:form>
-  <script>
-    window.addEventListener('load', () => {
-      const forms = document.getElementsByClassName('validation-form');
+</form:form>
+<script>
+if($("#pw-check").val() != '')
+	alert($("#pw-check").val());
+  window.addEventListener('load', () => {
+    const forms = document.getElementsByClassName('validation-form');
 
-      Array.prototype.filter.call(forms, (form) => {
-        form.addEventListener('submit', function (event) {
-          if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
+    Array.prototype.filter.call(forms, (form) => {
+      form.addEventListener('submit', function (event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
 
-          form.classList.add('was-validated');
-        }, false);
-      });
-    }, false);
-  </script>
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+//현재 비밀번호 유효성 검사
+var pwValid = 1;
+$("#now_pw").keyup(e => {
+	const pw = $(e.target).val();
+	const $pwErrorNow = $(".pwErrorNow");
+
+	var regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+	if(pw.length == 0)
+		pwValid = 1;
+	else if(pw.length < 8) {
+		$pwErrorNow.show();
+		pwValid = 0;
+		return;
+	}
+	else {
+		if(!regPw.test(pw)){
+			$pwErrorNow.show();
+			pwValid = 0;
+			return;
+		}
+		$pwErrorNow.hide();
+		pwValid = 0;
+	}
+	
+});
+
+//변경 비밀번호 유효성 검사
+var pwValid2 = 0;
+console.log(pwValid2);
+$("#emp_pw").keyup(e => {
+	const pw = $(e.target).val();
+	const $pwError1 = $(".pwError1");
+
+	var regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+	
+	if(pw.length < 8) {
+		$pwError1.show();
+		pwValid2 = 0;
+		return;
+	}
+	else {
+		if(!regPw.test(pw)){
+			$pwError1.show();
+			pwValid2 = 0;
+			return;
+		}
+		$pwError1.hide();
+	}
+});
+
+//변경 비밀번호 확인
+$("#re_emp_pw_check").blur(function(){
+	var $password = $("#emp_pw"), $passwordCheck = $("#re_emp_pw_check");
+	if($password.val() != $passwordCheck.val()){
+		$(".pwError2").show();
+		$("#re_emp_pw_check").val('');
+		pwValid2 = 0;
+		$password.select();
+	}
+	else {
+		pwValid2 = 1;
+		$(".pwError2").hide();
+	}
+});
+
+//비밀번호 입력 확인
+$("#form").submit(function(e){
+	console.log(pwValid);
+	if(pwValid == 0){
+		console.log(pwValid);
+		if($("#emp_pw").val() == ''){
+			alert("비밀번호를 확인해주세요.");
+			$("#emp_pw").attr("requierd", true);
+			$("#re_emp_pw_check").attr("requierd", true);
+			$("#emp_pw").focus();
+			e.preventDefault();
+		}
+		if(pwValid2 == 0){
+			alert("변경 비밀번호를 확인해주세요.");
+			e.preventDefault();
+		}
+		if($("#now_pw").val() == $("#emp_pw").val()){
+			alert("현재 비밀번호와 변경할 비밀번호는 같을 수 없습니다.");
+			e.preventDefault();
+		}
+	}
+	
+});
+</script>
 </body>
 </html>
