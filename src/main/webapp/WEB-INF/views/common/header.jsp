@@ -124,6 +124,7 @@
       <!-- 로그인이후 -->
       <sec:authorize access="isAuthenticated()">
       
+      <c:import url="/notice/noticeBtn"></c:import>
       
       <sec:authentication property="principal" var="principal" />
 		    <a href="${pageContext.request.contextPath}/member/memberDetail.do">
@@ -132,7 +133,6 @@
 			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
 			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 			   	</form:form>
-			   	 <c:import url="notice/noticeBtn"></c:import>
     	</sec:authorize>
     
  
