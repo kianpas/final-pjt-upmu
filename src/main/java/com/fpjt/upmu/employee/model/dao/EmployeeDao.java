@@ -23,5 +23,7 @@ public interface EmployeeDao {
 	String selectPwSearchId(String authVal);
 
 	int updatePw(Map<String, String> map);
+
+	void updateEmp(Map<String, Object> rawEmp);
 	
 }
