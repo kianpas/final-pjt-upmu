@@ -95,6 +95,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int updatePw(Map<String, String> map) {
 		return empDao.updatePw(map);
 	}
+
+	@Override
+	public void updateEmp(Map<String, Object> rawEmp) {
+		empDao.updateEmp(rawEmp);
+	}
 	
 	
 }
