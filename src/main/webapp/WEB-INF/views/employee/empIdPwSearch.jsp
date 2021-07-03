@@ -53,5 +53,7 @@
     </div>
   </div>
 </form:form>
+<script>
+</script>
 </body>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

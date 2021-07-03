@@ -101,3 +101,9 @@ input[type=submit]{
 .dept { 
 	padding-left: 20px;
 }
+.emp-name {
+	text-decoration: none;
+	font-weight: bold;
+	font-style: italic;
+	color: blue;
+}

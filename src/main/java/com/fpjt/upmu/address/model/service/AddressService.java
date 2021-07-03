@@ -13,7 +13,7 @@ public interface AddressService {
 
 	int deleteAddr(Address address);
 
-	Address selectOneAddr(Address address);
+	AddressExt selectOneAddr(AddressExt address);
 
 	
 }
