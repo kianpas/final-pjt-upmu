@@ -102,4 +102,9 @@
 		where
 			emp_no = #{empNo}
 	</update>
+	
+	<delete id="deleteEmp">
+		delete from employee
+		where emp_email = #{empEmail}
+	</delete>
 </mapper>

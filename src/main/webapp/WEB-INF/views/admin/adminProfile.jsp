@@ -17,8 +17,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myProfile.css" />
 </head>
 <body>
-<input id="pw-check" type="hidden" value="${msg}">
-<input name="empNoPrin" type="hidden" value="<sec:authentication property="principal.empNo"/>">
 <form:form action="${pageContext.request.contextPath}/admin/adminProfile.do" id="form" method="POST">
 <div class="container">
     <div class="input-form-backgroud row">
@@ -37,11 +35,6 @@
               <input type="text" class="form-control" id="email" name="empEmail" value="${employee.empEmail}" readonly>
               <div class="invalid-feedback">
                 이메일을 입력해주세요.
-              </div>
-              <label for="now_pw">현재 비밀번호</label>
-              <input type="password" class="form-control" id="now_pw" name="empPw">
-              <div class="invalid-feedback">
-                현재 비밀번호를 입력해주세요.
               </div>
               <div class="pwErrorNow" style="display: none; color: red;">비밀번호 사용불가</div>
               <label for="emp_pw">변경 비밀번호</label>
@@ -79,7 +72,7 @@
                 별명을 입력해주세요.
               </div>
               <label for="job">직급</label>
-                  <select id="job" name="empJob" class="form-control" onFocus="this.initialSelect = this.selectedIndex;" onChange="this.selectedIndex = this.initialSelect;">
+                  <select id="job" name="empJob" class="form-control">
                   		<c:forEach items="${jList}" var="job">
                       		<c:if test="${job.jobName == employee.empJob}">
                       			<option value="${job.jobNo}" selected>${employee.empJob}</option>
@@ -93,7 +86,7 @@
                         직급을 입력해주세요.
                     </div>
               <label for="dept">부서</label>
-                <select id="dept" name="empDept" class="form-control"  onFocus="this.initialSelect = this.selectedIndex;" onChange="this.selectedIndex = this.initialSelect;">
+                <select id="dept" name="empDept" class="form-control">
                     <c:forEach items="${dList}" var="dept">
                     	<c:if test="${dept.depName == employee.empDept}">
                     		<option value="${dept.depNo}" selected>${employee.empDept}</option>
@@ -116,7 +109,7 @@
           <hr class="mb-4">
           <div class="mb-4"></div>
           <button class="btn btn-primary float-right" type="submit" onclick="window.close()">취소</button>
-          <!-- <button class="btn btn-primary float-right" type="submit">삭제</button> -->
+          <button class="btn btn-primary float-right" type="submit" id="delete-emp" formaction="${pageContext.request.contextPath}/admin/empDelete.do">삭제</button>
           <button class="btn btn-primary float-right" type="submit">수정</button>
       </div>
     </div>
@@ -126,15 +119,6 @@
   </div>
 </form:form>
 <script>
-//잘못된 처리됐을 경우 처리
-if($("#pw-check").val() != ''){	
-	alert($("#pw-check").val());
-	
-	if($("#pw-check").val().includes("접근")){
-		location.href="${pageContext.request.contextPath}"
-	}
-}
-
 //절취선
   window.addEventListener('load', () => {
     const forms = document.getElementsByClassName('validation-form');
@@ -150,31 +134,6 @@ if($("#pw-check").val() != ''){
       }, false);
     });
   }, false);
-//현재 비밀번호 유효성 검사
-var pwValid = 1;
-$("#now_pw").keyup(e => {
-	const pw = $(e.target).val();
-	const $pwErrorNow = $(".pwErrorNow");
-
-	var regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-	if(pw.length == 0)
-		pwValid = 1;
-	else if(pw.length < 8) {
-		$pwErrorNow.show();
-		pwValid = 0;
-		return;
-	}
-	else {
-		if(!regPw.test(pw)){
-			$pwErrorNow.show();
-			pwValid = 0;
-			return;
-		}
-		$pwErrorNow.hide();
-		pwValid = 0;
-	}
-	
-});
 
 //변경 비밀번호 유효성 검사
 var pwValid2 = 0;
@@ -216,26 +175,11 @@ $("#re_emp_pw_check").blur(function(){
 
 //비밀번호 입력 확인
 $("#form").submit(function(e){
-	console.log(pwValid);
-	if(pwValid == 0){
-		console.log(pwValid);
-		if($("#emp_pw").val() == ''){
-			alert("비밀번호를 확인해주세요.");
-			$("#emp_pw").attr("requierd", true);
-			$("#re_emp_pw_check").attr("requierd", true);
-			$("#emp_pw").focus();
-			e.preventDefault();
-		}
 		if(pwValid2 == 0){
 			alert("변경 비밀번호를 확인해주세요.");
 			e.preventDefault();
 		}
-		if($("#now_pw").val() == $("#emp_pw").val()){
-			alert("현재 비밀번호와 변경할 비밀번호는 같을 수 없습니다.");
-			e.preventDefault();
-		}
 	}
-	
 });
 </script>
 </body>

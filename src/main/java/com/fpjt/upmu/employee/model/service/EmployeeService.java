@@ -28,4 +28,6 @@ public interface EmployeeService {
 
 	void updateEmp(Map<String, Object> rawEmp);
 
+	void deleteEmp(String empEmail);
+
 }

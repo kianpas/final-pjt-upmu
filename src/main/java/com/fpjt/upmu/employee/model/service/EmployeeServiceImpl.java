@@ -100,6 +100,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void updateEmp(Map<String, Object> rawEmp) {
 		empDao.updateEmp(rawEmp);
 	}
+
+	@Override
+	public void deleteEmp(String empEmail) {
+		empDao.deleteEmp(empEmail);
+	}
 	
 	
 }

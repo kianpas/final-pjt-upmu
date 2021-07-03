@@ -56,7 +56,10 @@ public class CommonCotroller {
 	}
 
 	@GetMapping("/myProfile.do")
-	public void myProfile(@RequestParam(value = "empNo") String param, Principal principal, Model model) {
+	public void myProfile(
+							@RequestParam(value = "empNo") String param, 
+							Principal principal, 
+							Model model) {
 		try {
 			Employee employee = elService.selectOneEmp(param);
 			List<Department> dList = elService.selectDeptList();
@@ -80,13 +83,14 @@ public class CommonCotroller {
 	}
 
 	@PostMapping("/myProfile.do")
-	public String myProfile(@RequestParam(value = "empPw") String empPw,
-			@RequestParam(value = "changePw") String changePw, RedirectAttributes redirectAttr, Employee employee) {
+	public String myProfile(
+							@RequestParam(value = "empPw") String empPw,
+							@RequestParam(value = "changePw") String changePw, 
+							RedirectAttributes redirectAttr, 
+							Employee employee) {
 
 		String email = employee.getEmpEmail();
 		Employee rawEmployee = empService.selectOneEmp(email);
-
-		// 자신 프로필 외 접근 시 리턴 처리
 
 		// 비밀번호값이 들어올 경우 처리
 		if (empPw != "") {
@@ -116,6 +120,7 @@ public class CommonCotroller {
 				value = field.get(rawEmployee);
 				rawEmp.put(field.getName(), value);
 			}
+			//맵키셋
 			Set<String> aKeys = emp.keySet();
 			Set<String> bKeys = rawEmp.keySet();
 

@@ -25,5 +25,7 @@ public interface EmployeeDao {
 	int updatePw(Map<String, String> map);
 
 	void updateEmp(Map<String, Object> rawEmp);
+
+	void deleteEmp(String empEmail);
 	
 }

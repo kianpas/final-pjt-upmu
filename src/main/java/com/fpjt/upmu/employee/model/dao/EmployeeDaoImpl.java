@@ -63,6 +63,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public void updateEmp(Map<String, Object> rawEmp) {
 		session.update("employee.updateEmp", rawEmp);
 	}
+
+	@Override
+	public void deleteEmp(String empEmail) {
+		session.delete("employee.deleteEmp", empEmail);	
+	}
 	
 	
 }
