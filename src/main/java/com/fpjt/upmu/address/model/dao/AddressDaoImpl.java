@@ -34,7 +34,7 @@ public class AddressDaoImpl implements AddressDao {
 	}
 
 	@Override
-	public Address selectOneAddr(Address address) {
+	public AddressExt selectOneAddr(AddressExt address) {
 		
 		return session.selectOne("address.selectOneAddr", address);
 	}

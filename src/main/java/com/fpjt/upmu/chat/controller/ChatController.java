@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.HtmlUtils;
 
@@ -35,7 +37,7 @@ import com.fpjt.upmu.chat.model.vo.DirectMsg;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @Slf4j
 @RequestMapping("/chat")
 public class ChatController {
@@ -45,13 +47,15 @@ public class ChatController {
 
 	// 채팅리스트 화면
 	@GetMapping("/chatRoomList.do")
-	public String chatRoomList(Model model) {
+	public ModelAndView chatRoomList(ModelAndView mav, Model model) {
 
 		try {
 			List<ChatRoom> chatRoomList = chatService.chatRoomList();
 			log.debug("chatRoomList {}", chatRoomList);
-			model.addAttribute("chatRoomList", chatRoomList);
-			return "chat/chatRoomList";
+			// model.addAttribute("chatRoomList", chatRoomList);
+			mav.addObject("chatRoomList", chatRoomList);
+			mav.setViewName("chat/chatRoomList");
+			return mav;
 		} catch (Exception e) {
 			log.error("채팅룸 리스트 조회 오류", e);
 			throw e;
@@ -75,12 +79,13 @@ public class ChatController {
 
 	// 채팅방 생성
 	@PostMapping("/room")
-	public String createRoom(ChatRoom chatRoom, RedirectAttributes redirectAttr) {
+	public ModelAndView createRoom(ModelAndView mav, ChatRoom chatRoom, RedirectAttributes redirectAttr) {
 
 		try {
 			log.debug("chatRoom {}", chatRoom);
 			int result = chatService.insertChatRoom(chatRoom);
-			return "redirect:/chat/chatRoomList.do";
+			mav.setViewName("redirect:/chat/chatRoomList.do");
+			return mav;
 		} catch (Exception e) {
 			log.error("채팅룸 생성 오류", e);
 			throw e;
@@ -89,12 +94,14 @@ public class ChatController {
 
 	// 채팅방 삭제
 	@PostMapping("/chatRoomDelete/{chatroomNo}")
-	public String chatRoomDelete(@PathVariable int chatroomNo, RedirectAttributes redirectAttr) {
+	public ModelAndView chatRoomDelete(ModelAndView mav, @PathVariable int chatroomNo,
+			RedirectAttributes redirectAttr) {
 
 		try {
 			log.debug("chatroomNo = {}", chatroomNo);
 			int result = chatService.deleteChatRoom(chatroomNo);
-			return "redirect:/chat/chatRoomList.do";
+			mav.setViewName("redirect:/chat/chatRoomList.do");
+			return mav;
 		} catch (Exception e) {
 			log.error("채팅룸 삭제 오류", e);
 			throw e;
@@ -103,12 +110,13 @@ public class ChatController {
 
 	// 채팅방 수정
 	@PostMapping("/chatRoomUpdate")
-	public String chatRoomUpdate(ChatRoom chatRoom, RedirectAttributes redirectAttr) {
+	public ModelAndView chatRoomUpdate(ModelAndView mav, ChatRoom chatRoom, RedirectAttributes redirectAttr) {
 
 		try {
 			log.debug("upchatRoom = {}", chatRoom);
 			int result = chatService.updateChatRoom(chatRoom);
-			return "redirect:/chat/chatRoomList.do";
+			mav.setViewName("redirect:/chat/chatRoomList.do");
+			return mav;
 		} catch (Exception e) {
 			log.error("채팅룸 수정 오류", e);
 			throw e;
@@ -117,7 +125,7 @@ public class ChatController {
 
 	// 채팅방 입장
 	@GetMapping("/room/enter/{chatroomNo}")
-	public String roomDetail(Model model, @PathVariable int chatroomNo) {
+	public ModelAndView roomDetail(ModelAndView mav, Model model, @PathVariable int chatroomNo) {
 
 		try {
 			log.debug("chatroomNo {}", chatroomNo);
@@ -129,8 +137,8 @@ public class ChatController {
 			log.debug("userList ---  {}", userList);
 			model.addAttribute("chatroom", chatroom);
 			model.addAttribute("chatroomNo", chatroomNo);
-			
-			return "/chat/roomDetail";
+			mav.setViewName("/chat/roomDetail");
+			return mav;
 		} catch (Exception e) {
 			log.error("채팅룸 입장 오류", e);
 			throw e;
@@ -139,7 +147,6 @@ public class ChatController {
 
 	// 채팅리스트 json으로
 	@GetMapping("/room/chatList/{chatroomNo}")
-	@ResponseBody
 	public List<ChatMsgExt> chatList(Model model, @PathVariable int chatroomNo) {
 
 		try {
@@ -161,13 +168,12 @@ public class ChatController {
 
 	// json으로 보낼경우 @ResponseBody 사용
 	@GetMapping("/userList/{chatroomNo}")
-	@ResponseBody
 	public List<Map<String, Object>> userList(@PathVariable int chatroomNo) {
 
 		try {
 			log.debug("chatroomNo +++{}", chatroomNo);
 			// 유저리스트 가져오기
-			//List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
+			// List<ChatRoomJoin> userList = chatService.roomUserList(chatroomNo);
 			List<Map<String, Object>> userList = chatService.roomUserList(chatroomNo);
 			log.debug("userList +++  {}", userList);
 
@@ -178,29 +184,27 @@ public class ChatController {
 			throw e;
 		}
 	}
-	
+
 	// json으로 보낼경우 @ResponseBody 사용
-		@GetMapping("/joinList/{empNo}")
-		@ResponseBody
-		public List<Map<String, Object>> joinList(@PathVariable int empNo) {
+	@GetMapping("/joinList/{empNo}")
+	public List<Map<String, Object>> joinList(@PathVariable int empNo) {
 
-			try {
-				log.debug("empNo +++{}", empNo);
-				// 참여 리스트 가져오기
-				List<Map<String, Object>> joinList = chatService.joinList(empNo);
-				log.debug("joinList +++  {}", joinList);
+		try {
+			log.debug("empNo +++{}", empNo);
+			// 참여 리스트 가져오기
+			List<Map<String, Object>> joinList = chatService.joinList(empNo);
+			log.debug("joinList +++  {}", joinList);
 
-				return joinList;
+			return joinList;
 
-			} catch (Exception e) {
-				log.error("참여리스트 조회 오류", e);
-				throw e;
-			}
+		} catch (Exception e) {
+			log.error("참여리스트 조회 오류", e);
+			throw e;
 		}
+	}
 
 	// 개인메세지
 	@GetMapping("/dmList/{username}/{recvname}")
-	@ResponseBody
 	public List<DirectMsg> dmList(@PathVariable int username, @PathVariable int recvname) {
 
 		try {
@@ -221,20 +225,19 @@ public class ChatController {
 	}
 
 	@GetMapping("/checkJoinDuplicate")
-	@ResponseBody
 	public Map<String, Object> checkIdDuplicate(@RequestParam int empNo, @RequestParam int chatroomNo) {
-		//1. 업무로직
+		// 1. 업무로직
 		try {
 			ChatRoomJoin chatRoomJoin = new ChatRoomJoin(0, empNo, chatroomNo, null);
 			ChatRoomJoin join = chatService.selectOneJoin(chatRoomJoin);
 			boolean available = join == null;
 			log.debug("empNo {}, chatroomNo {}", empNo, chatroomNo);
 			log.debug("join {}", join);
-			//2. Map에 속성 저장
+			// 2. Map에 속성 저장
 			Map<String, Object> map = new HashMap<>();
 			map.put("available", available);
-			map.put("join", join);		
-			
+			map.put("join", join);
+
 			return map;
 		} catch (Exception e) {
 			log.error("중복여부 조회 오류", e);
