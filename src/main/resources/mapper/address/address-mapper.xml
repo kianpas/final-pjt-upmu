@@ -19,9 +19,10 @@
 		where addr_no = #{addrNo}
 	</delete>
 	
-	<select id="selectOneAddr" resultType="address">
-		select * 
-		from address
+	<select id="selectOneAddr" resultType="addressExt">
+		select a.addr_no, a.by_emp, a.saved_emp, e.emp_name
+		from address a left join employee e
+		on a.saved_emp = e.emp_no
 		where by_emp = #{byEmp} and saved_emp = #{savedEmp}
 	</select>
 </mapper>

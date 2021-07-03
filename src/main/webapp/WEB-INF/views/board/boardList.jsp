@@ -118,7 +118,8 @@ $(() => {
 				<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd"/></td>
 				<td>
 					<c:if test="${board.hasAttachment}">
-						<img class="mx-auto" src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" />
+					<box-icon name='file-blank' ></box-icon>
+						<%-- <img class="mx-auto" src="${pageContext.request.contextPath}/resources/images/file.png" width="16px" alt="" /> --%>
 					</c:if>
 				</td>
 				<td>${board.readCount}</td>

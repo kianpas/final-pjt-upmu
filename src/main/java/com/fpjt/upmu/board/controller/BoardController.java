@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.board.model.service.BoardService;
@@ -54,7 +57,7 @@ public class BoardController {
 	private BoardService boardService;
 
 	@GetMapping("/boardList.do")
-	public String boardList(@RequestParam(required = true, defaultValue = "1") int cpage, HttpServletRequest request,
+	public ModelAndView boardList(ModelAndView mav,  @RequestParam(required = true, defaultValue = "1") int cpage, HttpServletRequest request,
 			Model model) {
 		try {
 			log.debug("cpage = {}", cpage);
@@ -69,15 +72,16 @@ public class BoardController {
 			String url = request.getRequestURI();
 			//log.debug("totalContents = {}, url = {}", totalContents, url);
 			String pageBar = UpmuUtils.getPageBar(totalContents, cpage, limit, url);
-
+			
 			// 2. jsp에 위임
 			model.addAttribute("list", list);
 			model.addAttribute("pageBar", pageBar);
+			mav.setViewName("board/boardList");
 		} catch (Exception e) {
 			log.error("게시글 조회 오류!", e);
 			throw e;
 		}
-		return "board/boardList";
+		return mav;
 	}
 
 	@GetMapping("/boardForm.do")
@@ -147,6 +151,8 @@ public class BoardController {
 
 		// 2. jsp에 위임
 		model.addAttribute("board", board);
+		
+		
 	}
 
 	@GetMapping("/fileDownload.do")
@@ -192,8 +198,7 @@ public class BoardController {
 		model.addAttribute("board", board);
 	}
 
-	@PostMapping("/boardUpdate")
-	@ResponseBody
+	@PutMapping("/boardUpdate")
 	public void boardUpdate(@ModelAttribute BoardExt boardExt, @RequestParam(name = "upFile") MultipartFile[] upFiles)
 			throws Exception {
 
@@ -239,7 +244,6 @@ public class BoardController {
 	}
 
 	@PostMapping("/boardDelete/{no}")
-	@ResponseBody
 	public int boardDelete(@PathVariable int no) {
 
 		try {
