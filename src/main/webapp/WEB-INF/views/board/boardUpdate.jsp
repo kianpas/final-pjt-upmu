@@ -198,7 +198,7 @@ const boardUpdate =()=>{
 		contentType: false,
 		processData: false,
 		cache : false,
-		method:'POST',
+		method:'put',
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader(header, token);
 		},

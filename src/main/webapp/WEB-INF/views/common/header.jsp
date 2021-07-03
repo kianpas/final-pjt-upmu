@@ -228,13 +228,13 @@ const showAddrList = () => {
 
 //주소록 삭제
 const addrDelete = (addrNo) =>{
-	//임시 사번
+	
 	const byEmp = ${principal.empNo};
 	const address = {addrNo};
 	console.log(address);
 	$.ajax({
 		url : `${pageContext.request.contextPath}/address/delete`,
-		method: 'POST',
+		method: 'delete',
 		contentType:"application/json; charset=utf-8",
 		data : JSON.stringify(address),
 		beforeSend: function (xhr) {
@@ -410,11 +410,12 @@ const updateDmReal = () => {
 	stompClient.send("/app/updateDm", {}, JSON.stringify({
 		'messageContent': messageContent,
 		'messageNo' : messageNo,
-		'messageReceiver' : localStorage.getItem("recvname")
+		'messageReceiver' : localStorage.getItem("dmId")
 	}));
 
 	$("#dm-input").show();
 	$("#dm-update").hide();
+	
 }
 
 //메세지 삭제
@@ -422,7 +423,7 @@ const deleteDm = (messageNo) => {
 	console.log(messageNo);
 	
 	 stompClient.send("/app/deleteDm", {}, JSON.stringify({
-		 'messageReceiver' : localStorage.getItem("recvname"),
+		 'messageReceiver' : localStorage.getItem("dmId"),
 			'messageNo' : messageNo
 			
 	 }));
@@ -434,10 +435,10 @@ const sendDM = (msg) => {
 	stompClient.send("/app/directMsg", {}, JSON.stringify({
 		'messageContent': $("#directMsg").val(),
 		'messageSender' : ${principal.empNo},
-		'messageReceiver' : localStorage.getItem("recvname")
+		'messageReceiver' : localStorage.getItem("dmId")
 	}));
 	
-	
+	$("#directMsg").val('');
 }
 
 //주소록에서 dm을 전달

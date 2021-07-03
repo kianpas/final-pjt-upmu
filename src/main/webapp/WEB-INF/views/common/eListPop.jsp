@@ -181,13 +181,13 @@ const saveAddress = () => {
 				console.log(data); //{"available":true}
 				console.log(data.available);
 				if(data.available){
-					
 					saveAddresssReal(byEmp, savedEmp);
 				}else {
-					const {addr:{addrNo, byEmp, savedEmp}} = data;
+				
+					const {addr:{addrNo, byEmp, savedEmp, empName}} = data;
 					console.log(data)
 					console.log(savedEmp)
-					alert(`\${savedEmp}은 이미 주소록에 포함되어있습니다.`);
+					alert(`\${empName}은 이미 주소록에 포함되어있습니다.`);
 					
 				}
 				

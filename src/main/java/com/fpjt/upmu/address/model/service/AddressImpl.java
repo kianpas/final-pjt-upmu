@@ -34,7 +34,7 @@ public class AddressImpl implements AddressService {
 	}
 
 	@Override
-	public Address selectOneAddr(Address address) {
+	public AddressExt selectOneAddr(AddressExt address) {
 		
 		return addressDao.selectOneAddr(address);
 	}
