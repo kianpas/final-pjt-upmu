@@ -17,15 +17,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myProfile.css" />
 </head>
 <body>
-<script>
-</script>
-<input id="pw-check" type="hidden" value="${msg}">
-<input name="empNoPrin" type="hidden" value="<sec:authentication property="principal.empNo"/>">
-<form:form action="${pageContext.request.contextPath}/common/myProfile.do?${_csrf.parameterName}=${_csrf.token}" id="form" method="POST" enctype="multipart/form-data">
+<form:form action="${pageContext.request.contextPath}/admin/adminProfile.do?${_csrf.parameterName}=${_csrf.token}" id="form" method="POST" enctype="multipart/form-data">
 <div class="container">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
-        <h4 class="mb-3">내 정보</h4>
+        <h4 class="mb-3">회원 정보</h4>
           <div class="row">
             <div class="col-md-3 mb-3">
               <label for="name"></label>
@@ -34,19 +30,14 @@
                 프로필 사진 자리
               </div>
               <label id="upProfile" class="btn btn-primary btn-file" style="padding: 1px 3px 1px 3px; margin-left:15px; margin-top:5px; text-align: center;">
-		    	사진등록<input type="file" id="upFile" name="upFile" style="display: none;"/>
-              </label>			  
+		    	사진등록<input type="file" id="upFile" name="upFile" style="display: none;" accept="image/jpeg, image/png, image/jpg"/>
+              </label>	
             </div>
             <div class="col-md-4.5 mb-3">
-			  <label for="email">이메일</label>
+			<label for="email">이메일</label>
               <input type="text" class="form-control" id="email" name="empEmail" value="${employee.empEmail}" readonly>
               <div class="invalid-feedback">
                 이메일을 입력해주세요.
-              </div>
-              <label for="now_pw">현재 비밀번호</label>
-              <input type="password" class="form-control" id="now_pw" name="empPw">
-              <div class="invalid-feedback">
-                현재 비밀번호를 입력해주세요.
               </div>
               <div class="pwErrorNow" style="display: none; color: red;">비밀번호 사용불가</div>
               <label for="emp_pw">변경 비밀번호</label>
@@ -61,6 +52,14 @@
                 변경 비밀번호를 다시 입력해주세요.
               </div>
               <span class="pwError2" style="display: none; color: red;">비밀번호 불일치</span>
+              <label for="auth">권한</label>
+                  <select id="auth" name="empAuth" class="form-control">
+                  	<option value="USER" selected>기본</option>
+                  	<option value="ADMIN">관리자</option>
+                  </select>
+                  <div class="invalid-feedback">
+                      권한을 선택해주세요.
+                  </div>
             </div>
             <div class="col-md-5 mb-3">
               <label for="name">이름</label>
@@ -84,7 +83,7 @@
                 별명을 입력해주세요.
               </div>
               <label for="job">직급</label>
-                  <select id="job" name="empJob" class="form-control" onFocus="this.initialSelect = this.selectedIndex;" onChange="this.selectedIndex = this.initialSelect;">
+                  <select id="job" name="empJob" class="form-control">
                   		<c:forEach items="${jList}" var="job">
                       		<c:if test="${job.jobName == employee.empJob}">
                       			<option value="${job.jobNo}" selected>${employee.empJob}</option>
@@ -95,10 +94,10 @@
                         </c:forEach>
                     </select>
                     <div class="invalid-feedback">
-                        직급을 입력해주세요.
+                        직급을 선택해주세요.
                     </div>
               <label for="dept">부서</label>
-                <select id="dept" name="empDept" class="form-control"  onFocus="this.initialSelect = this.selectedIndex;" onChange="this.selectedIndex = this.initialSelect;">
+                <select id="dept" name="empDept" class="form-control">
                     <c:forEach items="${dList}" var="dept">
                     	<c:if test="${dept.depName == employee.empDept}">
                     		<option value="${dept.depNo}" selected>${employee.empDept}</option>
@@ -109,7 +108,7 @@
                     </c:forEach>
 			    </select>
               <div class="invalid-feedback">
-                부서을 입력해주세요.
+                부서을 선택해주세요.
               </div>
               <label for="hireDate">입사일</label>
               <input type="date" class="form-control" id="hireDate" name="empHiredate" value="${employee.empHiredate}" required readonly>
@@ -121,7 +120,7 @@
           <hr class="mb-4">
           <div class="mb-4"></div>
           <button class="btn btn-primary float-right" type="submit" onclick="window.close()">취소</button>
-          <!-- <button class="btn btn-primary float-right" type="submit">삭제</button> -->
+          <%-- <button class="btn btn-primary float-right" type="submit" id="delete-emp" formaction="${pageContext.request.contextPath}/admin/empDelete.do">삭제</button> --%>
           <button class="btn btn-primary float-right" type="submit">수정</button>
       </div>
     </div>
@@ -159,16 +158,7 @@ function readURL(input) {
         }
         reader.readAsDataURL(input.files[0]);
     }
-}
-
-//다른 프로필 접근했을 경우 처리
-if($("#pw-check").val() != ''){	
-	alert($("#pw-check").val());
-	
-	if($("#pw-check").val().includes("접근")){
-		location.href="${pageContext.request.contextPath}"
-	}
-}
+} 
 
 //절취선
   window.addEventListener('load', () => {
@@ -185,37 +175,14 @@ if($("#pw-check").val() != ''){
       }, false);
     });
   }, false);
-//현재 비밀번호 유효성 검사
-var pwValid = 1;
-
-$("#now_pw").keyup(e => {
-	const pw = $(e.target).val();
-	const $pwErrorNow = $(".pwErrorNow");
-
-	var regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-	if(pw.length == 0)
-		pwValid = 1;
-	else if(pw.length < 8) {
-		$pwErrorNow.show();
-		pwValid = 0;
-		return;
-	}
-	else {
-		if(!regPw.test(pw)){
-			$pwErrorNow.show();
-			pwValid = 0;
-			return;
-		}
-		$pwErrorNow.hide();
-		pwValid = 0;
-	}
-	
-});
 
 //변경 비밀번호 유효성 검사
 var pwValid2 = 0;
+var pwCheck = 0;
 
 $("#emp_pw").keyup(e => {
+	pwCheck = 1;
+	
 	const pw = $(e.target).val();
 	const $pwError1 = $(".pwError1");
 
@@ -253,22 +220,9 @@ $("#re_emp_pw_check").blur(function(){
 
 //비밀번호 입력 확인
 $("#form").submit(function(e){
-	console.log(pwValid);
-	if(pwValid == 0){
-		console.log(pwValid);
-		if($("#emp_pw").val() == ''){
-			alert("비밀번호를 확인해주세요.");
-			$("#emp_pw").attr("requierd", true);
-			$("#re_emp_pw_check").attr("requierd", true);
-			$("#emp_pw").focus();
-			e.preventDefault();
-		}
+	if(pwCheck == 1){
 		if(pwValid2 == 0){
 			alert("변경 비밀번호를 확인해주세요.");
-			e.preventDefault();
-		}
-		if($("#now_pw").val() == $("#emp_pw").val()){
-			alert("현재 비밀번호와 변경할 비밀번호는 같을 수 없습니다.");
 			e.preventDefault();
 		}
 	}
