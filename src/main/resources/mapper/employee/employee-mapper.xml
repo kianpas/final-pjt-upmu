@@ -21,6 +21,31 @@
 		)
 	</insert>
 	
+	<insert id="insertRole">
+		insert into
+			authority
+		values(
+			#{empEmail},
+			'ROLE_USER'
+		)
+	</insert>
+	
+	<insert id="insertAuth">
+		insert into
+			authority
+		values(
+			#{email},
+			'ROLE_ADMIN'
+		)
+	</insert>
+	
+	<delete id="deleteAuth">
+		delete from 
+			authority
+		where 
+			email = #{email} and authority = 'ROLE_ADMIN'
+	</delete>
+	
 	<select id="selectOneEmp" resultType="employee">
 		select
 			*
@@ -69,8 +94,10 @@
 	</select>
 	
 	<delete id="deleteSearchPw">
-		delete from searchpwauth
-		where id = #{id}
+		delete from 
+			searchpwauth
+		where 
+			id = #{id}
 	</delete>
 	
 	<select id="selectPwSearchId" resultType="String">
@@ -83,9 +110,12 @@
 	</select>
 	
 	<update id="updatePw">
-		update employee
-		set emp_pw = #{pw}
-		where emp_email = #{id}
+		update 
+			employee
+		set 
+			emp_pw = #{pw}
+		where 
+			emp_email = #{id}
 	</update>
 	
 	<update id="updateEmp">
@@ -104,7 +134,47 @@
 	</update>
 	
 	<delete id="deleteEmp">
-		delete from employee
-		where emp_email = #{empEmail}
+		delete from 
+			employee
+		where 
+			emp_email = #{empEmail}
 	</delete>
+	
+	<insert id="insertProfile">
+	insert into
+		emp_profile
+	values(
+		#{empNo},
+		#{originalFilename},
+		#{renamedFilename}
+	)
+	</insert>
+	
+	<select id="selectProfileName" resultType="string">
+		select
+			NVL(max(renamed_fileName), 'N')
+		from
+			emp_profile
+		where
+			emp_no = #{empNo}
+	</select>
+	
+	<update id="updateProfile">
+		update
+			emp_profile
+		set
+			original_filename = #{originalFilename},
+			renamed_filename = #{renamedFilename}
+		where
+			emp_no = #{empNo}
+	</update>
+	
+	<select id="selectProfile" resultType="string">
+		select
+			NVL(max(renamed_filename), 'default.png')
+		from 
+			emp_profile
+		where
+			emp_no = #{param}	
+	</select>
 </mapper>

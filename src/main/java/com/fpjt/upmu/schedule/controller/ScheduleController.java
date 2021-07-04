@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.Employee;
 import com.fpjt.upmu.schedule.model.service.ScheduleService;
 import com.fpjt.upmu.schedule.model.vo.Schedule;
 

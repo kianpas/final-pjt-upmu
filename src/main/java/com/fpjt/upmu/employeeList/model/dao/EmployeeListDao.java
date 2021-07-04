@@ -3,8 +3,8 @@ package com.fpjt.upmu.employeeList.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.fpjt.upmu.employee.model.vo.Employee;
 import com.fpjt.upmu.employeeList.model.vo.Department;
-import com.fpjt.upmu.employeeList.model.vo.Employee;
 import com.fpjt.upmu.employeeList.model.vo.Job;
 
 public interface EmployeeListDao {

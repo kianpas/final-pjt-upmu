@@ -17,9 +17,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myProfile.css" />
 </head>
 <body>
+<script>
+</script>
 <input id="pw-check" type="hidden" value="${msg}">
 <input name="empNoPrin" type="hidden" value="<sec:authentication property="principal.empNo"/>">
-<form:form action="${pageContext.request.contextPath}/admin/adminProfile.do" id="form" method="POST">
+<form:form action="${pageContext.request.contextPath}/common/myProfile.do?${_csrf.parameterName}=${_csrf.token}" id="form" method="POST" enctype="multipart/form-data">
 <div class="container">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
@@ -27,13 +29,16 @@
           <div class="row">
             <div class="col-md-3 mb-3">
               <label for="name"></label>
-              <img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}/resources/images/증명사진.jpg">
+              <img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}${profile}">
               <div class="invalid-feedback">
                 프로필 사진 자리
               </div>
+              <label id="upProfile" class="btn btn-primary btn-file" style="padding: 1px 3px 1px 3px; margin-left:15px; margin-top:5px; text-align: center;">
+		    	사진등록<input type="file" id="upFile" name="upFile" style="display: none;"/>
+              </label>			  
             </div>
             <div class="col-md-4.5 mb-3">
-			<label for="email">이메일</label>
+			  <label for="email">이메일</label>
               <input type="text" class="form-control" id="email" name="empEmail" value="${employee.empEmail}" readonly>
               <div class="invalid-feedback">
                 이메일을 입력해주세요.
@@ -126,7 +131,37 @@
   </div>
 </form:form>
 <script>
-//잘못된 처리됐을 경우 처리
+//프로필 사진 미리보기 구현
+$('#upFile').change(function () {
+	//이미지 파일 유효성 검사
+	var imgFile = $('#upFile').val();
+	var fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+	var maxSize = 3 * 1024 * 1024;
+	var fileSize;
+
+	if(imgFile != "" && imgFile != null) {
+		fileSize = document.getElementById("upFile").files[0].size;
+	    if(!imgFile.match(fileForm)) {
+	    	alert("이미지 파일만 업로드 가능합니다.");
+	        return;
+	    } else if(fileSize == maxSize) {
+	    	alert("파일 사이즈는 3MB까지 가능합니다.");
+	        return;
+	    }
+	}
+  	readURL(this);
+});
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#photo').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+//다른 프로필 접근했을 경우 처리
 if($("#pw-check").val() != ''){	
 	alert($("#pw-check").val());
 	
@@ -152,6 +187,7 @@ if($("#pw-check").val() != ''){
   }, false);
 //현재 비밀번호 유효성 검사
 var pwValid = 1;
+
 $("#now_pw").keyup(e => {
 	const pw = $(e.target).val();
 	const $pwErrorNow = $(".pwErrorNow");
@@ -178,6 +214,7 @@ $("#now_pw").keyup(e => {
 
 //변경 비밀번호 유효성 검사
 var pwValid2 = 0;
+
 $("#emp_pw").keyup(e => {
 	const pw = $(e.target).val();
 	const $pwError1 = $(".pwError1");
@@ -235,7 +272,6 @@ $("#form").submit(function(e){
 			e.preventDefault();
 		}
 	}
-	
 });
 </script>
 </body>

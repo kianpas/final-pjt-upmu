@@ -7,8 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fpjt.upmu.employee.model.vo.Employee;
 import com.fpjt.upmu.employeeList.model.vo.Department;
-import com.fpjt.upmu.employeeList.model.vo.Employee;
 import com.fpjt.upmu.employeeList.model.vo.Job;
 
 import lombok.extern.slf4j.Slf4j;

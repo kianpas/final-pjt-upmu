@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.employee.model.service.EmployeeService;
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.Employee;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,6 +62,7 @@ public class EmployeeController {
 
 			// 1. 업무로직
 			int result = empService.insertEmployee(employee);
+			result = empService.insertRole(employee.getEmpEmail());
 			// 2. 사용자피드백
 			redirectAttr.addFlashAttribute("msg", "회원가입성공");
 		} catch (Exception e) {
@@ -171,4 +172,8 @@ public class EmployeeController {
 		return "redirect:/";
 	  }
 
+	  @PostMapping("/upProfile.do")
+	  public void upProfile() {
+		  log.debug("성공성공");
+	  }
 }

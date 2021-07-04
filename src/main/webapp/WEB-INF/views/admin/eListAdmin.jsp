@@ -152,7 +152,7 @@ function displayTable(data) {
 				<tr>
 				<td>\${empNo}</td>
 				<td><a class='emp-name' href='${pageContext.request.contextPath}/admin/adminProfile?empNo=\${empNo}' 
-						onclick="window.open(this.href, '_blank', 'width=770, height=900'); return false;">\${empName}</td>
+						onclick="window.open(this.href, '_blank', 'width=770, height=830'); return false;">\${empName}</td>
 				<td>\${empJob}</td>
 				<td>\${empDept}</td>
 				<td>\${empPhone}</td>

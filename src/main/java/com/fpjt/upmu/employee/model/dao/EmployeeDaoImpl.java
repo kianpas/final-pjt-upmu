@@ -6,7 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.EmpProfile;
+import com.fpjt.upmu.employee.model.vo.Employee;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -17,6 +18,22 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	@Override
 	public int insertEmployee(Employee employee) {
 		return session.insert("employee.insertEmp", employee);
+	}
+
+	@Override
+	public int insertRole(String empEmail) {
+		return session.insert("employee.insertRole", empEmail);
+	}
+
+	
+	@Override
+	public void insertAuth(String email) {
+		session.insert("employee.insertAuth", email);
+	}
+
+	@Override
+	public void deleteAuth(String email) {
+		session.delete("employee.deleteAuth", email);
 	}
 
 	@Override
@@ -67,6 +84,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	@Override
 	public void deleteEmp(String empEmail) {
 		session.delete("employee.deleteEmp", empEmail);	
+	}
+
+	@Override
+	public int insertProfile(EmpProfile profile) {
+		return session.insert("employee.insertProfile", profile);
+	}
+
+	@Override
+	public String selectProfileName(int empNo) {
+		return session.selectOne("employee.selectProfileName", empNo);
+	}
+
+	@Override
+	public int updateProfile(EmpProfile profile) {
+		return session.update("employee.updateProfile", profile);
+	}
+
+	@Override
+	public String selectProfile(String param) {
+		return session.selectOne("employee.selectProfile", param);
 	}
 	
 	

@@ -17,18 +17,21 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myProfile.css" />
 </head>
 <body>
-<form:form action="${pageContext.request.contextPath}/admin/adminProfile.do" id="form" method="POST">
+<form:form action="${pageContext.request.contextPath}/admin/adminProfile.do?${_csrf.parameterName}=${_csrf.token}" id="form" method="POST" enctype="multipart/form-data">
 <div class="container">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
-        <h4 class="mb-3">내 정보</h4>
+        <h4 class="mb-3">회원 정보</h4>
           <div class="row">
             <div class="col-md-3 mb-3">
               <label for="name"></label>
-              <img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}/resources/images/증명사진.jpg">
+              <img id="photo" alt="프로필사진" src="${pageContext.request.contextPath}${profile}">
               <div class="invalid-feedback">
                 프로필 사진 자리
               </div>
+              <label id="upProfile" class="btn btn-primary btn-file" style="padding: 1px 3px 1px 3px; margin-left:15px; margin-top:5px; text-align: center;">
+		    	사진등록<input type="file" id="upFile" name="upFile" style="display: none;" accept="image/jpeg, image/png, image/jpg"/>
+              </label>	
             </div>
             <div class="col-md-4.5 mb-3">
 			<label for="email">이메일</label>
@@ -49,6 +52,14 @@
                 변경 비밀번호를 다시 입력해주세요.
               </div>
               <span class="pwError2" style="display: none; color: red;">비밀번호 불일치</span>
+              <label for="auth">권한</label>
+                  <select id="auth" name="empAuth" class="form-control">
+                  	<option value="USER" selected>기본</option>
+                  	<option value="ADMIN">관리자</option>
+                  </select>
+                  <div class="invalid-feedback">
+                      권한을 선택해주세요.
+                  </div>
             </div>
             <div class="col-md-5 mb-3">
               <label for="name">이름</label>
@@ -83,7 +94,7 @@
                         </c:forEach>
                     </select>
                     <div class="invalid-feedback">
-                        직급을 입력해주세요.
+                        직급을 선택해주세요.
                     </div>
               <label for="dept">부서</label>
                 <select id="dept" name="empDept" class="form-control">
@@ -97,7 +108,7 @@
                     </c:forEach>
 			    </select>
               <div class="invalid-feedback">
-                부서을 입력해주세요.
+                부서을 선택해주세요.
               </div>
               <label for="hireDate">입사일</label>
               <input type="date" class="form-control" id="hireDate" name="empHiredate" value="${employee.empHiredate}" required readonly>
@@ -109,7 +120,7 @@
           <hr class="mb-4">
           <div class="mb-4"></div>
           <button class="btn btn-primary float-right" type="submit" onclick="window.close()">취소</button>
-          <button class="btn btn-primary float-right" type="submit" id="delete-emp" formaction="${pageContext.request.contextPath}/admin/empDelete.do">삭제</button>
+          <%-- <button class="btn btn-primary float-right" type="submit" id="delete-emp" formaction="${pageContext.request.contextPath}/admin/empDelete.do">삭제</button> --%>
           <button class="btn btn-primary float-right" type="submit">수정</button>
       </div>
     </div>
@@ -119,6 +130,36 @@
   </div>
 </form:form>
 <script>
+//프로필 사진 미리보기 구현
+$('#upFile').change(function () {
+	//이미지 파일 유효성 검사
+	var imgFile = $('#upFile').val();
+	var fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+	var maxSize = 3 * 1024 * 1024;
+	var fileSize;
+
+	if(imgFile != "" && imgFile != null) {
+		fileSize = document.getElementById("upFile").files[0].size;
+	    if(!imgFile.match(fileForm)) {
+	    	alert("이미지 파일만 업로드 가능합니다.");
+	        return;
+	    } else if(fileSize == maxSize) {
+	    	alert("파일 사이즈는 3MB까지 가능합니다.");
+	        return;
+	    }
+	}
+  	readURL(this);
+});
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#photo').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+} 
+
 //절취선
   window.addEventListener('load', () => {
     const forms = document.getElementsByClassName('validation-form');
@@ -137,7 +178,11 @@
 
 //변경 비밀번호 유효성 검사
 var pwValid2 = 0;
+var pwCheck = 0;
+
 $("#emp_pw").keyup(e => {
+	pwCheck = 1;
+	
 	const pw = $(e.target).val();
 	const $pwError1 = $(".pwError1");
 
@@ -175,6 +220,7 @@ $("#re_emp_pw_check").blur(function(){
 
 //비밀번호 입력 확인
 $("#form").submit(function(e){
+	if(pwCheck == 1){
 		if(pwValid2 == 0){
 			alert("변경 비밀번호를 확인해주세요.");
 			e.preventDefault();
