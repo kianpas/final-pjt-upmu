@@ -25,12 +25,13 @@
         </div>
         <div class="article-author">
           <div class="article-author-img">
-            <img src="https://assets.codepen.io/285131/author-3.png" />
+            <img src="./resources/images/logo.png" alt="logo" />
           </div>
           <div class="article-author-info">
             <dl>
               <dt>UPMU Project</dt>
-              <dd>Reporter</dd>
+              <dd>KH정보교육원에서 파이널프로젝트로 기획했던 저희 업무팀은  <br />
+              </dd>
             </dl>
           </div>
         </div>
