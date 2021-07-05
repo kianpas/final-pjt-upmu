@@ -40,7 +40,7 @@
 					<div class="chart-bar">
 						<div id="now"></div>
 						<button type="button" class="btn btn-primary" id="start-work"
-							onclick="startWork(${principal.empNo});">출근</button>
+							onclick="startDateCheck(${principal.empNo});">출근</button>
 						<button type="button" class="btn btn-secondary" id="end-work"
 							onclick="endWork(${principal.empNo})" disabled>퇴근</button>
 
@@ -222,10 +222,12 @@ const workTable = (empNo, search) => {
 
 	})
 };
+
 var myBarChart;
 var myPieChart;
 let startOfWeek = moment().startOf('week')
 let endOfWeek = moment().endOf('week')
+
 console.log(startOfWeek.format("MMDD"))
 console.log(endOfWeek.format("MMDD"))
 
@@ -415,6 +417,36 @@ const weekTotalWorkHour = (empNo, startOfWeek, endOfWeek) => {
 
 	})
 }
+
+const startDateCheck = (empNo) => {
+	console.log(moment().format("YYYYMMDD"))
+	const checkDate = moment().format("YYYYMMDD");
+	/* const empNo = ${principal.empNo}; */
+		$.ajax({
+			url:"${pageContext.request.contextPath}/attendance/attendanceDuplicate",
+			data: {checkDate, empNo},
+			success:data=>{
+				console.log(data); //{"available":true}
+				console.log(data.available);
+				 if(data.available){
+					 startWork(empNo);
+				}else {
+				
+					console.log(data)
+					//console.log(savedEmp)
+					alert(`이미 근무기록에 포함되어있습니다.`);
+					
+				} 
+				
+			},
+			error:console.log,
+
+		}) 
+		
+	
+}
+
+
 
 
 

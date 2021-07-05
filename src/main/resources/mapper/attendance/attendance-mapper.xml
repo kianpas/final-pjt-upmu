@@ -41,4 +41,9 @@
 			and TO_CHAR(att_start,'MMDD') <![CDATA[<=]]> #{endOfWeek}
 		order by att_start asc
 	</select>
+	<select id="selectOneAttendance" resultType="attendanceExt">
+		select *
+		from attendance
+		where emp_no = #{empNo} and TO_CHAR(att_start,'YYYYMMDD') = #{checkDate}
+	</select>
 </mapper>

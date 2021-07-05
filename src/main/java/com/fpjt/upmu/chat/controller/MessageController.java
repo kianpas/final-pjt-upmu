@@ -35,7 +35,8 @@ public class MessageController {
 			throw e;
 		}
 
-		simpMessagingTemplate.convertAndSend("/topic/chat/room/" + chatMsg.getChatroomNo(), chatMsg);
+		simpMessagingTemplate.convertAndSend(
+				"/topic/chat/room/" + chatMsg.getChatroomNo(), chatMsg);
 	}
 
 	// 참여 내용 출력
@@ -66,7 +67,8 @@ public class MessageController {
 			log.error("개인메세지 입력 오류", e);
 			throw e;
 		}
-		simpMessagingTemplate.convertAndSendToUser(String.valueOf(directMsg.getMessageReceiver()), "/directMsg",
+		simpMessagingTemplate.convertAndSendToUser(
+				String.valueOf(directMsg.getMessageReceiver()), "/directMsg",
 				directMsg);
 	}
 
@@ -81,7 +83,8 @@ public class MessageController {
 			log.error("개인메세지 입력 오류", e);
 			throw e;
 		}
-		simpMessagingTemplate.convertAndSend("/topic/chat/updated/" + chatMsg.getChatroomNo(), chatMsg);
+		simpMessagingTemplate.convertAndSend(
+				"/topic/chat/updated/" + chatMsg.getChatroomNo(), chatMsg);
 
 	}
 
@@ -100,7 +103,8 @@ public class MessageController {
 			throw e;
 		}
 
-		simpMessagingTemplate.convertAndSend("/topic/chat/deleted/" + roomNo, roomNo);
+		simpMessagingTemplate.convertAndSend(
+				"/topic/chat/deleted/" + roomNo, roomNo);
 
 	}
 
@@ -115,7 +119,8 @@ public class MessageController {
 			log.error("개인메세지 입력 오류", e);
 			throw e;
 		}
-		simpMessagingTemplate.convertAndSendToUser(String.valueOf(directMsg.getMessageReceiver()), "/updated",
+		simpMessagingTemplate.convertAndSendToUser(
+				String.valueOf(directMsg.getMessageReceiver()), "/updated",
 				directMsg);
 
 	}
@@ -134,7 +139,8 @@ public class MessageController {
 			throw e;
 		}
 
-		simpMessagingTemplate.convertAndSendToUser(String.valueOf(directMsg.getMessageReceiver()), "/deleted", result);
+		simpMessagingTemplate.convertAndSendToUser(
+				String.valueOf(directMsg.getMessageReceiver()), "/deleted", result);
 
 	}
 
@@ -148,7 +154,8 @@ public class MessageController {
 			log.error("챗룸 퇴장 오류", e);
 			throw e;
 		}
-		simpMessagingTemplate.convertAndSend("/topic/chat/disconnect/" + chatroomJoin.getChatroomNo(),
+		simpMessagingTemplate.convertAndSend("/topic/chat/disconnect/" 
+		+ chatroomJoin.getChatroomNo(),
 				chatroomJoin.getEmpNo());
 	}
 

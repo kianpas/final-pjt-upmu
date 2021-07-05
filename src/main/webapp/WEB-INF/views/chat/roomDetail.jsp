@@ -99,12 +99,8 @@
 
 <script>
 
-
-
  		var stompClient = null;
        	
-		
-    	//native
     	function connect() {
     		const socket = new SockJS(
     				'${pageContext.request.contextPath}/websocket-chat');
@@ -117,7 +113,6 @@
     			//특정 방 구독, 메세지 입력
     			stompClient.subscribe(`/topic/chat/room/${chatroomNo}`, frame => {
     				console.log(frame)
-    				//showMsg(frame);
     				chatList();
     				
     			});
@@ -208,9 +203,10 @@
 							$(data).each((index, room) => {
 								const title = room.TITLE;
 								const chatroomNo = room.CHATROOM_NO;
-								
+								console.log(chatroomNo)
 								html += `<li>
-										<a href=${pageContext.request.contextPath}/chat/room/enter/\${chatroomNo} class="link-dark rounded">\${title}</a>
+										<a href="${pageContext.request.contextPath}
+										/chat/room/enter/\${chatroomNo}" class="link-dark rounded">\${title}</a>
 										</li>`;
 							})
 							
@@ -359,6 +355,7 @@
     			
 				//입장메세지 출력
 				const showGreeting = (joinInfo) => {
+					console.log(joinInfo)
 					const {empNo, regDate} = JSON.parse(joinInfo.body);
 					
 					 $(".toast-body").text(`\${empNo}님이 입장하셨습니다.`);
@@ -411,6 +408,23 @@
 					e.preventDefault();
 				});
 
+				//대화창 수정, 삭제 아이콘 표시
+				const showIcon = (msgNo) => {
+					const $list = $(`#\${msgNo}`);
+					const $icon = $(`#\${msgNo} .icon-container`);
+					
+					$list.hover(function(){
+						$icon.show();
+					})
+					
+					$list.mouseleave(function(){
+						$icon.hide();
+						
+					})
+				}		
+
+
+				
 				
 
 //챗룸 조인 여부 확인
