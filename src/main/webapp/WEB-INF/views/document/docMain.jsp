@@ -4,10 +4,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script> --%>
 <!-- Main에 집어넣을 부분 -->
 <div class="list-group" id="docTypeMenu">
 	<button type="button" class="list-group-item list-group-item-action" id="notdecided">
