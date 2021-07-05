@@ -144,13 +144,18 @@ public class BoardController {
 	@GetMapping("/boardDetail.do")
 	public void selectOneBoard(@RequestParam int no, Model model) {
 
-		boardService.readCount(no);
-		// 1. 업무로직 : board - attachment
-		BoardExt board = boardService.selectOneBoardCollection(no);
-		log.debug("board = {}", board);
+		try {
+			boardService.readCount(no);
+			// 1. 업무로직 : board - attachment
+			BoardExt board = boardService.selectOneBoardCollection(no);
+			log.debug("board = {}", board);
 
-		// 2. jsp에 위임
-		model.addAttribute("board", board);
+			// 2. jsp에 위임
+			model.addAttribute("board", board);
+		} catch (Exception e) {
+			log.error("게시글 조회 오류!", e);
+			throw e;
+		}
 		
 		
 	}

@@ -18,4 +18,6 @@ public interface AttendanceService {
 
 	List<AttendanceExt> weekHourList(Map<String, Object> map);
 
+	AttendanceExt selectOneAttendance(Map<String, Object> map);
+
 }
