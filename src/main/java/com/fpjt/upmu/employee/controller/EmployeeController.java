@@ -332,6 +332,7 @@ public class EmployeeController {
 						rawEmp.put("empDept", emp.get("empDept"));
 					}
 					// 내 정보를 업데이트
+					redirectAttr.addFlashAttribute("msg", "정보 수정을 성공했습니다.");
 					empService.updateEmp(rawEmp);
 				}
 			} catch (Exception e) {
