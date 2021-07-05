@@ -17,21 +17,21 @@
     <div class="magazine-column" style="width: 450px;">
       <article class="article">
         <h2 class="article-title article-title--large">
-          <a href="#" class="article-link">The First Signs of <mark class="mark mark--primary">Alcoholic Liver</mark>
-            Damage Are Not in the Liver</a>
+          <a href="#" class="article-link">
+			<iframe width="100%" height="500px" src="https://www.youtube.com/embed/Ta9bs68kB6M?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</a>
         </h2>
         <div class="article-excerpt">
-          <p>The combination of my father's death and my personal back ground lit a fire in me to know more</p>
-          <p>He was admitted to the hospital on June 24, 2016.
         </div>
         <div class="article-author">
           <div class="article-author-img">
-            <img src="https://assets.codepen.io/285131/author-3.png" />
+            <img src="./resources/images/logo.png" alt="logo" />
           </div>
           <div class="article-author-info">
             <dl>
-              <dt>David Sherof</dt>
-              <dd>Reporter</dd>
+              <dt>UPMU Project</dt>
+              <dd>KH정보교육원에서 파이널프로젝트로 기획했던 저희 업무팀은  <br />
+              </dd>
             </dl>
           </div>
         </div>

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fpjt.upmu.employee.model.vo.Employee;
 import com.fpjt.upmu.employeeList.model.service.EmployeeListService;
 import com.fpjt.upmu.employeeList.model.vo.Department;
-import com.fpjt.upmu.employeeList.model.vo.Employee;
 
 import lombok.extern.slf4j.Slf4j;
 

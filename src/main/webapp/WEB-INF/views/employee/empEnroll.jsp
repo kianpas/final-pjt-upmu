@@ -146,8 +146,6 @@ $("#emp_email").keyup(e => {
 });
 
 //비밀번호 유효성 검사
-const $pwValid = $("#pwValid");
-
 $("#emp_pw").keyup(e => {
 	const pw = $(e.target).val();
 	console.log(pw);

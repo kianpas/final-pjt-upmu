@@ -45,6 +45,12 @@ public class AttendanceDaoImpl implements AttendanceDao {
 		
 		return session.selectList("attendance.weekHourList", map);
 	}
+
+	@Override
+	public AttendanceExt selectOneAttendance(Map<String, Object> map) {
+		
+		return session.selectOne("attendance.selectOneAttendance", map);
+	}
 	
 	
 

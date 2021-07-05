@@ -47,5 +47,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceDao.weekHourList(map);
 	}
 
+	@Override
+	public AttendanceExt selectOneAttendance(Map<String, Object> map) {
+		
+		return attendanceDao.selectOneAttendance(map);
+	}
+
+	
 	
 }

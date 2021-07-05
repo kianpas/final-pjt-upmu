@@ -99,12 +99,8 @@
 
 <script>
 
-
-
  		var stompClient = null;
        	
-		
-    	//native
     	function connect() {
     		const socket = new SockJS(
     				'${pageContext.request.contextPath}/websocket-chat');
@@ -117,7 +113,6 @@
     			//특정 방 구독, 메세지 입력
     			stompClient.subscribe(`/topic/chat/room/${chatroomNo}`, frame => {
     				console.log(frame)
-    				//showMsg(frame);
     				chatList();
     				
     			});
@@ -163,72 +158,7 @@
     		});
     	}		
 
-    	//개인메세지 구독
-    	/* function dconnect() {
-    		const socket = new SockJS(
-    				'${pageContext.request.contextPath}/websocket-chat');
-    		stompClient = Stomp.over(socket);
-    		
-    		stompClient.connect({}, frame => {
-
-        			//내 개인메세지 구독
-    				
-    				
-    				const username = ${principal.empNo};
-    				const recvname = $("#receive_username").val();
-        			stompClient.subscribe(`/user/\${username}/directMsg`, frame => {
-        				console.log(frame)
-        				//showDm(frame);
-        				showDmList();
-        			});
-
-        			stompClient.subscribe(`/user/\${username}/updated`, frame => {
-        				//업데이트한 메세지의 높이 전달
-        				const type = "up";
-        				const body = JSON.parse(frame.body)
-        				const {messageNo} = body;
-        				const height = $(`#\${messageNo}`).data("lo");
-        				
-        				showDmList(type, height);
-        				
-        				//showDm(frame);
-        						
-        			});
-				
-        			stompClient.subscribe(`/user/\${username}/deleted`, frame => {
-        				showDmList();
-        				
-        				//showDm(frame);
-        						
-        			});
-    			
-    				//보낸개인메세지 구독
-        			stompClient.subscribe(`/user/\${recvname}/directMsg`, frame => {
-        				showDmList();
-        				
-        				showDm(frame);
-        						
-        			});
-
-        			
-        			stompClient.subscribe(`/user/\${recvname}/updated`, frame => {
-        				showDmList();
-        				
-        				//showDm(frame);
-        						
-        			});
-
-        			stompClient.subscribe(`/user/\${recvname}/deleted`, frame => {
-        				showDmList();
-        				
-        				//showDm(frame);
-        						
-        			});
-    			
-
-    		    })
-    		}			 */
-
+    	
 				
     			//채팅방에 참여한 인원 가져오는 펑션
 				const showUserList = () => {
@@ -273,9 +203,10 @@
 							$(data).each((index, room) => {
 								const title = room.TITLE;
 								const chatroomNo = room.CHATROOM_NO;
-								
+								console.log(chatroomNo)
 								html += `<li>
-										<a href=${pageContext.request.contextPath}/chat/room/enter/\${chatroomNo} class="link-dark rounded">\${title}</a>
+										<a href="${pageContext.request.contextPath}
+										/chat/room/enter/\${chatroomNo}" class="link-dark rounded">\${title}</a>
 										</li>`;
 							})
 							
@@ -389,116 +320,7 @@
 				}
 
 
-				//개인메세지 가져오기
-    			/* const showDmList = (type, height) => {
-    				const username = ${principal.empNo};
-    				const recvname = $("#receive_username").val();
-						$.ajax({
-							url : `${pageContext.request.contextPath}/chat/dmList/\${username}/\${recvname}`,
-							method: 'GET',
-							contentType:"application/json; charset=utf-8",
-							
-							success(data){
-								//const $container = $("#dmTable");
-								const $container = $("#chat-content");
-								
-								let html = '';
-								$.each(data, function(key, value){
-									//console.log(value);
-									const {messageNo, messageContent, messageTime, messageSender, messageReceiver, readCheck} = value;
-															
-									//서버와의 시간차 9시간 조정
-									const time = moment(messageTime).format("Do hh:mm a")
-														
-									 if(username == messageSender){       
-					                    	html += `<div class="media media-chat media-chat-reverse" id="dm\${messageNo}" onmouseover="showDmIcon(\${messageNo})">
-							                            <div class="media-body reverse">
-							                                <p>\${messageContent}</p>
-								                            </div>
-								                            <p class="meta-reverse">\${time}</p>
-								                            <div class="icon-dm">
-									                         <box-icon type='solid' name='edit' onclick="updateDm(\${messageNo}, '\${messageContent}')"></box-icon>
-									                         <box-icon name='x'  onclick="deleteDm(\${messageNo})"></box-icon>
-								                         </div>
-							                         </div>`;
-							                         
-					                    	} else {
-									
-											html += `<div class="media media-chat"> 
-							                            <div class="media-body">
-							                                <p>\${messageContent}</p>
-							                                
-								                        </div>
-								                        <p class="meta">\${time}</p>
-								                     </div>`;
-					                   }
-									
-									
-								})
-								
-								
-								$container.html(html)
-								const location = $("#chat-content")[0].scrollHeight;
-									
-									console.log(location)
-									
-								//업데이트한 경우 업데이트한 메세지 위치로 이동
-								if(type=="up"){
-									$container.scrollTop(height);
-								} else {
-									$container.scrollTop($container[0].scrollHeight);
-								}
-							},
-							error:console.log,
-						})
-						
-							console.log($("#chat-content")[0].scrollHeight)
-							
-        		}
-
-
-    			//메세지 수정 전 가져오기
-        		const updateDm = (no, msg) => {
-            		$("#dm-input").hide();
-            		$("#dm-update").show();
-            		console.log(no, msg)
-					$("#updateDmInput").val(msg);
-					$("[name=messageNo]").val(no);
-					
-
-            	}
-
-        		
-
-    			//실제 수정
-				const updateDmReal = () => {
-					
-					const messageContent = $("#updateDmInput").val();
-					const messageNo = $("[name=messageNo]").val();
-					const directMsg = {messageContent, messageNo};
-					
-					stompClient.send("/app/updateDm", {}, JSON.stringify({
-						'messageContent': messageContent,
-						'messageNo' : messageNo,
-						'messageReceiver' : $("#receive_username").val()
-					}));
-
-					$("#dm-input").show();
-					$("#dm-update").hide();
-				}
-
-				//메세지 삭제
-				const deleteDm = (messageNo) => {
-					console.log(messageNo);
-					
-					 stompClient.send("/app/deleteDm", {}, JSON.stringify({
-						 'messageReceiver' : $("#receive_username").val(),
-							'messageNo' : messageNo
-							
-					 }));
-
-				}
-    	 */
+			
 				//입장
 				const sendUser = () => {
 					stompClient.send("/app/join", {}, JSON.stringify({
@@ -527,24 +349,13 @@
     				}));
     				$("#msg").val('');
     			}
-				
-				//dm 보내기
-    		/* 	const sendDM = (msg) => {
-    				
-					stompClient.send("/app/directMsg", {}, JSON.stringify({
-    					'messageContent': $("#directMsg").val(),
-    					'messageSender' : ${principal.empNo},
-						'messageReceiver' : $("#receive_username").val()
-    				}));
-    				
-					
-    			} */
-
+		
     			
 				 	
     			
 				//입장메세지 출력
 				const showGreeting = (joinInfo) => {
+					console.log(joinInfo)
 					const {empNo, regDate} = JSON.parse(joinInfo.body);
 					
 					 $(".toast-body").text(`\${empNo}님이 입장하셨습니다.`);
@@ -591,125 +402,12 @@
 
 	    		
 
-	    		//개인메세지 출력
-	    		/* const showDm = ({body}) => {
-		    		console.log(body)
-	    			const value = JSON.parse(body);
-	    			const {messageNo, messageContent, messageTime, messageSender, messageReceiver, readCheck} = value;
-					
-	    			const username = $("#webchat_username").val();
-	    			
-	    			const time = moment(moment()).format("Do hh:mm a");
-	    			console.log(time)
-	    			let html="";
-	    			 if(username == messageSender){       
-	                   html += `<div class="media media-chat media-chat-reverse">
-			                            <div class="media-body reverse" id="dm\${messageNo}">
-			                                <p>\${messageContent}</p>
-				                            </div>
-				                            <p class="meta-reverse">\${time}</p>
-			                         </div>
-			                         <div class="icon-dm">
-				                         <box-icon type='solid' name='edit' 
-				                                onclick="updateDm(\${messageNo}, '\${messageContent}')"></box-icon>
-				                         <box-icon name='x' onclick="deleteDm(\${messageNo})"></box-icon>
-				                     </div>`;
-	                    	} else {
-					
-							html += `<div class="media media-chat"> 
-			                            <div class="media-body">
-			                                <p>\${messageContent}</p>
-			                                <p class="meta">\${time}</p>
-				                        </div>
-				                     </div>`;
-	                   }
-
-	                   
-						
-	    			 $("#chat-content").append(html).scrollTop($("#chat-content")[0].scrollHeight);
-
-					
-	    		}
- */
-
-				//주소록리스트
-				/* const showAddrList = () => {
-					
-					$.ajax({
-						url : `${pageContext.request.contextPath}/address/addrList/${principal.empNo}`,
-						method: 'GET',
-						contentType:"application/json; charset=utf-8",
-						success(data){
-							console.log(data)
-							const $Container = $("#addrList");
-							let html = "";
-							$(data).each((index, list) => {
-								const {addrNo, savedEmp, empName} = list
-								 html += `<div class="list-group-item list-group-item-action py-3 lh-tight" onclick="addDm(\${savedEmp}, '\${empName}')"> 
-								        <div class="d-flex w-80 align-items-center justify-content-between">
-								          <strong class="mb-1">\${empName}</strong>
-								          <i id="dropdwonIcon" onclick="event.cancelBubble = true;" class='bx bx-dots-vertical-rounded bx-sm' data-bs-toggle="dropdown"></i>
-										  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-										    <li><a class="dropdown-item" onclick="event.cancelBubble = true; addrDelete(\${addrNo})">주소록 삭제</a></li>
-										  </ul>
-							          </div>
-							        </div>`;
-							})
-						
-							$Container.html(html);
-
-						},
-						error:console.log,
-					})
-
-				};
- */
-
-				
-				
-				//주소록에서 dm을 전달
-			/* 	const addDm = (id, name) =>{
-					$("#receive_username").val(id);
-					$("#dmName").text(name)
-					
-					showDmList();
-				} */
 
 				$("#dropdwonIcon", ".dropdown-item").click(e => {
 					console.log(e);
 					e.preventDefault();
 				});
 
-				//주소록 삭제
-				/* const addrDelete = (addrNo) =>{
-					
-					const byEmp = ${principal.empNo};
-					const address = {addrNo};
-					console.log(address);
-					$.ajax({
-						url : `${pageContext.request.contextPath}/address/delete`,
-						method: 'POST',
-						contentType:"application/json; charset=utf-8",
-						data : JSON.stringify(address),
-						success(data){
-							console.log(data);
-							showAddrList();
-						},
-						error:console.log,
-					})
-					
-				}
-
-
-				const openChat = () => {
-					if($("#chat-pop").css("display") == "none"){
-					    $("#chat-pop").show();
-					} else {
-					    $("#chat-pop").hide();
-					}
-					
-				}*/
-				
 				//대화창 수정, 삭제 아이콘 표시
 				const showIcon = (msgNo) => {
 					const $list = $(`#\${msgNo}`);
@@ -723,25 +421,11 @@
 						$icon.hide();
 						
 					})
-				}
+				}		
+
+
 				
-			/*	//개인대화창 수정, 삭제 아이콘 표시
-				const showDmIcon = (messageNo) => {
-					
-					const $list = $(`#dm\${messageNo}`);
-					
-					const $icon = $(`#dm\${messageNo} .icon-dm`);
-					
-					$list.hover(function(){
-						$icon.show();
-					})
-					
-					$list.mouseleave(function(){
-						$icon.hide();
-						
-					})
-				} */
-        	
+				
 
 //챗룸 조인 여부 확인
 const checkJoin = () => {
@@ -774,11 +458,7 @@ const checkJoin = () => {
     			$(function() {
         			
     				chatList();
-    			/* 			
-					$("#dmSub").click(function(){
-						dconnect();
-						showDmList();
-					}) */
+    			
 		    				    				
     				$("#disconnect").click(function() {
     					sendDisconnect();

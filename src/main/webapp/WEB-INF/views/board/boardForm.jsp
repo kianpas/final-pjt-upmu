@@ -73,14 +73,12 @@ function goBack(){
 		<tr>
 			<td style="width: 10%">첨부</td>
 			<td>
-				
 				  <div class="input-group mb-3">
 					  <input type="file" class="form-control" name="upFile" id="inputGroupFile01">
 					</div>
 					<div class="input-group mb-3">
 					  <input type="file" class="form-control" name="upFile" id="inputGroupFile02">
 					</div>
-				
 			</td>
 		</tr>
 		<tr>

@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpjt.upmu.common.util.UpmuUtils;
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.Employee;
 import com.fpjt.upmu.mail.model.service.MailService;
 import com.fpjt.upmu.mail.model.vo.Mail;
 import com.fpjt.upmu.mail.model.vo.MailExt;

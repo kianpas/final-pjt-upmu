@@ -57,7 +57,7 @@ img {
 }
 
 .magazine-column {
-  padding: 0 1.5rem;
+  padding: 0 0.7rem;
   grid-column: span 5;
 }
 @media (min-width: 1200px) {
@@ -148,8 +148,6 @@ img {
 .article-author-img {
   width: 3rem;
   height: 3rem;
-  border-radius: 12px;
-  background-color: #323232;
   overflow: hidden;
   background-blend-mode: multiply;
 }

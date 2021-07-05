@@ -13,6 +13,6 @@ public interface AddressDao {
 
 	int deleteAddr(Address address);
 
-	Address selectOneAddr(Address address);
+	AddressExt selectOneAddr(AddressExt address);
 
 }

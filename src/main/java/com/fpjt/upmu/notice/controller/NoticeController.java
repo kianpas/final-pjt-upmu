@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.Employee;
 import com.fpjt.upmu.notice.model.service.NoticeService;
 import com.fpjt.upmu.notice.model.vo.Notice;
 

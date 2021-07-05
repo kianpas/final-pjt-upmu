@@ -1,41 +1,36 @@
-<%@page import="com.fpjt.upmu.employeeList.model.vo.Employee"%>
+<%@page import="com.fpjt.upmu.employee.model.vo.Employee"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="UPMU" name="title"/>
+	<jsp:param value="UPMU" name="title" />
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eList.css" />
 <div class="search-form">
-		<label class="keyLabel"for="keyword"></label>
-		<select id="keyword">
-			<option value="emp_no" selected>사번</option>
-			<option value="emp_name">이름</option>
-			<option value="emp_job">직급</option>
-			<option value="emp_dept">부서</option>
-		</select>
-	    <input id="search" name="p" type="search" autocomplete="off" spellcheck="false" placeholder="검색" onkeypress="if( event.keyCode == 13) {colorReset();search()};">
-	    <input id="search-submit" type="submit" value="검색" onclick="search();">
+	<label class="keyLabel" for="keyword"></label>
+	<select id="keyword">
+		<option value="emp_no" selected>사번</option>
+		<option value="emp_name">이름</option>
+		<option value="emp_job">직급</option>
+		<option value="emp_dept">부서</option>
+	</select>
+	<input id="search" name="p" type="search" autocomplete="off" spellcheck="false" placeholder="검색" onkeypress="if( event.keyCode == 13) {colorReset();search()};"> <input id="search-submit" type="submit" value="검색" onclick="search();">
 </div>
 <div class="list-form">
 	<div class="depart-list list">
 		<details>
-	        <summary class="dList-all">
-	        	부서 목록
-	        </summary>
-		    <c:forEach items="${dList}" var="dept">
+			<summary class="dList-all"> 부서 목록 </summary>
+			<c:forEach items="${dList}" var="dept">
 				<p class="${dept.depNo} dept">${dept.depName}</p>
 			</c:forEach>
-    	</details>
+		</details>
 
 	</div>
-	
-	<div class="employee-list list">
-	</div>
+
+	<div class="employee-list list"></div>
 </div>
 
 <script>
@@ -47,7 +42,6 @@ link.rel = "stylesheet";
 link.type = "text/css";
 link.href = cssUrl;
 document.head.appendChild(link); */
-
 //색상 초기화
 function colorReset() {	
 	$(".dept").each((i, item) => {
@@ -198,4 +192,4 @@ $(".keyLabel").hide();
 
 </script>
 </body>
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
