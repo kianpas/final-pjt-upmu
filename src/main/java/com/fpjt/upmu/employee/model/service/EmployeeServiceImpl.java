@@ -12,7 +12,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.fpjt.upmu.employee.model.dao.EmployeeDao;
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.EmpProfile;
+import com.fpjt.upmu.employee.model.vo.Employee;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +31,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int insertEmployee(Employee employee) {
 		return	empDao.insertEmployee(employee);
 	}
+	
+	@Override
+	public int insertRole(String empEmail) {
+		return empDao.insertRole(empEmail);
+	}
 
+	@Override
+	public void insertAuth(String email) {
+		empDao.insertAuth(email);
+	}
+
+	@Override
+	public void deleteAuth(String email) {
+		empDao.deleteAuth(email);
+	}
+	
 	@Override
 	public Employee selectOneEmp(String id) {
 		return empDao.selectOneEmp(id);
@@ -99,6 +115,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void updateEmp(Map<String, Object> rawEmp) {
 		empDao.updateEmp(rawEmp);
+	}
+
+	@Override
+	public void deleteEmp(String empEmail) {
+		empDao.deleteEmp(empEmail);
+	}
+
+	@Override
+	public int insertProfile(EmpProfile profile) {
+		return empDao.insertProfile(profile);
+	}
+
+	@Override
+	public String selectProfileName(int empNo) {
+		return empDao.selectProfileName(empNo);
+	}
+
+	@Override
+	public int updateProfile(EmpProfile profile) {
+		return empDao.updateProfile(profile);
+	}
+
+	@Override
+	public String selectProfile(String param) {
+		return empDao.selectProfile(param);
 	}
 	
 	

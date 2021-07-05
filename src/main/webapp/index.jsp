@@ -18,7 +18,7 @@
       <article class="article">
         <h2 class="article-title article-title--large">
           <a href="#" class="article-link">
-			<iframe width="100%" height="500px" src="https://www.youtube.com/embed/Ta9bs68kB6M?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<iframe width="100%" height="500px" src="https://www.youtube.com/embed/Ta9bs68kB6M?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</a>
         </h2>
         <div class="article-excerpt">

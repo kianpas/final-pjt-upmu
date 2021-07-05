@@ -9,7 +9,7 @@ import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.fpjt.upmu.employeeList.model.vo.Employee;
+import com.fpjt.upmu.employee.model.vo.Employee;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 

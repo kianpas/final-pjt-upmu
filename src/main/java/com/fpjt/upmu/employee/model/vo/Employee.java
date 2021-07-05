@@ -1,4 +1,4 @@
-package com.fpjt.upmu.employeeList.model.vo;
+package com.fpjt.upmu.employee.model.vo;
 
 import java.sql.Date;
 import java.util.Collection;
