@@ -1,5 +1,7 @@
 package com.fpjt.upmu.schedule.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,23 +34,75 @@ public class ScheduleController {
 
 	@GetMapping("/schedule.do")
 	public String scheduleList(Authentication authentication, Model model) {
-		
+	
 		Employee principal = (Employee)authentication.getPrincipal();
+		Map<String, Object> emp = new HashMap<>();
+		emp.put("empNo", principal.getEmpNo());
+		emp.put("depName", principal.getEmpDept());
 		
-		List<Schedule> list = scheduleService.selectScheduleList(principal.getEmpNo()); // 사원번호
+		List<Schedule> list = scheduleService.selectScheduleList(emp);
 		
 		model.addAttribute("list", list);
 		
 		return "schedule/schedule";
 	}
 	
+	@GetMapping("/schIndex.do")
+	public String scheduleListIndex(Authentication authentication, Model model) {
+		
+		Date now = new Date();
+		SimpleDateFormat nowFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String today = nowFormat.format(now);
+		
+		Employee principal = (Employee)authentication.getPrincipal();
+		Map<String, Object> idx = new HashMap<>();
+		idx.put("empNo", principal.getEmpNo());
+		idx.put("depName", principal.getEmpDept());
+		idx.put("today", today);
+		
+		List<Schedule> list = scheduleService.selectScheduleListIndex(idx);
+		
+		for(int i = 0; i < list.size(); i++) {
+			String s = list.get(i).getSchStart();
+			s = s.substring(s.length()-5);
+			
+			if(s.contains("-")) {
+				s = "00:00";
+			}
+			
+			list.get(i).setSchStart(s);			
+		}
+		
+		model.addAttribute("list", list);
+		
+		return "schedule/schIndex";
+	}
+	
 	@PostMapping("/scheduleEnroll.do")
-	public String scheduleEnroll(Authentication authentication, @ModelAttribute Schedule schedule, @RequestParam String shareSch, RedirectAttributes redirectAttr) {
+	public String scheduleEnroll(Authentication authentication, @ModelAttribute Schedule schedule, @RequestParam String shareSchType, RedirectAttributes redirectAttr) {
 		try {
 			
 			log.debug("schdule = {}", schedule);
+			log.debug("shareSchType = {}", shareSchType);
+			
+			Employee principal = (Employee)authentication.getPrincipal();
+			
+			if(shareSchType.equals("depSch")) {
+				schedule.setShareSch(principal.getEmpDept());
+			}
+			else if(shareSchType.equals("allSch")) {
+				schedule.setShareSch("ALL");
+			}
+			else {
+				schedule.setShareSch(null);
+			}
 
+			schedule.setEmpNo(principal.getEmpNo());
+
+			log.debug("schdule = {}", schedule);
+			
 			int result = scheduleService.insertSchedule(schedule);
+			
 			redirectAttr.addFlashAttribute("msg", "일정이 등록되었습니다.");
 			
 		} catch(Exception e) {
