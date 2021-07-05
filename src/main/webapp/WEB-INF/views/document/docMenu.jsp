@@ -36,7 +36,7 @@
 			<div class="card-body">
 				<nav id="docNav">
 					<!-- testCode -->
-					<a href="${pageContext.request.contextPath}/document/docMain">임시 메인버튼</a>
+					<%-- <a href="${pageContext.request.contextPath}/document/docMain">임시 메인버튼</a> --%>
 
 					<div class="list-group" id="docEditorMenu">
 						<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>

@@ -207,7 +207,8 @@ public class DocController {
 			//result = docService.updateDocument(param);
 
 			result = docService.updateMyDocLineStatus(docLine);
-			result = docService.updateOthersDocLineStatus(docLine);
+//			if("approver".equals(docLine.getApproverType()))
+				result = docService.updateOthersDocLineStatus(docLine);
 
 			return "redirect:/document/docDetail?docNo="+docLine.getDocNo();
 		} catch (Exception e) {

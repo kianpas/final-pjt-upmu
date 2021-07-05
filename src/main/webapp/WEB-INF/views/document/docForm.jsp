@@ -74,7 +74,7 @@
 			<br />
 			
 			<div id="docLineDiv">
-				<table class="table" id="docLineTable">
+				<table class="table table-sm" id="docLineTable">
 					<tr>
 						<th scope="col">결재종류</th>
 						<th scope="col">직위</th>

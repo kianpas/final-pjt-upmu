@@ -102,7 +102,7 @@ textarea{
 									<c:when test="${docLine.status eq 'notdecided' }">
 										<c:if test="${docLine.approver == loginEmpNo }">
 										<td>
-											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
+											<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#approvalModal">선택</button>
 											<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
 											<input type="hidden" id="lv" value="${docLine.lv}"/>
 										</td>
