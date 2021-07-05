@@ -29,9 +29,14 @@
           </div>
           <div class="article-author-info">
             <dl>
-              <dt>UPMU Project</dt>
-              <dd>KH정보교육원에서 파이널프로젝트로 기획했던 저희 업무팀은  <br />
-              </dd>
+              <dt style="font-size: 20px; color: skyblue;">팀원소개</dt>
+              <dd style="font-size: 15px; font-weight: bolder;  text-align: center;">최한성(팀장), 김상훈, 송민성, 손세라, 이운산, 최민순</dd> 
+              <ul style="font-size: 15px;">
+              <li>
+              저희 KH정보교육원 수강생 업무팀은 회의를 통하여 그룹웨어를 만들어보았습니다.
+              </li>
+              <li>youtube 영상을 통해 조금 더 자세하게 보시면 좋을것같습니다.</li>
+              </ul>
             </dl>
           </div>
         </div>
@@ -51,11 +56,8 @@
           <p>By Jonathan O'Connell</p>
         </div>
       </article>
-      <!-- ChoiMS -->
       <article class="article">
-      <p>전자결재 문서 목록</p>
-      <c:import url="/document/docMain"></c:import>
-<!--         <figure class="article-img">
+        <figure class="article-img">
           <img
             src="https://images.unsplash.com/photo-1569234817121-a2552baf4fd4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" />
         </figure>
@@ -64,8 +66,7 @@
         </h2>
         <div class="article-creditation">
           <p>By Jonathan O'Connell</p>
-        </div> -->
-        
+        </div>
       </article>
     </div>
     <div class="magazine-column" style= " width: 330px;">
