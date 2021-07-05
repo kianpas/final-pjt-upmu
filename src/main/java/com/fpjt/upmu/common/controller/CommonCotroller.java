@@ -42,12 +42,6 @@ public class CommonCotroller {
 
 	@Autowired
 	EmployeeService empService;
-
-	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
-	@Autowired
-	private ServletContext application;
 	
 	@PostMapping("accessDenied.do")
 	public void error() {
