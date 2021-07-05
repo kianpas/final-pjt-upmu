@@ -333,7 +333,7 @@ public class EmployeeController {
 					}
 					// 내 정보를 업데이트
 					redirectAttr.addFlashAttribute("msg", "정보 수정을 성공했습니다.");
-					empService.updateEmp(rawEmp);
+					int result = empService.updateEmp(rawEmp);
 				}
 			} catch (Exception e) {
 				log.error("내 정보 업데이트 오류!", e);

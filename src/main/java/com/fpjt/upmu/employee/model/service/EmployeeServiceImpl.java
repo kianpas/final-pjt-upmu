@@ -113,8 +113,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void updateEmp(Map<String, Object> rawEmp) {
-		empDao.updateEmp(rawEmp);
+	public int updateEmp(Map<String, Object> rawEmp) {
+		return empDao.updateEmp(rawEmp);
 	}
 
 	@Override
