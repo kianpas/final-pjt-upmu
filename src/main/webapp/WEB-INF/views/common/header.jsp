@@ -129,7 +129,7 @@
        <sec:authorize access="isAuthenticated()"> 
       
        <sec:authentication property="principal" var="principal" />
-		    <a href="${pageContext.request.contextPath}/common/myProfile.do?empNo=${principal.empNo}" style="text-decoration: none; font-weight: bold; color: black;" onclick="window.open(this.href, '_blank', 'width=770, height=835'); return false;">
+		    <a href="${pageContext.request.contextPath}/employee/myProfile.do?empNo=${principal.empNo}" style="text-decoration: none; font-weight: bold; color: black;" onclick="window.open(this.href, '_blank', 'width=770, height=835'); return false;">
 		   	<sec:authentication property="principal.empName"/></a>님, 안녕하세요.			    
 		    		&nbsp;
 			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
