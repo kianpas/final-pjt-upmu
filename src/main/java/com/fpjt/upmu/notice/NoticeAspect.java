@@ -82,7 +82,7 @@ public class NoticeAspect {
 //		int docNo = list.get(0).getDocNo();
 //		Document document = docService.selectOnedocumentSimple(docNo);
 //		//System.out.printf("docNo = %d, writer = %d%n", docNo, writer);
-//		
+//			
 //		int empNo = document.getWriter();
 //		String linkAddr = "/document/docDetail?docNo="+docNo;
 //		String notiType = "docReply";

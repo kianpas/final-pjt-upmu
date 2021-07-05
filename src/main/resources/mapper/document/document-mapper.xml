@@ -103,30 +103,36 @@
 			approver != #{approver}
 		and
 			status = 'notdecided'
+		
+		<!-- 1. 대상자가 일반 결재자인 경우 -->
 		<!-- 일반 결재자는 승인시 상급자의 status를 바꾸면 안됨 -->
 		<if test='maxAuthority != "Y" and status eq "approved"'>
-			and lv &lt; #{lv}
+		and 
+			approver_type = 'approver'
+		and
+			lv &lt; #{lv}
 		</if>
 		</where>
 	</update>
 	
 	<select id="selectDocNo" resultType="string">
+		select doc_no from (
 		select doc_no from docline
 		<where>
 		    approver = #{id}
 		<if test="status == 'afterview'">
-			and approver_type in ('enforcer', 'referer')
+			and status = 'afterview'
 		</if>
 		<if test="status == 'notdecided'">
-			and approver_type in ('approver', 'agreer')
+			<!-- and approver_type in ('approver', 'agreer') -->
 			and status = #{status}
 		</if>
 		<if test="status == 'approved'">
 			and approver_type in ('approver', 'agreer')
-			and status = #{status}
+			and status != 'notdecided'
 		</if>
 		</where>
-		<if test="status != 'afterview'">
+
 		intersect
 		select doc_no from docline
 		<where>
@@ -139,9 +145,15 @@
 			<if test="status == 'approved'">
 			max_authority = 'Y' and status = 'notdecided'
 			</if>
-			
 		</where>
+		<if test="status == 'afterview'">
+		minus
+		select doc_no from docline
+		where
+			status = 'approved'
+        	or status = 'rejected'
 		</if>
+		) order by doc_no desc
 	</select>
 	
 	<insert id="insertDocument">
@@ -309,18 +321,18 @@
 		<where>
 		    approver = #{id}
 		<if test="status == 'afterview'">
-			and approver_type in ('enforcer', 'referer')
+			and status = 'afterview'
 		</if>
 		<if test="status == 'notdecided'">
-			and approver_type in ('approver', 'agreer')
+			<!-- and approver_type in ('approver', 'agreer') -->
 			and status = #{status}
 		</if>
 		<if test="status == 'approved'">
 			and approver_type in ('approver', 'agreer')
-			and status = #{status}
+			and status != 'notdecided'
 		</if>
 		</where>
-		<if test="status != 'afterview'">
+
 		intersect
 		select doc_no from docline
 		<where>
@@ -333,9 +345,14 @@
 			<if test="status == 'approved'">
 			max_authority = 'Y' and status = 'notdecided'
 			</if>
-			
 		</where>
-		</if>	
+		<if test="status == 'afterview'">
+		minus
+		select doc_no from docline
+		where
+			status = 'approved'
+        	or status = 'rejected'
+		</if>
 	)
 	</select>
 	
