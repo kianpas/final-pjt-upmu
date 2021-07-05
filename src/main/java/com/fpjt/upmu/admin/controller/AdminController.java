@@ -99,6 +99,7 @@ public class AdminController {
 		} catch (Exception e) {
 			log.error("error",e);
 		}
+		
 		try {
 			
 			//프로필 사진 처리
@@ -113,24 +114,15 @@ public class AdminController {
 				String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1, originalFileName.length());
 				
 				if(!(extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg"))) {
-					System.out.println(extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg"));
-					System.out.println(!extension.equals("png"));
-					System.out.println(extension.equals("png"));
 					redirectAttr.addFlashAttribute("msg", "올바른 이미지 파일이 아닙니다.");
 					return "redirect:/common/myProfile.do?empNo=" + rawEmployee.getEmpNo();
 				}
 				
-				File dir = new File(saveDirectory);
-				if(!dir.exists())
-					dir.mkdirs(); // 복수개의 디렉토리를 생성
-				
 				String renamedFilename = UpmuUtils.getRenamedFilename(originalFileName);
 				
-				// a.서버컴퓨터에 저장
 				File dest = new File(saveDirectory, renamedFilename);
 				upFile.transferTo(dest); // 파일이동
 				
-				// b.저장된 데이터를 Attachment객체에 저장 및 list에 추가
 				EmpProfile profile = new EmpProfile();
 				profile.setEmpNo(rawEmployee.getEmpNo());
 				profile.setOriginalFilename(upFile.getOriginalFilename());
@@ -139,7 +131,7 @@ public class AdminController {
 				//프로필 사진 존재 여부 조회
 				//비존재 시 'N'을 반환
 				String profileName = empService.selectProfileName(rawEmployee.getEmpNo());
-				// 2. 업무로직 : db저장 board, attachment
+
 				//프로필 사진이 존재, 비존재 시 분기 처리
 				int result;
 				

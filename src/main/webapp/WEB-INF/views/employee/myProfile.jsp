@@ -21,7 +21,7 @@
 </script>
 <input id="pw-check" type="hidden" value="${msg}">
 <input name="empNoPrin" type="hidden" value="<sec:authentication property="principal.empNo"/>">
-<form:form action="${pageContext.request.contextPath}/common/myProfile.do?${_csrf.parameterName}=${_csrf.token}" id="form" method="POST" enctype="multipart/form-data">
+<form:form action="${pageContext.request.contextPath}/employee/myProfile.do?${_csrf.parameterName}=${_csrf.token}" id="form" method="POST" enctype="multipart/form-data">
 <div class="container">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
