@@ -113,24 +113,31 @@ public class DocController {
 	
 	@GetMapping("/docMain")
 	public String docMain(Authentication authentication, Model model) {
-		Employee principal = (Employee) authentication.getPrincipal();
-		Map<String, Object> param = new HashMap<>();
-		param.put("id", principal.getEmpNo());
-
-		Map<String,Object> menuCounter = new HashMap<>();
-		param.put("status", "notdecided");
-		menuCounter.put("notdecided", docService.selectDocCount(param));
-		param.put("status", "approved");
-		menuCounter.put("approved", docService.selectDocCount(param));
-		param.put("status", "completed");
-		menuCounter.put("completed", docService.selectDocCount(param));
-		param.put("status", "afterview");
-		menuCounter.put("afterview", docService.selectDocCount(param));
-		param.put("status", "rejected");
-		menuCounter.put("rejected", docService.selectDocCount(param));
-
-		model.addAttribute("menuCounter", menuCounter);
 		
+		try {
+			if(authentication != null) {
+				Employee principal = (Employee) authentication.getPrincipal();
+				
+				Map<String, Object> param = new HashMap<>();
+				param.put("id", principal.getEmpNo());
+
+				Map<String,Object> menuCounter = new HashMap<>();
+				param.put("status", "notdecided");
+				menuCounter.put("notdecided", docService.selectDocCount(param));
+				param.put("status", "approved");
+				menuCounter.put("approved", docService.selectDocCount(param));
+				param.put("status", "completed");
+				menuCounter.put("completed", docService.selectDocCount(param));
+				param.put("status", "afterview");
+				menuCounter.put("afterview", docService.selectDocCount(param));
+				param.put("status", "rejected");
+				menuCounter.put("rejected", docService.selectDocCount(param));
+
+				model.addAttribute("menuCounter", menuCounter);		
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "document/docMain";
 	}
 	

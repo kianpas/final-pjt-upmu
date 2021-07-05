@@ -31,11 +31,21 @@
 		<span class="badge bg-secondary badge-menu">${menuCounter.rejected}</span>
 	</button>
 </div>
-
+<!-- 로그인이전 -->
+<sec:authorize access="isAnonymous()">
 <script>
 $("#docTypeMenu>button").click(function(){
-	//empNo=1. 원래는 <sec:authentication property="principal.empNo"/>
+	location.href = `${pageContext.request.contextPath}/document/docForm`;
+});
+</script>
+</sec:authorize>
+<!-- 로그인이후 -->
+<sec:authorize access="isAuthenticated()">
+<script>
+$("#docTypeMenu>button").click(function(){
 	var empNo = '<sec:authentication property="principal.empNo"/>';
 	location.href = `${pageContext.request.contextPath}/document/docList?empNo=\${empNo}&type=\${this.id}`;
 });
 </script>
+</sec:authorize>
+

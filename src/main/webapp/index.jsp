@@ -54,7 +54,7 @@
       <!-- ChoiMS -->
       <article class="article">
       <p>전자결재 문서 목록</p>
-      <%-- <c:import url="/document/docMain"></c:import> --%>
+      <c:import url="/document/docMain"></c:import>
 <!--         <figure class="article-img">
           <img
             src="https://images.unsplash.com/photo-1569234817121-a2552baf4fd4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" />
