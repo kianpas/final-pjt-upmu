@@ -359,9 +359,6 @@ public class MailController {
 		String result = null;
 		
 		try {
-			System.out.println(valueArr);
-			System.out.println(who);
-
 			//
 			int now = 1;
 			
