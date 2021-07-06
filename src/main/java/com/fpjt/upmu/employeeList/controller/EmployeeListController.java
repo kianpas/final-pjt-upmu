@@ -47,7 +47,7 @@ public class EmployeeListController {
 		} catch (Exception e) {
 			log.error("부서등록 오류!");
 		}
-		return "redirect:/employeeList/eList";
+		return "redirect:/redirect:/admin/eListAdmin.do";
 	}
 	
 	//부서에 따른 조직원 조회
@@ -97,7 +97,7 @@ public class EmployeeListController {
 		} catch (Exception e) {
 			log.error("부서삭제 오류!");
 		}
-		return "redirect:/employeeList/eList";
+		return "redirect:/admin/eListAdmin.do";
 	}
 	
 	//부서 업데이트 창 띄우기

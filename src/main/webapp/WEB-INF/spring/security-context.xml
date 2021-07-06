@@ -28,6 +28,7 @@
 		<intercept-url pattern="/main.jsp" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/**" access="hasRole('USER')"/>
+		<intercept-url pattern="/employeeList/departEnroll.do" access="hasRole('ADMIN')"/>
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
 		
 		
