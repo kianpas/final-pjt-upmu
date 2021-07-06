@@ -99,9 +99,12 @@ public class BoardDaoImpl implements BoardDao {
 		
 		return session.update("board.deleteFile", no);
 	}
-	
-	
-	
+
+	@Override
+	public List<BoardExt> mainBoardList() {
+		
+		return session.selectList("board.mainBoardList");
+	}
 	
 	
 	
