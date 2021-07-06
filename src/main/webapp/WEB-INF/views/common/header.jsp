@@ -63,7 +63,7 @@
     <div class="container-fluid" >
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
+          <li class="nav-item" style="margin-left: -22px;">
             <a class="nav-link active" aria-current="page"
               href="${pageContext.request.contextPath}/board/boardList.do">게시판</a>
           </li>
@@ -79,7 +79,7 @@
             <a class="nav-link active" aria-current="page"
               href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" style="margin-left: -22px;">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               조직도
