@@ -54,23 +54,15 @@ public class ScheduleController {
 		SimpleDateFormat nowFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String today = nowFormat.format(now);
 		
-		Employee principal = (Employee)authentication.getPrincipal();
-		Map<String, Object> idx = new HashMap<>();
-		idx.put("empNo", principal.getEmpNo());
-		idx.put("depName", principal.getEmpDept());
-		idx.put("today", today);
-		
-		List<Schedule> list = scheduleService.selectScheduleListIndex(idx);
-		
-		for(int i = 0; i < list.size(); i++) {
-			String s = list.get(i).getSchStart();
-			s = s.substring(s.length()-5);
+		List<Schedule> list = null;;
+		if(authentication != null) {
+			Employee principal = (Employee)authentication.getPrincipal();
+			Map<String, Object> idx = new HashMap<>();
+			idx.put("empNo", principal.getEmpNo());
+			idx.put("depName", principal.getEmpDept());
+			idx.put("today", today);
 			
-			if(s.contains("-")) {
-				s = "00:00";
-			}
-			
-			list.get(i).setSchStart(s);			
+			list = scheduleService.selectScheduleListIndex(idx);
 		}
 		
 		model.addAttribute("list", list);
