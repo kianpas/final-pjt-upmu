@@ -130,32 +130,35 @@ const now = () => {
 setInterval(now, 1000);
 
 const startWork = (empNo) => {
-	confirm("근무를 시작하시겠습니까?");
-	$.ajax({
-		url:`${pageContext.request.contextPath}/attendance/startWork/\${empNo}`,
-		method:'GET',
-		success(data){
-			$("#start-work").attr("disabled", true);
-			$("#end-work").attr("disabled", false);
-		},
-		error:console.log
-
-	})
-
+	const check = confirm("근무를 시작하시겠습니까?");
+	if(check){
+		$.ajax({
+			url:`${pageContext.request.contextPath}/attendance/startWork/\${empNo}`,
+			method:'GET',
+			success(data){
+				$("#start-work").attr("disabled", true);
+				$("#end-work").attr("disabled", false);
+			},
+			error:console.log
+	
+		})
+	}
 }
 
 const endWork = (empNo) => {
-	confirm("근무를 종료하시겠습니까?");
-	$.ajax({
-		url:`${pageContext.request.contextPath}/attendance/endWork/\${empNo}`,
-		method:'GET',
-		success(data){
-			$("#start-work").attr("disabled", false);
-			$("#end-work").attr("disabled", true);
-		},
-		error:console.log
-
-	})
+	const check = confirm("근무를 종료하시겠습니까?");
+	if(check){
+		$.ajax({
+			url:`${pageContext.request.contextPath}/attendance/endWork/\${empNo}`,
+			method:'GET',
+			success(data){
+				$("#start-work").attr("disabled", false);
+				$("#end-work").attr("disabled", true);
+			},
+			error:console.log
+	
+		})
+	}
 };
 
 function simpleTemplating(data) {

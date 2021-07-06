@@ -73,10 +73,23 @@ public class DocController {
 	//testCode
 	@GetMapping("/docMenu")
 	public String docMenu(Authentication authentication, Model model) {
-		log.debug("test");
-		
-		int tempVal = 382;
-		model.addAttribute("tempVal", tempVal);
+		Employee principal = (Employee) authentication.getPrincipal();
+		Map<String, Object> param = new HashMap<>();
+		param.put("id", principal.getEmpNo());
+
+		Map<String,Object> menuCounter = new HashMap<>();
+		param.put("status", "notdecided");
+		menuCounter.put("notdecided", docService.selectDocCount(param));
+		param.put("status", "approved");
+		menuCounter.put("approved", docService.selectDocCount(param));
+		param.put("status", "completed");
+		menuCounter.put("completed", docService.selectDocCount(param));
+		param.put("status", "afterview");
+		menuCounter.put("afterview", docService.selectDocCount(param));
+		param.put("status", "rejected");
+		menuCounter.put("rejected", docService.selectDocCount(param));
+
+		model.addAttribute("menuCounter", menuCounter);
 		return "document/docMenu";
 	}
 	@GetMapping("/example")
@@ -100,14 +113,31 @@ public class DocController {
 	
 	@GetMapping("/docMain")
 	public String docMain(Authentication authentication, Model model) {
-		Employee principal = (Employee) authentication.getPrincipal();
-		int empNo = principal.getEmpNo();
 		
-		List<Notice> noticeList = noticeService.selectNoticeList(empNo);
-		int noticeCount = noticeService.countNoticeList(empNo);
-	
-		model.addAttribute("noticeList", noticeList);
-		model.addAttribute("noticeCount", noticeCount);
+		try {
+			if(authentication != null) {
+				Employee principal = (Employee) authentication.getPrincipal();
+				
+				Map<String, Object> param = new HashMap<>();
+				param.put("id", principal.getEmpNo());
+
+				Map<String,Object> menuCounter = new HashMap<>();
+				param.put("status", "notdecided");
+				menuCounter.put("notdecided", docService.selectDocCount(param));
+				param.put("status", "approved");
+				menuCounter.put("approved", docService.selectDocCount(param));
+				param.put("status", "completed");
+				menuCounter.put("completed", docService.selectDocCount(param));
+				param.put("status", "afterview");
+				menuCounter.put("afterview", docService.selectDocCount(param));
+				param.put("status", "rejected");
+				menuCounter.put("rejected", docService.selectDocCount(param));
+
+				model.addAttribute("menuCounter", menuCounter);		
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "document/docMain";
 	}
 	
@@ -184,7 +214,8 @@ public class DocController {
 			//result = docService.updateDocument(param);
 
 			result = docService.updateMyDocLineStatus(docLine);
-			result = docService.updateOthersDocLineStatus(docLine);
+//			if("approver".equals(docLine.getApproverType()))
+				result = docService.updateOthersDocLineStatus(docLine);
 
 			return "redirect:/document/docDetail?docNo="+docLine.getDocNo();
 		} catch (Exception e) {

@@ -11,7 +11,7 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eListForDoc.css?after" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/eListForDoc.css" />
 </head>
 <body>
 
@@ -57,6 +57,7 @@
 		<div class="right-down">
 			<button type="button" class="btn btn-outline-success" onclick="saveBtn();">저장</button>
 			<button type="button" class="btn btn-outline-danger" onclick="window.close();">닫기</button>
+			<!-- <button type="button" class="btn btn-outline-danger" onclick="test();">test</button> -->
 		</div>
 	</div>
 	
@@ -76,19 +77,39 @@ $(document).on('click', '#optDel', function(e) {
 	$selected.remove();
 });
 
+function test(){
+	$optArr = $("option");
+	var apCnt = 0;
+	let agrCnt = 0;
+	
+	$optArr.each(function(index, item){
+		approverType = item.dataset.approvertype;
 
+		switch(approverType){
+		case 'approver' : apCnt++; break;
+		case 'agreer' : agrCnt++; break;
+		}
+	});
+	//합의자는 결재자가 존재할때만 입력할 수 있다
+	//즉 결재자가 0이면서 합의자>0은 존재해선 안된다.
+	if(apCnt==0 && agrCnt>0){
+		console.log("합의자를 등록하려면 결재자가 한명 이상 있어야 합니다.");
+	}
+}
 
 function saveBtn(){
-	let html = `<table class="table" id="docLineTable">
-					<tr>
-						<th scope="col">결재종류</th>
-						<th scope="col">직위</th>
-						<th scope="col">이름</th>
-					</tr>
-				`;
-
-	$optArr = $("option")
+	$optArr = $("option");
 	let apvCnt = 0;
+	let agrCnt = 0;
+	var flag = true;
+	
+	let html = `<table class="table table-sm" id="docLineTable">
+		<tr>
+			<th scope="col">결재종류</th>
+			<th scope="col">직위</th>
+			<th scope="col">이름</th>
+		</tr>
+	`;	
 	
 	$optArr.each(function(index, item){
 		empNo = item.dataset.empno;
@@ -98,13 +119,29 @@ function saveBtn(){
 		let typeName;
 
 		switch(approverType){
-		case 'approver' : typeName = '결재자'; break;
-		case 'agreer' : typeName = '합의자'; break;
-		case 'enforcer' : typeName = '시행자'; break;
-		case 'referer' : typeName = '수신참조자'; break;
+		case 'approver' : 
+			apvCnt++;
+			typeName = '결재자'; 
+			break;
+		case 'agreer' : 
+			agrCnt++;
+			typeName = '합의자'; 
+			break;
+		case 'enforcer' : 
+			typeName = '시행자'; 
+			break;
+		case 'referer' : 
+			typeName = '수신참조자'; 
+			break;
+		}
+		//합의자는 결재자가 존재할때만 입력할 수 있다
+		//즉 결재자가 0이면서 합의자>0은 존재해선 안된다.
+		if(apvCnt==0 && agrCnt>0){
+			alert("합의자를 등록하려면 결재자가 한명 이상 있어야 합니다.");
+			flag = false;
+			return false;
 		}
 		
-
 		html += `
 			<tr>
 				<td>\${typeName}</td>
@@ -116,9 +153,11 @@ function saveBtn(){
 			`;
 		if(approverType == 'approver'){
 			html+=`<input type="hidden" name="docLines[\${index}].lv" value="\${apvCnt}"/>`;
-			apvCnt++;
 		}
 	});
+	if(flag==false)
+		return false;
+	
 
 	//approver의 마지막 input만 maxAuthority="Y"
 	if(apvCnt>0){

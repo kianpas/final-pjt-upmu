@@ -13,12 +13,20 @@
 .list-group-item {
 	margin-bottom: 0px;
 }
+.justify-content-center{
+	flex-wrap: nowrap;
+}
+.badge-menu{
+	float: right;
+    width: 20%;
+    padding: 6px;
+}
 </style>
-
 <main class="responsive-wrapper">
 
 <div class="row justify-content-center">
-	<div class="col-xl-3">
+	<!-- <div class="col-xl-3"> -->
+	<div class="" style="width: auto;">
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 				<h6 class="m-0 font-weight-bold text-primary">메뉴</h6>
@@ -26,9 +34,10 @@
 			
 			<!--  Body -->
 			<div class="card-body">
-			
 				<nav id="docNav">
-					<a href="${pageContext.request.contextPath}/document/docMain">임시 메인버튼</a>
+					<!-- testCode -->
+					<%-- <a href="${pageContext.request.contextPath}/document/docMain">임시 메인버튼</a> --%>
+
 					<div class="list-group" id="docEditorMenu">
 						<button type="button" class="list-group-item list-group-item-action" id="docForm">새 문서 작성</button>
 						<button type="button" class="list-group-item list-group-item-action" id="docFormAdd">새 문서양식 추가</button>
@@ -40,11 +49,26 @@
 					<hr />
 				
 					<div class="list-group" id="docTypeMenu">
-						<button type="button" class="list-group-item list-group-item-action" id="notdecided">대기중</button>
-						<button type="button" class="list-group-item list-group-item-action" id="approved">진행중</button>
-						<button type="button" class="list-group-item list-group-item-action" id="completed">결재완료</button>
-						<button type="button" class="list-group-item list-group-item-action" id="afterview">열람</button>
-						<button type="button" class="list-group-item list-group-item-action" id="rejected">반려</button>
+						<button type="button" class="list-group-item list-group-item-action" id="notdecided">
+							<span>대기중</span> 
+							<span class="badge bg-secondary badge-menu">${menuCounter.notdecided}</span>
+						</button>
+						<button type="button" class="list-group-item list-group-item-action" id="approved">
+							<span>진행중</span>
+							<span class="badge bg-secondary badge-menu">${menuCounter.approved}</span>
+						</button>
+						<button type="button" class="list-group-item list-group-item-action" id="completed">
+							<span>결재완료</span>
+							<span class="badge bg-secondary badge-menu">${menuCounter.completed}</span>
+						</button>
+						<button type="button" class="list-group-item list-group-item-action" id="afterview">
+							<span>열람</span>
+							<span class="badge bg-secondary badge-menu">${menuCounter.afterview}</span>
+						</button>
+						<button type="button" class="list-group-item list-group-item-action" id="rejected">
+							<span>반려</span>
+							<span class="badge bg-secondary badge-menu">${menuCounter.rejected}</span>
+						</button>
 					</div>
 				</nav>
 			</div>

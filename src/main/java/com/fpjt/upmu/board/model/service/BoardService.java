@@ -35,6 +35,8 @@ public interface BoardService {
 
 	int deleteFile(int no);
 
+	List<BoardExt> mainBoardList();
+
 	
 
 }

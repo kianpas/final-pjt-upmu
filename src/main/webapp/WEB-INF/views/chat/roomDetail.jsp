@@ -35,7 +35,7 @@
 					<ul class="list-unstyled ps-0">
 			      		<li class="mb-1">
 				       	<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#join-collapse" aria-expanded="false">
-				          내가 참여한 채팅
+				          참여한 회의실
 				        </button>
 				        <div class="collapse" id="join-collapse">
 				        </div>

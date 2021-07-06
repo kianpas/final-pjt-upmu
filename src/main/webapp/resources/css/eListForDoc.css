@@ -102,6 +102,7 @@ input[type=submit]{
 }
 .approver-list select{
 	width: 137px;
+	height: 112px;
 	display: block;
 }
 

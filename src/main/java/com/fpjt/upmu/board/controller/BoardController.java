@@ -265,19 +265,44 @@ public class BoardController {
 	@GetMapping("/boardSearch.do")
 	@ResponseBody
 	public List<BoardExt> boardSearch(@RequestParam String search){
-		log.debug("search {}", search);
-		List<BoardExt> list = boardService.boardSearch(search);
-		log.debug("list {}", list);
-		return list;
+		try {
+			log.debug("search {}", search);
+			List<BoardExt> list = boardService.boardSearch(search);
+			log.debug("list {}", list);
+			return list;
+		} catch (Exception e) {
+			log.error("게시글 검색 오류", e);
+			throw e;
+		}
 	}
 
 	@PostMapping("/deleteFile")
 	@ResponseBody
 	public int deleteFile(@RequestBody int no) {
-		log.debug("no {}", no);
+		try {
+			log.debug("no {}", no);
+			
+			int result = boardService.deleteFile(no);
+			return result;
+		} catch (Exception e) {
+			log.error("게시글 삭제 오류", e);
+			throw e;
+		}
+	}
+	
+	@GetMapping("/mainBoardList")
+	@ResponseBody
+	public List<BoardExt> mainBoardList(){
 		
-		int result = boardService.deleteFile(no);
-		return 0;
+		try {
+			log.debug("{}", 11111111);
+			List<BoardExt> list = boardService.mainBoardList();
+			log.debug("list {}", list);
+			return list;
+		} catch (Exception e) {
+			log.error("게시글 조회 오류", e);
+			throw e;
+		}
 	}
 	
 }

@@ -121,6 +121,12 @@ public class BoardServiceImpl implements BoardService {
 		
 		return boardDao.deleteFile(no);
 	}
+
+	@Override
+	public List<BoardExt> mainBoardList() {
+		
+		return boardDao.mainBoardList();
+	}
 	
 	
 }
