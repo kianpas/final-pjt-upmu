@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<body>
+<body style="background-color: #f8f3eb;">
 	<div class="UPMU">
 		<a href="${pageContext.request.contextPath}/index.jsp" id="UPMU_logo">
 			<img src="${pageContext.request.contextPath}/resources/images/logo1.png" alt="UPMU-logo" />

@@ -22,7 +22,7 @@
 	/* background-color: #b3e0ff; */
 }
 .list-group{
-	height : 400px;
+	height : 242px;
 	background-color : white;
 	overflow: auto;
 }
