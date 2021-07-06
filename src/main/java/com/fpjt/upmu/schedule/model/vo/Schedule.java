@@ -1,7 +1,5 @@
 package com.fpjt.upmu.schedule.model.vo;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +16,6 @@ public class Schedule {
 	private String schStart;
 	private String schEnd;
 	private String schType;
+	private String shareSch;
 
 }

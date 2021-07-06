@@ -21,11 +21,30 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public int insertSchedule(Schedule schedule) {
 		return scheduleDao.insertSchedule(schedule);
+	}	
+
+	@Override
+	public List<Schedule> selectScheduleList(Map<String, Object> emp) {
+		return scheduleDao.selectScheduleList(emp);
 	}
 
 	@Override
-	public List<Schedule> selectScheduleList(int i) {
-		return scheduleDao.selectScheduleList(i);
+	public List<Schedule> selectScheduleListIndex(Map<String, Object> idx) {
+		List<Schedule> list = scheduleDao.selectScheduleListIndex(idx);
+		
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getSchTitle());
+			String s = list.get(i).getSchStart();
+			s = s.substring(s.length()-5);
+			
+			if(s.contains("-")) {
+				s = "00:00";
+			}
+			
+			list.get(i).setSchStart(s);
+		}
+	
+		return list;
 	}
 
 	@Override

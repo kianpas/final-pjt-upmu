@@ -112,6 +112,10 @@
 	              href="${pageContext.request.contextPath}/admin/eListAdmin.do" style="width: 100px;">관리페이지</a>
 	          </li>
           </sec:authorize>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
+          </li>
        		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
 			</button>	
         </ul>

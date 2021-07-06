@@ -166,19 +166,16 @@ public class MailController {
 	@PostMapping("/mailEnroll.do")
 	public String mailEnroll(
 				Authentication authentication,
+				@ModelAttribute MailExt mail,
 				@RequestParam(name = "receiverArr") String[] receiverArr,
 				@RequestParam(name = "upFile") MultipartFile[] upFiles,
-				RedirectAttributes redirectAttr,
-				HttpServletRequest request
+				RedirectAttributes redirectAttr
 			) throws Exception {
 		
 		try {
 			
-			MailExt mail = new MailExt();
-			
-			String mailTitle = request.getParameter("mailTitle");
-			String mailContent = request.getParameter("mailContent");
-			
+			log.debug("mail = {}", mail);
+
 			Employee principal = (Employee)authentication.getPrincipal();
 
 			String saveDirectory = application.getRealPath("/resources/upload/mail");
@@ -205,9 +202,7 @@ public class MailController {
 						
 			}		
 
-			int i;
-			
-			for(i = 0; i < receiverArr.length; i++) {
+			for(int i = 0; i < receiverArr.length; i++) {
 				String s = receiverArr[i];
 				//외부메일
 				if(receiverArr[i].contains("@")) {
@@ -219,8 +214,8 @@ public class MailController {
 								
 							mailHelper.setFrom("theupmuteam@gmail.com");
 							mailHelper.setTo(s);
-							mailHelper.setSubject(mailTitle);
-							mailHelper.setText(mailContent);
+							mailHelper.setSubject(mail.getMailTitle());
+							mailHelper.setText(mail.getMailContent());
 							
 							if(attachList != null) {
 								for(int i = 0; i < attachList.size(); i++) {
@@ -243,20 +238,17 @@ public class MailController {
 			}
 			mail.setSenderAdd(principal.getEmpNo());
 			mail.setAttachList(attachList);			
-			mail.setMailTitle(mailTitle);
-			mail.setMailContent(mailContent);
 			
 			int result = mailService.insertMail(mail);
 			redirectAttr.addFlashAttribute("msg", "메일 전송 성공!");
-			
 			
 			} catch(Exception e) {
 				log.error("메일 전송 오류!", e);
 				throw e;
 			}
-		return "redirect:/mail/sendMailList.do?sender_no=1";
+		return "redirect:/mail/sendMailList.do";
 	}
-
+	
 	//받은 메일 상세 보기
 	@GetMapping("/receiveMailView.do")
 	public void selectOneReceiveMail(@RequestParam int no, Model model) {
@@ -275,16 +267,18 @@ public class MailController {
 		
 		log.debug("보낸 mail = {}", mail);
 		
-		String receiver = mail.getReceiverAdd();
-		receiver = receiver.replace(":", "");
-		
-		mail.setReceiverAdd(receiver);
-		model.addAttribute("mail",mail);
+		String receiver = null;
+		if(mail != null) {
+			receiver = mail.getReceiverAdd();
+			receiver = receiver.replace(":", "");
+			mail.setReceiverAdd(receiver);
+			model.addAttribute("mail",mail);
+		}
 	}
 
 	//파일 다운로드
 	@GetMapping("fileDownload.do")
-	public ResponseEntity<Resource> fileDownloadWithResponseEntity(@RequestParam int no) throws UnsupportedEncodingException{
+	public ResponseEntity<Resource> fileDownload(@RequestParam int no) throws UnsupportedEncodingException{
 		ResponseEntity<Resource> responseEntity = null;
 		try {
 			MailAttach attach = mailService.selectOneAttachment(no);
@@ -330,7 +324,6 @@ public class MailController {
 			searchMail.put("who", principal.getEmpNo());
 			list = mailService.searchMail(searchMail, 1);
 		}
-
 		else if(referer.contains("receive")) {
 			//2 : 받은
 			searchMail.put("who", ":"+principal.getEmpName()+":");
@@ -366,9 +359,6 @@ public class MailController {
 		String result = null;
 		
 		try {
-			System.out.println(valueArr);
-			System.out.println(who);
-
 			//
 			int now = 1;
 			
