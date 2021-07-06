@@ -148,4 +148,11 @@
 		set status = 'N'
 		where no = #{no}
 	</update>
+	<select id="mainBoardList" resultType="boardExt">
+		select * from
+		(select 
+		row_number() over(order by b.reg_date desc) row_num, b.*
+		from board b)
+		where row_num <![CDATA[<=]]> 5
+	</select>
 </mapper>

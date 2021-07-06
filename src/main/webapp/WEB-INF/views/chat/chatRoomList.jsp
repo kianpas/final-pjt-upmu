@@ -13,13 +13,13 @@
     <div class="container" id="app">
         <div class="row">
             <div class="col-md-12">
-                <h3>채팅방 리스트</h3>
+                <h3>회의실 리스트</h3>
             </div>
         </div>
         
         <div class="input-group">
             <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
- 			 채팅방 개설
+ 			 회의실 개설
 			</button>
         </div>
       
@@ -34,12 +34,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">방 생성</h5>
+        <h5 class="modal-title" id="exampleModalLabel">회의실 생성</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form:form id="chatRoomCreateFrm" method="post" action="${pageContext.request.contextPath}/chat/room">
       <div class="modal-body">
-       	  <label for="roomTitle" class="col-form-label">방 제목</label>
+       	  <label for="roomTitle" class="col-form-label">회의실 제목</label>
           <input type="text" class="form-control" name="title" id="roomTitle">
           <input type="hidden" class="form-control" name="empCreate" value="${principal.empNo}">
       </div>
@@ -57,12 +57,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">방 수정</h5>
+        <h5 class="modal-title" id="exampleModalLabel">회의실 수정</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form:form id="chatRoomUpdateFrm" method="post">
       <div class="modal-body">
-       	  <label for="roomTitle" class="col-form-label">방 제목</label>
+       	  <label for="roomTitle" class="col-form-label">회의실 제목</label>
           <input type="text" class="form-control" name="title" id="updateTitle" value="">
           <input type="hidden" class="form-control" name="chatroomNo" id="updateNo" value="">
       </div>
