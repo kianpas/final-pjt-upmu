@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fpjt.upmu.schedule.model.vo.Schedule;
-
 @Repository
 public class ScheduleDaoImpl implements ScheduleDao {
 
@@ -21,8 +20,13 @@ public class ScheduleDaoImpl implements ScheduleDao {
 	}
 
 	@Override
-	public List<Schedule> selectScheduleList(int i) {
-		return session.selectList("schedule.selectScheduleList", i);
+	public List<Schedule> selectScheduleList(Map<String, Object> emp) {
+		return session.selectList("schedule.selectScheduleList", emp);
+	}
+
+	@Override
+	public List<Schedule> selectScheduleListIndex(Map<String, Object> idx) {
+		return session.selectList("schedule.selectScheduleListIndex", idx);
 	}
 
 	@Override

@@ -13,10 +13,11 @@
 			#{schContent},
 			#{schStart},
 			#{schEnd},
-			#{schType}	
+			#{schType},
+			#{shareSch}
 		)
 
-		<selectKey keyProperty="schNo" resultType="_int" order="AFTER">
+		<selectKey keyProperty="schNo" resultType="_int" order="AFTER"> <!-- 지워도 될 듯 -->
 			select
 				 seq_sch.currval
 			from 
@@ -30,7 +31,7 @@
 		from
 			schedule
 		where
-			emp_no = #{i}
+			emp_no = #{empNo} OR shareSch = #{depName} OR shareSch ='ALL'
 	</select>
 	<resultMap type="schedule" id="schMap">
 		<id column="sch_no" property="schNo"/>
@@ -40,7 +41,23 @@
 		<result column="sch_start" property="schStart"/>
 		<result column="sch_end" property="schEnd"/>
 		<result column="sch_type" property="schType"/>
+		<result column="sharesch" property="shareSch"/>
 	</resultMap>
+	
+	<select id="selectScheduleListIndex" resultMap="schMap">
+	select
+    	*
+	from
+    	schedule
+	where
+		(emp_no = #{empNo} OR shareSch = #{depName} OR shareSch ='ALL')
+		AND
+    	(sch_start like '%' || #{today} || '%'
+    	OR
+    	sch_start <![CDATA[<]]>= #{today} AND #{today} <![CDATA[<]]>= sch_end)
+    order by
+    	sch_start asc
+	</select>
 	
 	<update id="updateSchedule">
 		update

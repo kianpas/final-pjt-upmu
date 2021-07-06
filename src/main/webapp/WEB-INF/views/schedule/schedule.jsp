@@ -75,9 +75,24 @@ $(document).ready(function() {
 		      $('.btn-addEvent').show();
 		      $('.btn-modifyEvent').hide();
 
+		      console.log($('#sch-role').val());
+
+ 		      let role = $('#sch-role').val();
+
+		      //radio
+		      if(role == '[ROLE_USER]'){
+				$('.user-radio').show();
+				$('.admin-radio').hide();
+			  }
+		      else{
+		    	  $('.user-radio').hide();
+		    	  $('input:radio[name="shareSchType"][value="allSch"]').prop('checked',true);
+		    	  $('.admin-radio').show();
+			  } 
+
 		},
 
-		events: [
+ 		events: [
 <%
 		for(int i = 0; i < list.size(); i++){
 			s = list.get(i);
@@ -89,7 +104,9 @@ $(document).ready(function() {
 			description: '<%= s.getSchContent() %>',
 			type: '<%= s.getSchType() %>',
 			color: colorType('<%= s.getSchType() %>'),
-			no: '<%= s.getSchNo() %>'
+			no: '<%= s.getSchNo() %>',
+			empNo: '<%= s.getEmpNo()%>',
+			share: '<%= s.getShareSch() %>'
 			
 <% if(i == list.size()-1){ %>
 		}
@@ -104,8 +121,11 @@ $(document).ready(function() {
 %>
 		],
 
-	    eventClick: function(info){
-			
+	    eventClick: function(info, event){
+			console.log(info);
+
+			var empNo = info.event._def.extendedProps.empNo;
+
 	    	$('#schTitle').val(info.event.title);
 	    	$('#schContent').val(info.event.extendedProps.description);
 
@@ -127,52 +147,93 @@ $(document).ready(function() {
 	    		$('#schEnd').val(moment(info.event.end).format('YYYY-MM-DD HH:mm'));
 		    }
 
+		    //라디오
+		    if(info.event._def.extendedProps.share == 'ALL'){
+		    	$('input:radio[name="shareSchType"][value="allSch"]').prop('checked',true);
+		    	/* $('input:radio[name="shareSchType"][value="allSch"]').prop('disabled',true); */
+		    	$('.user-radio').hide();
+				$('.admin-radio').show();
+			} else if (info.event._def.extendedProps.share == 'null'){
+				$('input:radio[name="shareSchType"][value="mySch"]').prop('checked',true);
+				$('.user-radio').show();
+				$('.admin-radio').hide();
+			} else {
+				$('input:radio[name="shareSchType"][value="depSch"]').prop('checked',true);
+				$('.user-radio').show();
+				$('.admin-radio').hide();
+			}
+
+
 			$('#schType').val(info.event.type);
 			$('#schType').val(info.event.extendedProps.type).attr("selected", "selected");
 			$('#sch-no').val(info.event.extendedProps.no);
 
 			$('#sch-modal').modal("show");
 			$('.modal-title').html('일정 조회');
-			$('.btn-modifyEvent').show();
-			$('.btn-addEvent').hide();
+				
+			if(empNo == <sec:authentication property="principal.empNo"/>){
+				$('.btn-modifyEvent').show();
+				$('.btn-addEvent').hide();
+			}else {
+				
+				$('.btn-modifyEvent').hide();
+				$('.btn-addEvent').hide();
+			}
 		},
 		
 		eventResize: function(event){
+			console.log(event.event);
+			console.log(event.event._def.extendedProps.empNo);
+			
+			if(event.event._def.extendedProps.empNo == '<sec:authentication property="principal.empNo"/>'){
 
-			$('#schStart').val(event.event.startStr);
-			$('#schEnd').val(event.event.endStr);
+				$('#schStart').val(event.event.startStr);
+				$('#schEnd').val(event.event.endStr);
 
-			schDateUpdate(event);
+				schDateUpdate(event);
+			} else{
+				alert("수정할 수 없습니다.");
+				location.reload();
+			}
 
 		},
 		
 		eventDrop: function(event){
 			console.log(event.event);
 
-			//1일 하루종일
-	    	if(isNaN(moment(event.event.end))){
-	    		$('#schStart').val(event.event.startStr);
-	    		$('#schEnd').val(event.event.startStr);
-		    }
-	    	//n일 하루종일
-	    	else if((event.event.endStr).indexOf("T") == -1){
-	    		$('#schStart').val(event.event.startStr);
-	    		$('#schEnd').val(event.event.endStr);
-		    }
-			else {
-				$('#schStart').val(moment(event.event.startStr).format('YYYY-MM-DD HH:mm'));
-				$('#schEnd').val(moment(event.event.endStr).format('YYYY-MM-DD HH:mm'));
+			if(event.event._def.extendedProps.empNo == '<sec:authentication property="principal.empNo"/>'){
+
+				//1일 하루종일
+		    	if(isNaN(moment(event.event.end))){
+		    		$('#schStart').val(event.event.startStr);
+		    		$('#schEnd').val(event.event.startStr);
+			    }
+		    	//n일 하루종일
+		    	else if((event.event.endStr).indexOf("T") == -1){
+		    		$('#schStart').val(event.event.startStr);
+		    		$('#schEnd').val(event.event.endStr);
+			    }
+				else {
+					$('#schStart').val(moment(event.event.startStr).format('YYYY-MM-DD HH:mm'));
+					$('#schEnd').val(moment(event.event.endStr).format('YYYY-MM-DD HH:mm'));
+				}
+
+				schDateUpdate(event);
+			} else{
+				alert("수정할 수 없습니다.");
+				location.reload();
 			}
 
-			schDateUpdate(event);
 		}
 	    
 	  });
 
 		$('#schStart, #schEnd').datetimepicker({
 			format: 'YYYY-MM-DD HH:mm',
-			locale: 'ko'
+			locale: 'ko',
+			autoclose: true
 		});
+
 
 		$('.modal').on('hidden.bs.modal', function (e) {
 		    $('#schFrm')[0].reset();
@@ -355,6 +416,18 @@ function beforeSubmit(){
 					onsubmit="return beforeSubmit();">
 				<table class="table">
 					<tr>
+						<td>공유 일정</td>
+						<td>
+							<div class="user-radio">
+								<input class="share-sch" type="radio" name="shareSchType" value="mySch" checked="checked"/>개인
+								<input class="share-sch" type="radio" name="shareSchType" value="depSch"/>부서
+							</div>
+							<div class="admin-radio">
+								<input class="share-sch" type="radio" name="shareSchType" value="allSch"/>회사 전체
+							</div>
+						</td>
+					</tr>
+					<tr>
 						<td>하루 종일</td>
 						<td>
 							<input class="allDayNewEvent" type="checkbox" name="schAllDay" id="schAllDay" onclick="chkAllday();"/>
@@ -401,6 +474,7 @@ function beforeSubmit(){
 			</div>
 			</form:form>
 			<input type="hidden" id="sch-no" name="sch-no" value=""/>
+			<input type="hidden" id="sch-role" name="sch-role" value='<sec:authentication property="principal.authorities"/>'/>
 		</div>
 	</div>  
 </div>
