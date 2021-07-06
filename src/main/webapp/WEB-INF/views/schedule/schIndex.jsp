@@ -22,13 +22,16 @@
 	/* background-color: #b3e0ff; */
 }
 .list-group{
-	height : 242px;
-	background-color : white;
+	height : 400px;
 	overflow: auto;
 }
 .li-header{
 	height: 10%;
 	position: relative;
+}
+.li-body{
+	height: 78%;
+	overflow: auto;
 }
 .span-header{
 	position: absolute;
@@ -41,18 +44,20 @@
 </head>
 <body>
 	<div class="list-group">
-		<div class="li-header" ><span class="span-header">일 정 <span class="badge badge-primary badge-pill">${fn:length(list)}</span></span></div>
-		<div style="height: 90%">
+		<div class="li-header" ><span>일 정 <span class="badge badge-primary badge-pill">${fn:length(list)}</span></span></div>
+		<div class = "li-body">
 			<c:choose>
 				<c:when test="${empty list}">
 
 				</c:when>
 				<c:otherwise>
-					<c:forEach items="${list}" var="sch" varStatus="status">
-						<a href="${pageContext.request.contextPath}/schedule/schedule.do" class="list-group-item list-group-item-action text-left">
-							${sch.schStart} <span style="font-weight: bold">${sch.schTitle}</span>
-						</a>
-					</c:forEach>
+					<div class="li-body">
+						<c:forEach items="${list}" var="sch" varStatus="status">
+							<a href="${pageContext.request.contextPath}/schedule/schedule.do" class="list-group-item list-group-item-action text-left">
+								${sch.schStart} <span style="font-weight: bold">${sch.schTitle}</span>
+							</a>
+						</c:forEach>
+					</div>
 				</c:otherwise>
 			</c:choose>
 		</div>
