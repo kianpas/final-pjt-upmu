@@ -29,6 +29,8 @@
 		Notice
 	where
 		emp_no = #{empNo}
+	order by
+		reg_date desc
 </select>
 <resultMap type="Notice" id="NoticeVoMap">
 	<result column="checked" property="checked" typeHandler="booleanYnTypeHandler"/>

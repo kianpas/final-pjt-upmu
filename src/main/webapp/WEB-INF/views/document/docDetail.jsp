@@ -8,7 +8,7 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-<jsp:include page="/WEB-INF/views/document/docMenu.jsp"></jsp:include>
+<c:import url="/document/docMenu"></c:import>
 <style>
 #title{
 	text-align: center;
@@ -16,11 +16,15 @@
 #docColumn{
 	width: 300px;
 }
-table{
+/* table{
 	border: 2px solid black;
 }
 th, td{
 	border: 1px solid black;
+} */
+tr, th, td{
+	/* 혹시 table 속성 안먹이면 테두리 없이 나오니까 */
+	border: 1px solid #dee2e6;
 }
 
 #docLineTable{
@@ -66,27 +70,27 @@ textarea{
 				<h1 id="title">${document.title}</h1>
 				<br />
 				<div class="tableDiv" id="docColumn">
-					<table class="table table-sm">
+					<table class="table table-sm table-bordered">
 						<tr>
-							<td class="table-secondary" style="width: 100px;">기안자</td><td>${document.writerName}</td>
+							<td style="width: 100px;">기안자</td><td>${document.writerName}</td>
 						</tr>
 						<tr>
-							<td class="table-secondary">소속</td><td>${document.depName}</td>
+							<td>소속</td><td>${document.depName}</td>
 						</tr>
 						<tr>
-							<td class="table-secondary">직위</td><td>${document.jobName}</td>
+							<td>직위</td><td>${document.jobName}</td>
 						</tr>
 						<tr>
-							<td class="table-secondary">기안일</td><td>${document.requestDate}</td>
+							<td>기안일</td><td>${document.requestDate}</td>
 						</tr>
 						<tr>
-							<td class="table-secondary">문서번호</td><td>${document.docNo}</td>
+							<td>문서번호</td><td>${document.docNo}</td>
 						</tr>
 					</table>
 				</div>
 				
 				<div class="tableDiv" id="docLineDiv">
-					<table id="docLineTable">
+					<table id="docLineTable" class="table-bordered">
 						<tr>
 							<td rowspan="4" align="center" class="table-secondary">결<br/>재</td>
 						</tr>
@@ -96,13 +100,9 @@ textarea{
 								<td>${docLine.jobName}</td>
 								<c:choose>
 									<c:when test="${docLine.status eq 'notdecided' }">
-										<%-- 
-											결재자가 본인인 경우만 링크 활성화
-											임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
-										--%>
 										<c:if test="${docLine.approver == loginEmpNo }">
 										<td>
-											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
+											<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#approvalModal">선택</button>
 											<input type="hidden" id="maxAuthority" value="${docLine.maxAuthority}"/>
 											<input type="hidden" id="lv" value="${docLine.lv}"/>
 										</td>
@@ -135,10 +135,6 @@ textarea{
 								<td>${docLine.jobName}</td>
 								<c:choose>
 									<c:when test="${docLine.status eq 'notdecided' }">
-										<%-- 
-											결재자가 본인인 경우만 링크 활성화
-											임시로 1로 설정. 실제로는 loginMember.getId라고 생각하면 됨
-										--%>
 										<c:if test="${docLine.approver == loginEmpNo }">
 										<td>
 											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approvalModal">결재</button>
@@ -252,7 +248,7 @@ textarea{
 				<input type="hidden" name="docNo" value="${document.docNo}"/>
 				<input type="hidden" name="writer" value="${loginEmpNo}"/>
 				<textarea class="form-control" name="content"></textarea>
-				
+				<br />
 				<button type="submit" id="replyBtn" class="btn btn-primary">댓글등록</button>
 				</form:form>
 			</div>
@@ -316,15 +312,22 @@ $(document).ready(function(){
       		action="${pageContext.request.contextPath}/document/docDetail"
 			method="POST">
       <div class="modal-body">
-      <input type="radio" name="status" value="approved"/>승인
-      <br />
-      <input type="radio" name="status" value="rejected"/>반려
-      <br />
-      <!-- <input type="radio" name="status" value="notdecided"/>미정 -->
+		<div class="form-check">
+	      <input class="form-check-input" type="radio" name="status" value="approved" id="btn1" />
+	      <label class="form-check-label" for="btn1">
+	      	승인
+	      </label>
+		</div>
+		<div class="form-check">
+	      <input class="form-check-input" type="radio" name="status" value="rejected" id="btn2"/>
+	      <label class="form-check-label" for="btn2">
+	      	반려
+	      </label>
+		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="save">Save changes</button>
+        <button type="submit" class="btn btn-success" id="save">저장</button>
+        <button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
       </div>
       <input type="hidden" name="docNo" value="${document.docNo}"/>
       
