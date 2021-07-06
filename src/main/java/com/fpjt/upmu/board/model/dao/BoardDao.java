@@ -37,5 +37,7 @@ public interface BoardDao {
 
 	int deleteFile(int no);
 
+	List<BoardExt> mainBoardList();
+
 
 }
