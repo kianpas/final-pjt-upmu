@@ -47,7 +47,16 @@
 					<hr />
 					<h4 align="center">결재문서 목록</h4>
 					<hr />
-				
+					<!-- for ADMIN -->
+					<sec:authorize access="hasRole('ROLE_ADMIN')" >
+					<div class="list-group">
+						<button type="button" class="list-group-item list-group-item-action" id=""
+						onclick="location.href = `${pageContext.request.contextPath}/document/adminDocList`;"	>
+							<span>관리자용 문서목록</span> 
+						</button>					
+					</div>
+					</sec:authorize>
+					
 					<div class="list-group" id="docTypeMenu">
 						<button type="button" class="list-group-item list-group-item-action" id="notdecided">
 							<span>대기중</span> 

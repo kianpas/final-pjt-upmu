@@ -58,7 +58,7 @@
 	</select>
 
 	<select id="selectOneDocumentByParam" resultType="document">
-		select 
+<!-- 		select 
 		    d.doc_no,
 		    d.title,
 		    e.emp_name writer_name,
@@ -68,11 +68,23 @@
 		    document d left join docline dl
 		        on d.doc_no = dl.doc_no
 	                   left join employee e
-		        on dl.approver = e.emp_no
-		where
+		        on dl.approver = e.emp_no -->
+		select 
+		    d.doc_no,
+		    d.title,
+		    e.emp_name writer_name,
+		    d.request_date,
+		    d.end_date
+		from 
+		    document d 
+		        left join employee e
+		        	on d.writer = e.emp_no
+		<where>
+			<if test="approver!=null">
 		    approver = #{id}
-		and d.doc_no = #{docNo}
-	
+			</if>
+			and d.doc_no = #{docNo}
+		</where>
 	</select>
 	
 	<update id="updateDocument">
@@ -356,4 +368,29 @@
 	)
 	</select>
 	
+	<delete id="deleteDocument">
+		delete from
+			document
+		where
+			doc_no = #{docNo}
+	</delete>
+	<select id="selectDocumentList" resultMap="docListMap">
+		select
+			d.doc_no,
+            d.title,
+            d.request_date,
+            e.emp_name
+		from
+			document d
+                join employee e
+                    on d.writer = e.emp_no
+		order by d.request_date desc
+	</select>
+	<resultMap type="document" id="docListMap">
+		<result column="doc_no" property="docNo"/>
+		<result column="title" property="title"/>
+		<result column="request_date" property="requestDate"/>
+		<result column="emp_name" property="writerName"/>
+	
+	</resultMap>
 </mapper>
