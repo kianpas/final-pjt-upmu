@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title"/>
 </jsp:include>
@@ -44,16 +45,13 @@
     </div>
     <div class="magazine-column">
       <article class="article" style="height: 400px">
-        <figure class="article-img">
-          <img
-            src="https://images.unsplash.com/photo-1512521743077-a42eeaaa963c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80" />
-        </figure>
-        <h2 class="article-title article-title--small">
-          <a href="#" class="article-link">To Become <mark class="mark mark--secondary">Happier</mark>, Ask Yourself
-            These Two Questions Every Night</a>
-        </h2>
         <div class="article-creditation">
-          <p>By Jonathan O'Connell</p>
+				<h6 class="m-0 fw-bold">공지사항</h6>
+				<div class="table-responsive m-3">
+					<table class="table table-hover" id="boardList">
+					</table>
+				</div>
+			
         </div>
       </article>
       <!-- ChoiMS -->
@@ -75,24 +73,13 @@
     </div>
     <div class="magazine-column" style= " width: 330px;">
       <article class="article" style="height: 400px">
-        <h2 class="article-title article-title--medium">
-          <a href="#" class="article-link">Traveller Visiting Ice Cave With Amazing Eye-Catching Scenes</a>
-        </h2>
-        <div class="article-excerpt">
-          <p>Slack has become indispensible for many businesses operation remotely during the pandemic. Here's what the
-            acquisition could mean for users...</p>
-        </div>
-        <div class="article-author">
-          <div class="article-author-img">
-            <img src="https://assets.codepen.io/285131/author-2.png" />
-          </div>
-          <div class="article-author-info">
-            <dl>
-              <dt>James Robert</dt>
-              <dd>Editor</dd>
-            </dl>
-          </div>
-        </div>
+			<h6 class="m-0 fw-bold">출근/퇴근</h6>
+		<div class="m-3 d-grid gap-2">
+			<button type="button" class="btn btn-primary btn-lg" id="start-work"
+							onclick="startDateCheck();">출근</button>
+			<button type="button" class="btn btn-secondary btn-lg" id="end-work"
+							onclick="endWork()" disabled>퇴근</button>
+		</div>
       </article>
       <article class="article">
         <small class="article-category">
@@ -169,6 +156,107 @@ function eListPop() {
 	window.open("${pageContext.request.contextPath}/common/eListPop.do", "", option);
 }
 </script>
+<sec:authorize access="isAuthenticated()">
+<script>
+const empNo = `<sec:authentication property="principal.empNo"/>`;
+console.log(empNo)
+const mainBoardList = () =>{
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/board/mainBoardList",
+		method:"GET",
+		contentType:"application/json; charset=utf-8",
+		success: data => {
+			
+			console.log(data)
+			 const $container = $("#boardList");
+			let html ="<thead>";
+			 $.each(data, (key, value) => {
+				 const {title, no} = value;
+				html +=`<tr><td onclick="boardDetail(\${no})">\${title}</td></tr>`;
+			}) 
+			html+="</table>";
+
+			 $container.append(html);
+			
+		},
+		error:console.log,
+		
+
+	});
+
+};
+
+const boardDetail = no =>{
+	console.log(no)
+	location.href = `${pageContext.request.contextPath}/board/boardDetail.do?no=\${no}`;
+};
+
+const startWork = () => {
+	const empNo = `<sec:authentication property="principal.empNo"/>`;
+	const check = confirm("근무를 시작하시겠습니까?");
+	if(check){
+		$.ajax({
+			url:`${pageContext.request.contextPath}/attendance/startWork/\${empNo}`,
+			method:'GET',
+			success(data){
+				$("#start-work").attr("disabled", true);
+				$("#end-work").attr("disabled", false);
+			},
+			error:console.log
+	
+		});
+	}
+};
+
+const endWork = () => {
+	const empNo = `<sec:authentication property="principal.empNo"/>`;
+	const check = confirm("근무를 종료하시겠습니까?");
+	if(check){
+		$.ajax({
+			url:`${pageContext.request.contextPath}/attendance/endWork/\${empNo}`,
+			method:'GET',
+			success(data){
+				$("#start-work").attr("disabled", false);
+				$("#end-work").attr("disabled", true);
+			},
+			error:console.log
+	
+		});
+	}
+};
+
+const startDateCheck = () => {
+	const empNo = `<sec:authentication property="principal.empNo"/>`;
+	console.log(empNo)
+	console.log(moment().format("YYYYMMDD"))
+	const checkDate = moment().format("YYYYMMDD");
+		$.ajax({
+			url:"${pageContext.request.contextPath}/attendance/attendanceDuplicate",
+			data: {checkDate, empNo},
+			success:data=>{
+				console.log(data); //{"available":true}
+				console.log(data.available);
+				 if(data.available){
+					 startWork(empNo);
+				}else {
+				
+					console.log(data)
+					//console.log(savedEmp)
+					alert(`이미 근무기록에 포함되어있습니다.`);
+					
+				} 
+				
+			},
+			error:console.log,
+
+		}) 
+		
+	
+};
+mainBoardList();
+</script>
+</sec:authorize>
 </body>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
