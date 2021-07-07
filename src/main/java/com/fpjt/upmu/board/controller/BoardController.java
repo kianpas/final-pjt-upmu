@@ -203,7 +203,7 @@ public class BoardController {
 		model.addAttribute("board", board);
 	}
 
-	@PutMapping("/boardUpdate")
+	@PostMapping("/boardUpdate")
 	public void boardUpdate(@ModelAttribute BoardExt boardExt, @RequestParam(name = "upFile") MultipartFile[] upFiles)
 			throws Exception {
 
@@ -249,12 +249,14 @@ public class BoardController {
 	}
 
 	@PostMapping("/boardDelete/{no}")
-	public int boardDelete(@PathVariable int no) {
-
+	@ResponseBody
+	public int boardDelete(@PathVariable String no) {
+				
+			int number = Integer.parseInt(no);
 		try {
 			log.debug("no {}", no);
-			int result = boardService.boardDelete(no);
-
+			int result = boardService.boardDelete(number);
+			log.debug("result {}", result);
 			return result;
 		} catch (Exception e) {
 			log.error("게시글 삭제 오류", e);

@@ -128,7 +128,7 @@
 	
 	<delete id="boardDelete">
 		delete from board
-		where no = #{no}
+		where no = #{number}
 	</delete>
 	<update id="boardUpdate">
 		update board
