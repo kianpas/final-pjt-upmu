@@ -170,4 +170,10 @@ public class DocServiceImpl implements DocService {
 	}
 
 
+	@Override
+	public int selectDocAllCount(Map<String, Object> param) {
+		return docDao.selectDocAllCount(param);
+	}
+
+
 }

@@ -139,6 +139,11 @@ public class DocDaoImpl implements DocDao {
 		return session.selectList("document.selectDocumentList", param,rowBounds);
 	}
 
+	@Override
+	public int selectDocAllCount(Map<String, Object> param) {
+		return session.selectOne("document.selectDocAllCount", param);
+	}
+
 	
 
 }

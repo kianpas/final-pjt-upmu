@@ -384,6 +384,10 @@
 			document d
                 join employee e
                     on d.writer = e.emp_no
+		<if test="empNo!=null">
+		where
+			writer = ${empNo}
+		</if>
 		order by d.request_date desc
 	</select>
 	<resultMap type="document" id="docListMap">
@@ -393,4 +397,10 @@
 		<result column="emp_name" property="writerName"/>
 	
 	</resultMap>
+	<select id="selectDocAllCount" resultType="_int">
+		select
+			count(*)
+		from
+			document
+	</select>
 </mapper>

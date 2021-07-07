@@ -55,4 +55,6 @@ public interface DocDao {
 
 	List<Document> selectDocumentList(Map<String, Object> param);
 
+	int selectDocAllCount(Map<String, Object> param);
+
 }
