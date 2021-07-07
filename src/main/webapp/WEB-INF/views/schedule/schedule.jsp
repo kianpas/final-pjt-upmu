@@ -234,6 +234,14 @@ $(document).ready(function() {
 			autoclose: true
 		});
 
+		$('html').click(function(e){
+			$('#schStart').datetimepicker("hide");
+		});
+
+		$('html').click(function(e){
+			$('#schEnd').datetimepicker("hide");
+		});
+
 
 		$('.modal').on('hidden.bs.modal', function (e) {
 		    $('#schFrm')[0].reset();
