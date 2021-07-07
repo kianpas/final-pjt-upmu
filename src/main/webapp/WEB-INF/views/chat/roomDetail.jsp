@@ -237,13 +237,14 @@
 									const username = ${principal.empNo};
 									//console.log(value);
 									const {msgNo, chatroomNo, writerNo, msg, regDate, empName} = value;
+									const mmsg = msg == null ? "":msg;
 									const location = $container[0].scrollHeight;
 									
 									html += `<li class="list-group-item d-flex justify-content-between align-items-start" 
 												id="\${msgNo}" data-lo="\${location}" onmouseenter="showIcon(\${msgNo})">
 												    <div class="ms-2 me-auto">
 												      <div class="fw-bold">\${empName}</div>
-												      \${msg}
+												      \${mmsg}
 												    </div>`;
 											if(username == writerNo){    
 													html += `<div class="icon-container"><box-icon type='solid' name='edit'
@@ -351,6 +352,8 @@
 
     				}));
     				$("#msg").val('');
+    				
+    				
     			}
 		
     			
@@ -480,6 +483,7 @@ const checkJoin = () => {
     				
     				$("#msgSend").click(function() {
     					sendMessage();
+    					
     				});
 					$("#msg").keydown(function(key) {
 		               
@@ -505,6 +509,6 @@ const checkJoin = () => {
 connect();
 showUserList();
 showAddrList();
-   	
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
