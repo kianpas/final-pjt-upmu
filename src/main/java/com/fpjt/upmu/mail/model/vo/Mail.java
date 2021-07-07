@@ -20,8 +20,7 @@ public class Mail {
 	private String readChk;
 	//
 	private int senderDel;
-	private int receiverDel;
-	
+	private String receiverDel;
 	//
 	private String senderName;
 	

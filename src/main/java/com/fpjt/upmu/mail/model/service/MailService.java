@@ -16,19 +16,19 @@ public interface MailService {
 
 	int insertAttachment(MailAttach attach);
 
-	int selectReceiveTotalContents(String i);
+	int selectReceiveTotalContents(String empName);
 	int selectSendTotalContents(int i);
 	
-
-	List<Mail> selectReceiveList(Map<String, Object> param, String i);
-	List<Mail> selectSendList(Map<String, Object> param, int i);
+	List<Mail> selectReceiveList(Map<String, Object> param, String empName);
+	List<Mail> selectSendList(Map<String, Object> param, int empNo);
 
 	MailAttach selectOneAttachment(int no);
 
 	List<Mail> searchMail(Map<String, Object> searchMail, int i);
 	
 	List<MailReceiver> searchReceiver(String searchReceiver);
-
-	String deleteMail(String str, int who, int now);
+	
+	int deleteReceiveMail(Map<String, Object> del, String saveDirectory);
+	int deleteSendMail(int mailNo, String saveDirectory);
 	
 }
