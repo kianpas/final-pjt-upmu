@@ -55,6 +55,14 @@
 			</c:forEach>
 		</div>
 		<div class="right-down">
+			<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="right" 
+			title="결재자 : 실제 문서의 결재선에 포함되는 사람. 여기서 미결재가 존재하면 결재가 종료되지 않는다.
+	윗사람이 결재를 승인하면 아랫사람은 후열로 자동 변경된다.
+합의자 : 문서의 결재선에는 포함되어 있지만 결재승인을 해도 자기자신만 결재완료로 변경되며
+	다른 사람의 결재상태를 변경시키지 않는다.
+시행자/수신참조자 : 결재요구하는 대상자는 아니지만 문서에 추가하여 열람을 요구한다.">
+			  결재자란?
+			</button>
 			<button type="button" class="btn btn-outline-success" onclick="saveBtn();">저장</button>
 			<button type="button" class="btn btn-outline-danger" onclick="window.close();">닫기</button>
 			<!-- <button type="button" class="btn btn-outline-danger" onclick="test();">test</button> -->

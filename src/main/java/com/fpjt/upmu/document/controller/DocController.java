@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -226,24 +227,56 @@ public class DocController {
 		
 		return "document/docList";
 	}
-	
+//	여기수정중
 	@GetMapping("/docDetail")
-	public String docDetail(@RequestParam String docNo, Model model) {
+	public String docDetail(@RequestParam String docNo,
+			Authentication authentication,
+			Model model,
+			RedirectAttributes redirectAttr
+			) {
 		
-		Document document = docService.selectOneDocument(docNo);
-		log.debug("document = {}",document);
-		
-		List<DocAttach> docAttachList = docService.selectDocAttachList(docNo);
-		log.debug("docAttachList = {}",docAttachList);
-		
-		List<DocReply> docReplyList = docService.selectDocReplyList(docNo);
-		log.debug("docReplyList = {}",docReplyList);
+		try {
+			Document document = docService.selectOneDocument(docNo);
+			log.debug("document = {}",document);
+			if(document==null) {
+				redirectAttr.addFlashAttribute("msg", "해당하는 문서가 존재하지 않습니다.");
+				return "redirect:/document/docForm";
+			}
+			//로그인한 사번이 기안자 사번과 같거나 결재선 사번중에 포함될 경우에만 정상작동. 그 외에는 헤더로 보내든 어디로 보내든...
+			Employee principal = (Employee) authentication.getPrincipal();
+			int flag = 0;
+			if(principal.getEmpNo()==document.getWriter()) {
+				flag=1;
+			}
+			for (DocLine docLine : document.getDocLine()) {
+				if(principal.getEmpNo()==docLine.getApprover()) {
+					flag=1;
+				}
+			}
+			//관리자 권한이 있을 경우에는 return안하도록.
+			boolean authorized = principal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			if(!authorized) {
+				if(flag==0) {
+					redirectAttr.addFlashAttribute("msg", "해당 문서에 접근할 권한이 없습니다.");
+					return "redirect:/document/docForm";
+				}
+			}
+			
+			List<DocAttach> docAttachList = docService.selectDocAttachList(docNo);
+			log.debug("docAttachList = {}",docAttachList);
+			
+			List<DocReply> docReplyList = docService.selectDocReplyList(docNo);
+			log.debug("docReplyList = {}",docReplyList);
 
-		model.addAttribute("document", document);
-		model.addAttribute("docAttachList", docAttachList);
-		model.addAttribute("docReplyList", docReplyList);
-		
-		return "document/docDetail";
+			model.addAttribute("document", document);
+			model.addAttribute("docAttachList", docAttachList);
+			model.addAttribute("docReplyList", docReplyList);
+			
+			return "document/docDetail";
+		} catch (Exception e) {
+			log.error("문서 로딩 실패!",e);
+			throw e;
+		}
 	}
 
 
@@ -253,10 +286,8 @@ public class DocController {
 			Model model){
 		try {
 			int result = 0;
-			//result = docService.updateDocument(param);
 
 			result = docService.updateMyDocLineStatus(docLine);
-//			if("approver".equals(docLine.getApproverType()))
 				result = docService.updateOthersDocLineStatus(docLine);
 
 			return "redirect:/document/docDetail?docNo="+docLine.getDocNo();
