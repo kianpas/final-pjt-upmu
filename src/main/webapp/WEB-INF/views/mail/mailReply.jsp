@@ -247,6 +247,11 @@ $(() => {
 function beforeSubmit(){
 	var mailFrm = document.mailFrm;
 
+	if($("#toTitle").val().trim() == ''){
+		alert("제목을 입력하세요.");
+		return false;
+	}
+
 	if($('.tf_edit').length != 0){
 		for(var i = 0; i < $('.tf_edit').length; i++){
 			receiverArr.push($('.tf_edit').eq(i).attr("value"));
