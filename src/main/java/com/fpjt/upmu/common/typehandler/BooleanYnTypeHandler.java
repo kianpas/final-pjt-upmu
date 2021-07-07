@@ -24,7 +24,7 @@ public class BooleanYnTypeHandler extends BaseTypeHandler<Boolean> {
 	}
 
 	/**
-	 *  YN -----> boolean
+	 * YN -----> boolean
 	 */
 	@Override
 	public Boolean getNullableResult(ResultSet rs, String columnName) throws SQLException {
@@ -33,7 +33,7 @@ public class BooleanYnTypeHandler extends BaseTypeHandler<Boolean> {
 	}
 
 	/**
-	 *  YN -----> boolean
+	 * YN -----> boolean
 	 */
 	@Override
 	public Boolean getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
@@ -41,7 +41,7 @@ public class BooleanYnTypeHandler extends BaseTypeHandler<Boolean> {
 	}
 
 	/**
-	 *  YN -----> boolean
+	 * YN -----> boolean
 	 */
 	@Override
 	public Boolean getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
