@@ -64,7 +64,7 @@ $(() => {
 		var $tr = $(e.target).parents();
 		var no = $tr.data("no");
 
-		//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + no;
+		//location.href = "${pageContext.request.contextPath}/mail/mailView.do?no=" + no;
 		location.href = "${pageContext.request.contextPath}/mail/receiveMailView.do?no=" + no;
 	});
 
@@ -87,9 +87,6 @@ $(() => {
 						label: '메일 제목 : ' + mailTitle,
 						value: mailTitle,
 						mailNo
-/* 						mailContent,
-						senderAdd,
-						mailNo */
 					}));
 				console.log(arr);
 				response(arr);
@@ -101,7 +98,7 @@ $(() => {
 		},
 		select: function(event, selected){
 			const {item: {mailNo}} = selected;
-			//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + mailNo;
+			//location.href = "${pageContext.request.contextPath}/mail/mailView.do?no=" + mailNo;
 			location.href = "${pageContext.request.contextPath}/mail/receiveMailView.do?no=" + mailNo;
 		},
 		focus: function(event, focused){

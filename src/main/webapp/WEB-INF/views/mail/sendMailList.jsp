@@ -63,7 +63,7 @@ $(() => {
 		var $tr = $(e.target).parents();
 		var no = $tr.data("no");
 		console.log("No : " + no);
-		//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + no;
+		//location.href = "${pageContext.request.contextPath}/mail/mailView.do?no=" + no;
 		location.href = "${pageContext.request.contextPath}/mail/sendMailView.do?no=" + no;
 	});
 
@@ -86,9 +86,6 @@ $(() => {
 						label: '메일 제목 : ' + mailTitle,
 						value: mailTitle,
 						mailNo
-/* 						mailContent,
-						receiverAdd,
-						mailNo */
 					}));
 				console.log(arr);
 				response(arr);
@@ -101,7 +98,7 @@ $(() => {
 		select: function(event, selected){
 			const {item: {mailNo}} = selected;
 			console.log(mailNo);
-			//location.href = "${pageContext.request.contextPath}/mail/mailDetail.do?no=" + mailNo;
+			//location.href = "${pageContext.request.contextPath}/mail/mailView.do?no=" + mailNo;
 			location.href = "${pageContext.request.contextPath}/mail/sendMailView.do?no=" + mailNo;
 		},
 		focus: function(event, focused){
@@ -186,7 +183,8 @@ function deleteMail(){
 						<tr data-no="${mail.mailNo}">
 							<td onclick="event.cancelBubble=true"><input id="chk" type="checkbox" name="chkbox" onclick="chkOne(this)" value="${mail.mailNo}"/></td>
 							<td>
-								<c:set var="receiverAdd" value="${fn:replace(mail.receiverAdd, ':', '')}"/>
+								<c:set var="length" value="${fn:length(mail.receiverAdd)}"/>
+								<c:set var="receiverAdd" value="${fn:substring(mail.receiverAdd, 1, length-1)}"/>
 								${receiverAdd}
 							</td>
 							<td>${mail.mailTitle}</td>

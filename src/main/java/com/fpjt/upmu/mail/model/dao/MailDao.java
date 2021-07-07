@@ -16,11 +16,11 @@ public interface MailDao {
 
 	int insertAttachment(MailAttach attach);
 
-	int selectReceiveTotalContents(String i);
+	int selectReceiveTotalContents(String empName);
 	int selectSendTotalContents(int i);
 
-	List<Mail> selectReceiveList(Map<String, Object> param, String i);
-	List<Mail> selectSendList(Map<String, Object> param, int i);
+	List<Mail> selectReceiveList(Map<String, Object> param, String empName);
+	List<Mail> selectSendList(Map<String, Object> param, int empNo);
 
 	MailAttach selectOneAttachment(int no);
 	
@@ -30,6 +30,10 @@ public interface MailDao {
 	
 	List<MailReceiver> searchReceiver(String searchReceiver);
 
-	String deleteMail(String str, int who, int now);
+	int hideReceiveMail(Map<String, Object> del);
+	int hideSendMail(int mailNo);
+
+	int deleteMail(int mailNo);
+
 
 }

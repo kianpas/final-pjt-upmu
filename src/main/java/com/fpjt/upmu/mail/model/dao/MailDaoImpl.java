@@ -35,8 +35,8 @@ public class MailDaoImpl implements MailDao {
 	}
 
 	@Override
-	public int selectReceiveTotalContents(String i) {
-		return session.selectOne("mail.selectReceiveTotalContents", i);
+	public int selectReceiveTotalContents(String empName) {
+		return session.selectOne("mail.selectReceiveTotalContents", empName);
 	}
 
 	@Override
@@ -45,19 +45,19 @@ public class MailDaoImpl implements MailDao {
 	}
 
 	@Override
-	public List<Mail> selectReceiveList(Map<String, Object> param, String i) {
+	public List<Mail> selectReceiveList(Map<String, Object> param, String empName) {
 		int offset = (int)param.get("offset");
 		int limit = (int)param.get("limit");
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("mail.selectReceiveList", i, rowBounds);
+		return session.selectList("mail.selectReceiveList", empName, rowBounds);
 	}
 
 	@Override
-	public List<Mail> selectSendList(Map<String, Object> param, int i) {
+	public List<Mail> selectSendList(Map<String, Object> param, int empNo) {
 		int offset = (int)param.get("offset");
 		int limit = (int)param.get("limit");
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("mail.selectSendList", i, rowBounds);
+		return session.selectList("mail.selectSendList", empNo, rowBounds);
 	}
 
 	@Override
@@ -86,43 +86,21 @@ public class MailDaoImpl implements MailDao {
 	public List<MailReceiver> searchReceiver(String searchReceiver) {
 		return session.selectList("mail.searchReceiver", searchReceiver);
 	}
-	
+
 	@Override
-	public String deleteMail(String str, int who, int now) {
-		int result;
-		String resultStr = null;
-		
-		if(who == 1) {
-			//보낸 사람이 삭제
-			if(now != 2) {
-				result =  session.update("mail.hideSendMail", str);
-				resultStr = "hide";
-				
-				if(result != 1) {
-					resultStr = "beforeDel";
-				}				
-			} else if(now == 2){
-				result = session.delete("mail.deleteMail", str);
-				return result + "";
-			}
-		}
-		
-		else {
-			
-			if(now != 2) {
-				//받은 사람이 삭제
-				result = session.update("mail.hideReceiveMail", str);
-				resultStr = "hide";
-				
-				if(result != 1) {
-					resultStr = "beforeDel";
-				}	
-			} else {
-				result = session.delete("mail.deleteMail", str);
-				return result + "";
-			}
-		}
-		return resultStr;
+	public int hideSendMail(int mailNo) {
+		return session.update("mail.hideSendMail", mailNo);
 	}
+
+	@Override
+	public int hideReceiveMail(Map<String, Object> del) {
+		return session.update("mail.hideReceiveMail", del);
+	}
+
+	@Override
+	public int deleteMail(int mailNo) {
+		return session.delete("mail.deleteMail", mailNo);
+	}
+
 }
 
