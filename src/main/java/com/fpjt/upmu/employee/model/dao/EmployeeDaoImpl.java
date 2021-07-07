@@ -77,8 +77,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public void updateEmp(Map<String, Object> rawEmp) {
-		session.update("employee.updateEmp", rawEmp);
+	public int updateEmp(Map<String, Object> rawEmp) {
+		return session.update("employee.updateEmp", rawEmp);
 	}
 
 	@Override

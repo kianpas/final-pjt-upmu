@@ -196,7 +196,9 @@ public class AdminController {
 	}
 	
 	@PostMapping("/empDelete.do")
-	public void empDelete(@RequestParam(value = "empEmail") String empEmail) {
+	public String empDelete(@RequestParam(value = "empEmail") String empEmail) {
 		empService.deleteEmp(empEmail);
+		
+		return "redirect:/employeeList/close";
 	}
 }

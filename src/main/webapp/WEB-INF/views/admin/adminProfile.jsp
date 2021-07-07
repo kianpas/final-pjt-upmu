@@ -120,7 +120,7 @@
           <hr class="mb-4">
           <div class="mb-4"></div>
           <button class="btn btn-primary float-right" type="submit" onclick="window.close()">취소</button>
-          <%-- <button class="btn btn-primary float-right" type="submit" id="delete-emp" formaction="${pageContext.request.contextPath}/admin/empDelete.do">삭제</button> --%>
+          <button class="btn btn-primary float-right" type="submit" id="delete-emp" formaction="${pageContext.request.contextPath}/admin/empDelete.do?${_csrf.parameterName}=${_csrf.token}">삭제</button>
           <button class="btn btn-primary float-right" type="submit">수정</button>
       </div>
     </div>

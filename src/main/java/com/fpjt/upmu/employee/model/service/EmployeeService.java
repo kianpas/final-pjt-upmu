@@ -33,7 +33,7 @@ public interface EmployeeService {
 
 	int updatePw(Map<String, String> map);
 
-	void updateEmp(Map<String, Object> rawEmp);
+	int updateEmp(Map<String, Object> rawEmp);
 
 	void deleteEmp(String empEmail);
 

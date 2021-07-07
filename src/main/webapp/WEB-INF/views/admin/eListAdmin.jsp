@@ -38,7 +38,7 @@
     	<div id="depart-enroll">
     		<h2>부서등록</h2>
     		<!-- 관리자, 담당자 권한 추가해야됨. -->
-    		<form action="${pageContext.request.contextPath}/employeeList/departEnroll.do" method="post">
+    		<form action="${pageContext.request.contextPath}/employeeList/departEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post">
 	    		<label class="depart-name" for="depart-name">부서명</label>
 	  			<input id="depart-name" name="depName" class="depart-name" type="text" placeholder="부서명" autocomplete="off" spellcheck="false">
 	  			<label class="depart-code-label" for="depart-code">부서코드</label>
