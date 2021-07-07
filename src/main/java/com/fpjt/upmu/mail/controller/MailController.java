@@ -86,11 +86,10 @@ public class MailController {
 			param.put("offset", offset);
 
 			Employee principal = (Employee)authentication.getPrincipal();
-			principal.setEmpName(":"+principal.getEmpName()+":");
 
-			List<Mail> list = mailService.selectReceiveList(param, principal.getEmpName());
+			List<Mail> list = mailService.selectReceiveList(param, ","+principal.getEmpName()+",");
 
-			int totalContents = mailService.selectReceiveTotalContents(principal.getEmpName());
+			int totalContents = mailService.selectReceiveTotalContents(","+principal.getEmpName()+",");
 			
 			String url = request.getRequestURI();
 			
@@ -100,8 +99,6 @@ public class MailController {
 			
 			model.addAttribute("list", list);
 			model.addAttribute("pageBar", pageBar);
-			
-			principal.setEmpName(principal.getEmpName().replace(":", ""));
 			
 		} catch(Exception e) {
 			log.error("받은 메일함 조회 오류!", e);
@@ -230,16 +227,21 @@ public class MailController {
 			
 				//외부, 내부 공통
 				if(mail.getReceiverAdd() == null) {
-					mail.setReceiverAdd(":" + receiverArr[i] + ":");
+					mail.setReceiverAdd("," + receiverArr[i]);
 				}
 				else {
-					mail.setReceiverAdd(mail.getReceiverAdd() + ",:" + receiverArr[i] + ":");
+					mail.setReceiverAdd(mail.getReceiverAdd() + "," + receiverArr[i]);
+				}
+				
+				if(i == receiverArr.length-1) {
+					mail.setReceiverAdd(mail.getReceiverAdd() + ",");
 				}
 			}
+			
 			mail.setSenderAdd(principal.getEmpNo());
 			mail.setAttachList(attachList);			
 			
-			int result = mailService.insertMail(mail);
+			mailService.insertMail(mail);
 			redirectAttr.addFlashAttribute("msg", "메일 전송 성공!");
 			
 			} catch(Exception e) {
@@ -263,17 +265,9 @@ public class MailController {
 	@GetMapping("/sendMailView.do")
 	public void selectOneSendMail(@RequestParam int no, Model model) {
 		
-		MailExt mail = mailService.selectOneMailCollection(no);
-		
-		log.debug("보낸 mail = {}", mail);
-		
-		String receiver = null;
-		if(mail != null) {
-			receiver = mail.getReceiverAdd();
-			receiver = receiver.replace(":", "");
-			mail.setReceiverAdd(receiver);
-			model.addAttribute("mail",mail);
-		}
+		MailExt mail = mailService.selectOneMailCollection(no);		
+		log.debug("보낸 mail = {}", mail);	
+		model.addAttribute("mail",mail);
 	}
 
 	//파일 다운로드
@@ -287,6 +281,7 @@ public class MailController {
 			}
 			
 			String saveDirectory = application.getRealPath("/resources/upload/mail");
+
 			File downFile = new File(saveDirectory, attach.getRenamedFilename());
 			Resource resource = resourceLoader.getResource("file:" + downFile);
 			String filename = new String(attach.getOriginalFilename().getBytes("utf-8"), "iso-8859-1");
@@ -326,7 +321,7 @@ public class MailController {
 		}
 		else if(referer.contains("receive")) {
 			//2 : 받은
-			searchMail.put("who", ":"+principal.getEmpName()+":");
+			searchMail.put("who", ","+principal.getEmpName()+",");
 			list = mailService.searchMail(searchMail, 2);
 		}
 
@@ -355,50 +350,44 @@ public class MailController {
 	//메일 삭제
 	@PostMapping("/deleteMail.do")
 	@ResponseBody
-	public String deleteMail(@RequestParam String[] valueArr, @RequestParam int who) {
-		String result = null;
+	public String deleteMail(Authentication authentication, @RequestParam String[] valueArr, @RequestParam int who) {
+		
+		int result = 0;
+		String resultStr = null;
 		
 		try {
-			//
-			int now = 1;
+			
+			Employee principal = (Employee)authentication.getPrincipal();
+			
+			String saveDirectory = application.getRealPath("/resources/upload/mail");
 			
 			for(int i = 0; i < valueArr.length; i++) {
-				result = mailService.deleteMail(valueArr[i], who, now);
-			
-				//beforeDel인 경우
-				if(result.equals("beforeDel")) {
-					List<MailAttach> delAttach = mailService.selectOneMailCollection(Integer.parseInt(valueArr[i])).getAttachList();
-					for(int j = 0; j < delAttach.size(); j ++) {
-						
-						String saveDirectory = application.getRealPath("/resources/upload/mail");
-						MailAttach attach = delAttach.get(j);
-						String filePath = saveDirectory + "\\" + attach.getRenamedFilename();
-						
-						File deleteFile = new File(filePath);
-						
-						if(deleteFile.exists()) {
-							deleteFile.delete();
-						
-						} else {
-							System.out.println("파일이 존재하지 않습니다.");
-						}
-					}
+				
+				//who
+				//1 : sender (sender_add 1 추가) , 2 : receiver (receiver_add에 자기 이름 추가) --> 다 삭제하면 delete
+				
+				if(who == 1) {
+					//sender가 삭제
+					result = mailService.deleteSendMail(Integer.parseInt(valueArr[i]), saveDirectory);
+				} else {
+					//receiver가 삭제
+					Map<String, Object> del = new HashMap<>();
+					del.put("mailNo", Integer.parseInt(valueArr[i]));
+					del.put("empName", principal.getEmpName() + ","); // 사원이름,
 					
-					now = 2;
-					mailService.deleteMail(valueArr[i], who, now);
+					result = mailService.deleteReceiveMail(del, saveDirectory);		
 				}
-			}
+			}		
 
-			result = "OK";
+			resultStr = "OK";
 					
 		} catch(Exception e) {
 			log.error("삭제 오류!", e);
-			result = "Fail";
-			throw e;
-			
+			resultStr = "Fail";
+			throw e;			
 		}
 
-		return result;
+		return resultStr;
 	}
 
 }

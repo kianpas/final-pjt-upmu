@@ -190,13 +190,18 @@ $(() => {
 function beforeSubmit(){
 	var mailFrm = document.mailFrm;
 
-	for(var i = 0; i < $('.tf_edit').length; i++){
-		receiverArr.push($('.tf_edit').eq(i).attr("value"));
+	if($('.tf_edit').length != 0){
+		for(var i = 0; i < $('.tf_edit').length; i++){
+			receiverArr.push($('.tf_edit').eq(i).attr("value"));
+		}
+		
+		$("#receiverArr").val(receiverArr);
+		
+		mailFrm.submit();
 	}
-	
-	$("#receiverArr").val(receiverArr);
-	
-	mailFrm.submit();
+	else {
+		alert("받는 사람을 입력하세요.");
+	}
 }
 function delBtn(b){
 	$("#" + b.id).remove();
