@@ -23,7 +23,7 @@
 <!-- * [**AWS** RDS](https://aws.amazon.com/ko/rds/)   -->
 
 ## Contributors
-[<img alt="HSdover" src="https://avatars.githubusercontent.com/u/80959194?v=4" width="117">](https://github.com/HSdover) 
+[<img alt="HSdover" src="https://avatars.githubusercontent.com/u/80959194?v=4" width="117">](https://github.com/HSdover) |
 [<img alt="SonSera" src="https://avatars.githubusercontent.com/u/80957989?v=4" width="117">](https://github.com/SonSera) |
 [<img alt="miiin_sseong" src="https://avatars.githubusercontent.com/u/70365399?v=4" width="117">](https://github.com/alstjd0051) | 
 [<img alt="kianpas" src="https://avatars.githubusercontent.com/u/74401597?v=4" width="117">](https://github.com/kianpas) |
