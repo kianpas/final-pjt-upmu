@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.fpjt.upmu.chat.model.service.ChatService;
 import com.fpjt.upmu.chat.model.vo.ChatMsg;
 import com.fpjt.upmu.chat.model.vo.ChatRoomJoin;
+import com.fpjt.upmu.chat.model.vo.ChatRoomJoinExt;
 import com.fpjt.upmu.chat.model.vo.DirectMsg;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,20 +42,20 @@ public class MessageController {
 
 	// 참여 내용 출력
 	@MessageMapping("/join")
-	public void join(ChatRoomJoin chatroomJoin) {
+	public void join(ChatRoomJoinExt chatroomJoinExt) {
 
 		try {
 			
-			int result = chatService.joinChatRoom(chatroomJoin);
+			int result = chatService.joinChatRoom(chatroomJoinExt);
 			//ChatRoomJoin joinInfo = chatService.selectChatRoomJoin(chatroomJoin);
-			log.debug("chatroomJoin {}", chatroomJoin);
+			log.debug("chatroomJoinExt {}", chatroomJoinExt);
 		} catch (Exception e) {
 			log.error("챗룸 참여 오류", e);
 			throw e;
 		}
 
-		simpMessagingTemplate.convertAndSend("/topic/chat/greeting/" + chatroomJoin.getChatroomNo(),
-				chatroomJoin);
+		simpMessagingTemplate.convertAndSend("/topic/chat/greeting/" + chatroomJoinExt.getChatroomNo(),
+				chatroomJoinExt);
 	}
 
 	// 개인메세지 출력
@@ -146,17 +147,17 @@ public class MessageController {
 
 	// 나갈경우 출력메세지
 	@MessageMapping("/disconnect")
-	public void disconnect(ChatRoomJoin chatroomJoin) {
+	public void disconnect(ChatRoomJoinExt chatroomJoinExt) {
 		try {
-			log.debug("chatroomJoin {}", chatroomJoin);
-			int result = chatService.disconnectChatRoom(chatroomJoin);
+			log.debug("chatroomJoinExt {}", chatroomJoinExt);
+			int result = chatService.disconnectChatRoom(chatroomJoinExt);
 		} catch (Exception e) {
 			log.error("챗룸 퇴장 오류", e);
 			throw e;
 		}
 		simpMessagingTemplate.convertAndSend("/topic/chat/disconnect/" 
-		+ chatroomJoin.getChatroomNo(),
-				chatroomJoin.getEmpNo());
+		+ chatroomJoinExt.getChatroomNo(),
+				chatroomJoinExt.getEmpName());
 	}
 
 	// 테스트용
