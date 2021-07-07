@@ -76,9 +76,9 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public int boardDelete(int no) {
+	public int boardDelete(int number) {
 		
-		return session.delete("board.boardDelete", no);
+		return session.delete("board.boardDelete", number);
 	}
 
 	@Override

@@ -201,6 +201,15 @@ var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
 
+function eListPop() {
+	var option = "width=500, height=600";
+	
+	window.open("${pageContext.request.contextPath}/common/eListPop.do", "", option);
+}
+
+
+
+
 
 //주소록리스트
 const showAddrList = () => {

@@ -126,6 +126,24 @@ public class DocDaoImpl implements DocDao {
 		return session.selectOne("document.selectDocCount", param);
 	}
 
+	@Override
+	public int deleteDocument(int docNo) {
+		return session.delete("document.deleteDocument", docNo);
+	}
+
+	@Override
+	public List<Document> selectDocumentList(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int)param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset,limit);		
+		return session.selectList("document.selectDocumentList", param,rowBounds);
+	}
+
+	@Override
+	public int selectDocAllCount(Map<String, Object> param) {
+		return session.selectOne("document.selectDocAllCount", param);
+	}
+
 	
 
 }

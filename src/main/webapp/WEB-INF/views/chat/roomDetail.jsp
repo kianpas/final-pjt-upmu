@@ -325,8 +325,10 @@
 				const sendUser = () => {
 					stompClient.send("/app/join", {}, JSON.stringify({
 						'empNo' : ${principal.empNo},
-						'chatroomNo': ${chatroomNo}
+						'chatroomNo': ${chatroomNo},
+						'empName' : '${principal.empName}'
 					}));
+					showJoinList();
 	
 				}
 
@@ -334,7 +336,8 @@
 				const sendDisconnect = (msg) => {
     				stompClient.send("/app/disconnect", {}, JSON.stringify({
     					'empNo' : ${principal.empNo},
-						'chatroomNo': ${chatroomNo}
+						'chatroomNo': ${chatroomNo},
+						'empName':'${principal.empName}'
     				}));
     				location.href = "${pageContext.request.contextPath}/chat/chatRoomList.do";
     			}
@@ -356,9 +359,9 @@
 				//입장메세지 출력
 				const showGreeting = (joinInfo) => {
 					console.log(joinInfo)
-					const {empNo, regDate} = JSON.parse(joinInfo.body);
+					const {empNo, regDate, empName} = JSON.parse(joinInfo.body);
 					
-					 $(".toast-body").text(`\${empNo}님이 입장하셨습니다.`);
+					 $(".toast-body").text(`\${empName}님이 입장하셨습니다.`);
 					 $("#joinDate").text(moment((moment().format())).fromNow());
 					  $('#liveToast').toast('show');
 	    			
@@ -366,10 +369,10 @@
 	    		}
 
 				//나갈때 출력
-	    		const showDisconnect = (empNo) => {
-		    		console.log(empNo)
+	    		const showDisconnect = (empName) => {
+		    		console.log(empName)
 		    		
-		    		 $(".toast-body").text(`\${empNo}님이 나가셨습니다.`);
+		    		 $(".toast-body").text(`\${empName}님이 나가셨습니다.`);
 					 $("#joinDate").text(moment((moment().format())).fromNow());
 					  $('#liveToast').toast('show');
 	    		}
@@ -458,7 +461,7 @@ const checkJoin = () => {
     			$(function() {
         			
     				chatList();
-    			
+    				showJoinList();
 		    				    				
     				$("#disconnect").click(function() {
     					sendDisconnect();
@@ -498,7 +501,7 @@ const checkJoin = () => {
     			});
 
 
-showJoinList();
+
 connect();
 showUserList();
 showAddrList();

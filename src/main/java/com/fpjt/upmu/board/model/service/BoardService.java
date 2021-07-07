@@ -27,7 +27,7 @@ public interface BoardService {
 	
 	int boardUpdate(BoardExt boardExt);
 
-	int boardDelete(int no);
+	int boardDelete(int number);
 
 	List<BoardExt> boardSearch(String search);
 

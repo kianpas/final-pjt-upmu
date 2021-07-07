@@ -478,5 +478,5 @@ function beforeSubmit(){
 		</div>
 	</div>  
 </div>
-</body>
-</html>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include></html>

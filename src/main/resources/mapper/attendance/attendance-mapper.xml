@@ -5,14 +5,14 @@
 <mapper namespace="attendance">
 	<insert id="startWork">
 		insert into attendance
-		values (seq_att_no.nextval, #{empNo}, current_date, null, null)
+		values (seq_att_no.nextval, #{empNo}, sysdate, null, null)
 	</insert>
 	<update id="endWork">
 		update attendance
 		set att_end = current_date
 		where emp_no = #{empNo} 
 			and 
-		to_char(att_start, 'YYMMDD') = to_char(current_date, 'YYMMDD')
+		to_char(att_start, 'YYMMDD') = to_char(sysdate, 'YYMMDD')
 	</update>
 	<select id="selectWorkList" resultType="attendance">
 		select * 

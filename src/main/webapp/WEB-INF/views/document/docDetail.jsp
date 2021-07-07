@@ -204,13 +204,18 @@ textarea{
 				</button>
 				</c:forEach>
 				</div>
-				
-		
-			</article>
-			
-			
 
+			</article>
 		</section>
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')" >
+			<form:form id="docDelFrm" 
+				action="${pageContext.request.contextPath}/document/docDelete"
+				method="POST">
+			<input type="hidden" name="docNo" value="${document.docNo}"/>
+			<button type="submit" id="delBtn" class="btn btn-danger">문서 삭제</button>
+			</form:form>
+		</sec:authorize>
 		
 		</div>
 	</div>

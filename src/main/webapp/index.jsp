@@ -53,17 +53,6 @@
 				<article class="article">
 					<p>전자결재 문서 목록</p>
 					<c:import url="/document/docMain"></c:import>
-					<!--         <figure class="article-img">
-          <img
-            src="https://images.unsplash.com/photo-1569234817121-a2552baf4fd4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" />
-        </figure>
-        <h2 class="article-title article-title--small">
-          <a href="#" class="article-link">10 Things I Stole From People Smarter Than Me</a>
-        </h2>
-        <div class="article-creditation">
-          <p>By Jonathan O'Connell</p>
-        </div> -->
-
 				</article>
 			</div>
 			<div class="magazine-column" style="width: 330px;">
@@ -107,22 +96,17 @@ const mainBoardList = () =>{
 				html +=`<tr><td onclick="boardDetail(\${no})">\${title}</td></tr>`;
 			}) 
 			html+="</table>";
-
 			 $container.append(html);
 			
 		},
 		error:console.log,
 		
-
 	});
-
 };
-
 const boardDetail = no =>{
 	console.log(no)
 	location.href = `${pageContext.request.contextPath}/board/boardDetail.do?no=\${no}`;
 };
-
 const startWork = () => {
 	const empNo = `<sec:authentication property="principal.empNo"/>`;
 	const check = confirm("근무를 시작하시겠습니까?");
@@ -139,7 +123,6 @@ const startWork = () => {
 		});
 	}
 };
-
 const endWork = () => {
 	const empNo = `<sec:authentication property="principal.empNo"/>`;
 	const check = confirm("근무를 종료하시겠습니까?");
@@ -156,7 +139,6 @@ const endWork = () => {
 		});
 	}
 };
-
 const startDateCheck = () => {
 	const empNo = `<sec:authentication property="principal.empNo"/>`;
 	console.log(empNo)
@@ -180,7 +162,6 @@ const startDateCheck = () => {
 				
 			},
 			error:console.log,
-
 		}) 
 		
 	

@@ -25,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -66,11 +67,70 @@ public class DocController {
 	@Autowired
 	private DocService docService;
 	
-	//Notice 임시출력을 위한 코드
-	@Autowired
-	private NoticeService noticeService;
+	@GetMapping("/myDocList")
+	public String myDocList(
+			@RequestParam int empNo,
+			@RequestParam(required = true, defaultValue = "1") int cpage, 
+			HttpServletRequest request,
+			Model model
+			) {
 
-	//testCode
+		final int limit = 10; 
+		final int offset = (cpage-1)*limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("empNo", empNo);
+		
+		List<Document> docList = docService.selectDocumentList(param);
+
+		model.addAttribute("docList", docList);
+		
+		//===========pageBar시작===============
+		int totalContents = docService.selectDocCount(param);
+		String url = request.getRequestURI()+"?empNo="+empNo;
+		String pageBar = UpmuUtils.getMvcPageBar(cpage, limit, totalContents, url);
+		model.addAttribute("pageBar",pageBar);
+		//============pageBar끝===============
+		log.debug("totalContents ={}",totalContents);
+		
+		return "document/docList";
+	}
+	
+	@GetMapping("/adminDocList")
+	public String adminDocList(
+			@RequestParam(required = true, defaultValue = "1") int cpage, 
+			HttpServletRequest request,
+			Model model
+			) {
+		final int limit = 10; 
+		final int offset = (cpage-1)*limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		List<Document> docList = docService.selectDocumentList(param);
+
+		model.addAttribute("docList", docList);
+		
+		//===========pageBar시작===============
+		int totalContents = docService.selectDocAllCount(param);
+		String url = request.getRequestURI();
+		String pageBar = UpmuUtils.getMvcPageBar(cpage, limit, totalContents, url);
+		model.addAttribute("pageBar",pageBar);
+		//============pageBar끝===============
+		log.debug("totalContents ={}",totalContents);
+		
+		return "document/docList";
+	}
+	
+	
+	@PostMapping("/docDelete")
+	public String docDelete(@RequestParam int docNo) {
+		
+		int result = docService.deleteDocument(docNo);
+		return "redirect:/document/docForm";
+	}
+	
 	@GetMapping("/docMenu")
 	public String docMenu(Authentication authentication, Model model) {
 		Employee principal = (Employee) authentication.getPrincipal();
@@ -92,24 +152,6 @@ public class DocController {
 		model.addAttribute("menuCounter", menuCounter);
 		return "document/docMenu";
 	}
-	@GetMapping("/example")
-	public String example(Authentication authentication, Model model) {
-		Employee principal = (Employee) authentication.getPrincipal();
-		int empNo = principal.getEmpNo();
-		
-		List<Notice> noticeList = noticeService.selectNoticeList(empNo);
-		int noticeCount = noticeService.countNoticeList(empNo);
-	
-		model.addAttribute("noticeList", noticeList);
-		model.addAttribute("noticeCount", noticeCount);
-		return "document/example";
-	}		
-	
-	//원래 docMain코드
-//	@GetMapping("/docMain")
-//	public String docMain() {
-//		return "document/docMain";
-//	}	
 	
 	@GetMapping("/docMain")
 	public String docMain(Authentication authentication, Model model) {
