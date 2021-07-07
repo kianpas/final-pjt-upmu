@@ -327,6 +327,7 @@
 						'empNo' : ${principal.empNo},
 						'chatroomNo': ${chatroomNo}
 					}));
+					showJoinList();
 	
 				}
 
@@ -458,7 +459,7 @@ const checkJoin = () => {
     			$(function() {
         			
     				chatList();
-    			
+    				showJoinList();
 		    				    				
     				$("#disconnect").click(function() {
     					sendDisconnect();
@@ -498,7 +499,7 @@ const checkJoin = () => {
     			});
 
 
-showJoinList();
+
 connect();
 showUserList();
 showAddrList();

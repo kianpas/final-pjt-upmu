@@ -12,7 +12,7 @@
 	
 	<insert id="insertChatRoom">
 		insert into chatroom 
-		values (seq_chatroom_no.nextval, #{title}, #{empCreate}, current_date)
+		values (seq_chatroom_no.nextval, #{title}, #{empCreate}, sysdate)
 	</insert>
 	
 	<select id="selectedRoomChatList" resultType="chatmsgExt">
@@ -30,7 +30,7 @@
 	
 	<insert id="insertChatMsg">
 		insert into chatmsg
-		values (seq_chatmsg_no.nextval, #{chatroomNo}, #{writerNo}, #{msg}, current_date)
+		values (seq_chatmsg_no.nextval, #{chatroomNo}, #{writerNo}, #{msg}, sysdate)
 		<!-- 발급받은 chatmsg pk msg_no값을 파라미터 board객체의 property no에 저장한다. msgNo는 세터 -->
 		<selectKey keyProperty="msgNo" resultType="_int" order="AFTER">
 			select seq_chatmsg_no.currval
@@ -41,7 +41,7 @@
 	
 	<insert id="joinChatRoom">
 		insert into chatroomjoin
-		values (seq_chatroomjoin_no.nextval, #{empNo}, #{chatroomNo}, current_date)
+		values (seq_chatroomjoin_no.nextval, #{empNo}, #{chatroomNo}, sysdate)
 			<selectKey keyColumn="jreg_date" keyProperty="regDate" resultType="date" order="AFTER">
 				select reg_date
 				from chatroomjoin

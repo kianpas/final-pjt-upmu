@@ -99,9 +99,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int boardDelete(int no) {
+	public int boardDelete(int number) {
 		
-		return boardDao.boardDelete(no);
+		return boardDao.boardDelete(number);
 	}
 
 	@Override
