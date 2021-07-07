@@ -91,13 +91,13 @@ h1{
 				name="title" id="title">
 			</div>			
 						
-			<div class="input-group mb-3">
+			<!-- <div class="input-group mb-3">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="inputGroup-sizing-default">양식 타입</span>
 				</div>
 				<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
 				name="type" id="type">
-			</div>
+			</div> -->
 			<!-- 테이블 임시 작성 -->
 			<div id="tempDiv">
 
