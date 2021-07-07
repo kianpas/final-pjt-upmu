@@ -47,7 +47,7 @@
 		UPDATE
 			DEPARTMENT
 		SET
-			DEP_NO = #{dep.depNo},
+			DEP_NO = #{modifyDept},
 			DEP_NAME = #{dep.depName}
 		WHERE
 			DEP_NO = #{modifyDept}

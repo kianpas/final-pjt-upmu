@@ -22,7 +22,9 @@
 		<intercept-url pattern="/employee/empIdPwSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/empIdSearch.do" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/checkIdDuplicate.do" access="isAnonymous()"/>
+		<intercept-url pattern="/employee/pwSearchNo" access="isAnonymous()"/>
 		<intercept-url pattern="/employee/jusoPopup.do" access="permitAll"/>
+		<intercept-url pattern="/employeeList/modifyDept.do" access="hasRole('ADMIN')"/>
 		<intercept-url pattern="/common/myProfile.do" access="hasRole('USER')"/>
 		
 		<intercept-url pattern="/main.jsp" access="permitAll"/>

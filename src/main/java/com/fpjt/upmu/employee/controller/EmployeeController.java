@@ -165,8 +165,6 @@ public class EmployeeController {
 	
 	  @PostMapping("/empPwSearch.do") 
 	  public String empPwSearch(String empPw, String authVal, RedirectAttributes redirectAttr){		  
-		log.debug(empPw); 
-		log.debug(authVal); 
 		// 0. 비밀번호 암호화처리
 		String rawPassword = empPw;
 		String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -182,15 +180,19 @@ public class EmployeeController {
 			map.put("id", id);
 			
 			int result = empService.updatePw(map);
+			if(result == 0)
+				return "redirect:/employee/pwSearchNo";
 			// 2. 사용자피드백
 			redirectAttr.addFlashAttribute("msg", "비밀번호 재설정 완료");			
 		} catch (Exception e) {
 			log.error("비밀번호 찾기 후 재설정 오류", e);
-			return "redirect:/common/accessDenied.do";
 		}
 		return "redirect:/";
 	  }
 
+	  @GetMapping("/pwSearchNo")
+	  public void pwSearchNo() {}
+	  
 	  @PostMapping("/upProfile.do")
 	  public void upProfile() {
 		  log.debug("성공성공");
@@ -252,7 +254,7 @@ public class EmployeeController {
 					
 					if(!(extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg"))) {
 						redirectAttr.addFlashAttribute("msg", "올바른 이미지 파일이 아닙니다.");
-						return "redirect:/common/myProfile.do?empNo=" + rawEmployee.getEmpNo();
+						return "redirect:/employee/myProfile.do?empNo=" + rawEmployee.getEmpNo();
 					}
 					
 					String renamedFilename = UpmuUtils.getRenamedFilename(originalFileName);
@@ -292,7 +294,7 @@ public class EmployeeController {
 						rawEmployee.setEmpPw(encodedPw);
 					} else {
 						redirectAttr.addFlashAttribute("msg", "현재 비밀번호가 틀립니다.");
-						return "redirect:/common/myProfile.do?empNo=" + rawEmployee.getEmpNo();
+						return "redirect:/employee/myProfile.do?empNo=" + rawEmployee.getEmpNo();
 					}
 				}
 
@@ -338,6 +340,6 @@ public class EmployeeController {
 			} catch (Exception e) {
 				log.error("내 정보 업데이트 오류!", e);
 			}
-			return "redirect:/common/myProfile.do?empNo=" + rawEmployee.getEmpNo();
+			return "redirect:/employee/myProfile.do?empNo=" + rawEmployee.getEmpNo();
 		}
 }

@@ -47,7 +47,7 @@ public class EmployeeListController {
 		} catch (Exception e) {
 			log.error("부서등록 오류!");
 		}
-		return "redirect:/redirect:/admin/eListAdmin.do";
+		return "redirect:/admin/eListAdmin.do";
 	}
 	
 	//부서에 따른 조직원 조회
@@ -79,7 +79,6 @@ public class EmployeeListController {
 				return map; 
 			}
 			List<Employee> eList = elService.selectSearchList(keyword);
-			log.debug("eList={}",eList);
 			
 			//2. map에 요소 저장후 리턴
 			map.put("eList", eList);
@@ -114,7 +113,7 @@ public class EmployeeListController {
 			
 			int result = elService.updateDept(map);
 		} catch (Exception e) {
-			log.error("부서등록 오류!");
+			log.error("부서수정 오류!", e);
 		}
 		return "redirect:/employeeList/close";
 	}

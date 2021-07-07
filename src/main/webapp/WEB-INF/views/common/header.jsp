@@ -79,7 +79,11 @@
             <a class="nav-link active" aria-current="page"
               href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
           </li>
-          <li class="nav-item dropdown" style="margin-left: -22px;">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/employeeList/eList.do">조직도</a>
+          </li>
+         <%--  <li class="nav-item dropdown" style="margin-left: -22px;">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               조직도
@@ -89,7 +93,7 @@
               </li>
               <li><input value="새창으로이동" onclick="eListPop();" class="dropdown-item" /></li>
             </ul>
-          </li>
+          </li> --%>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -106,16 +110,16 @@
        		<li class="nav-item">
               <a class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
+          </li>
           <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 	          <li class="nav-item">
 	            <a class="nav-link active" aria-current="page"
 	              href="${pageContext.request.contextPath}/admin/eListAdmin.do" style="width: 100px;">관리페이지</a>
 	          </li>
           </sec:authorize>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
-          </li>
        		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
 			</button>	
         </ul>

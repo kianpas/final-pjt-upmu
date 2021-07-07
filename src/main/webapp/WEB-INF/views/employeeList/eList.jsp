@@ -14,8 +14,8 @@
 	<select id="keyword">
 		<option value="emp_no" selected>사번</option>
 		<option value="emp_name">이름</option>
-		<option value="emp_job">직급</option>
-		<option value="emp_dept">부서</option>
+		<option value="job_name">직급</option>
+		<option value="dep_name">부서</option>
 	</select>
 	<input id="search" name="p" type="search" autocomplete="off" spellcheck="false" placeholder="검색" onkeypress="if( event.keyCode == 13) {colorReset();search()};"> <input id="search-submit" type="submit" value="검색" onclick="search();">
 </div>

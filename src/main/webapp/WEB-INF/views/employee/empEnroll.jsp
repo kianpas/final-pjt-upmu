@@ -176,8 +176,8 @@ $("#re_emp_pw_check").blur(function(){
 		$password.select();
 	}
 	else {
-		$pwValid.val(1);
 		$(".pwError2").hide();
+		$pwValid.val(1);	
 	}
 });
 
