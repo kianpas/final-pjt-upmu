@@ -67,18 +67,20 @@ public class DocController {
 	@Autowired
 	private DocService docService;
 	
-	@GetMapping("/adminDocList")
-	public String adminDocList(
+	@GetMapping("/myDocList")
+	public String myDocList(
+			@RequestParam int empNo,
 			@RequestParam(required = true, defaultValue = "1") int cpage, 
 			HttpServletRequest request,
 			Model model
 			) {
-		
+
 		final int limit = 10; 
 		final int offset = (cpage-1)*limit;
 		Map<String, Object> param = new HashMap<>();
 		param.put("limit", limit);
 		param.put("offset", offset);
+		param.put("empNo", empNo);
 		
 		List<Document> docList = docService.selectDocumentList(param);
 
@@ -86,6 +88,32 @@ public class DocController {
 		
 		//===========pageBar시작===============
 		int totalContents = docService.selectDocCount(param);
+		String url = request.getRequestURI()+"?empNo="+empNo;
+		String pageBar = UpmuUtils.getMvcPageBar(cpage, limit, totalContents, url);
+		model.addAttribute("pageBar",pageBar);
+		//============pageBar끝===============
+		log.debug("totalContents ={}",totalContents);
+		
+		return "document/docList";
+	}
+	
+	@GetMapping("/adminDocList")
+	public String adminDocList(
+			@RequestParam(required = true, defaultValue = "1") int cpage, 
+			HttpServletRequest request,
+			Model model
+			) {
+		final int limit = 10; 
+		final int offset = (cpage-1)*limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		List<Document> docList = docService.selectDocumentList(param);
+
+		model.addAttribute("docList", docList);
+		
+		//===========pageBar시작===============
+		int totalContents = docService.selectDocAllCount(param);
 		String url = request.getRequestURI();
 		String pageBar = UpmuUtils.getMvcPageBar(cpage, limit, totalContents, url);
 		model.addAttribute("pageBar",pageBar);

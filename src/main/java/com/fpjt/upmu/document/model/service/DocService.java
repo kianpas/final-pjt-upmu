@@ -54,4 +54,6 @@ public interface DocService {
 	int deleteDocument(int docNo);
 
 	List<Document> selectDocumentList(Map<String, Object> param);
+
+	int selectDocAllCount(Map<String, Object> param);
 }

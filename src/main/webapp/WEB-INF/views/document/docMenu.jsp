@@ -50,13 +50,21 @@
 					<!-- for ADMIN -->
 					<sec:authorize access="hasRole('ROLE_ADMIN')" >
 					<div class="list-group">
-						<button type="button" class="list-group-item list-group-item-action" id=""
-						onclick="location.href = `${pageContext.request.contextPath}/document/adminDocList`;"	>
+						<button type="button" class="list-group-item list-group-item-action"
+						onclick="location.href = `${pageContext.request.contextPath}/document/adminDocList`;">
 							<span>관리자용 문서목록</span> 
 						</button>					
 					</div>
 					</sec:authorize>
 					
+					<div class="list-group">
+						<button type="button" class="list-group-item list-group-item-action"
+						onclick="location.href = `${pageContext.request.contextPath}/document/myDocList?empNo
+						=<sec:authentication property="principal.empNo"/>`;">
+							<span>내가 올린 문서</span> 
+							<span class="badge bg-secondary badge-menu"></span>
+						</button>
+					</div>
 					<div class="list-group" id="docTypeMenu">
 						<button type="button" class="list-group-item list-group-item-action" id="notdecided">
 							<span>대기중</span> 
