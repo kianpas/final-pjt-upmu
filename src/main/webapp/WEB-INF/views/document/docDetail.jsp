@@ -94,6 +94,7 @@ textarea{
 						<tr>
 							<td rowspan="4" align="center" class="table-secondary">결<br/>재</td>
 						</tr>
+						<c:set var="counter" value="0" />
 						<c:forEach items="${document.docLine}" var="docLine">
 							<c:if test='${docLine.approverType eq "approver"}'>
 							<tr>
@@ -112,12 +113,15 @@ textarea{
 										</c:if>
 									</c:when>
 									<c:when test="${docLine.status eq 'approved' }">
+										<c:set var="counter" value="${counter + 1}"/>
 										<td class="bg-success text-white">결재완료</td>
 									</c:when>
 									<c:when test="${docLine.status eq 'rejected' }">
+										<c:set var="counter" value="${counter + 1}"/>
 										<td class="bg-danger text-white">반려</td>
 									</c:when>
 									<c:when test="${docLine.status eq 'afterview' }">
+										<c:set var="counter" value="${counter + 1}"/>
 										<td class="bg-secondary text-white">후열</td>
 									</c:when>
 								</c:choose>
@@ -217,6 +221,17 @@ textarea{
 			</form:form>
 		</sec:authorize>
 		
+		<sec:authorize access="!hasRole('ROLE_ADMIN')" >
+			<sec:authentication property="principal.empNo" var="empNo" />
+			<c:if test="${document.writer eq empNo}">
+				<form:form id="docDelFrm"
+					action="${pageContext.request.contextPath}/document/docDelete"
+					method="POST">
+				<input type="hidden" name="docNo" value="${document.docNo}"/>
+				<button type="submit" id="delBtn" class="btn btn-danger">문서 삭제</button>
+				</form:form>
+			</c:if>
+		</sec:authorize>
 		</div>
 	</div>
 	<!-- footer -->
@@ -265,6 +280,16 @@ textarea{
 		
 </main>
 <script>
+
+<sec:authorize access="!hasRole('ROLE_ADMIN')" >
+$("#docDelFrm").submit(function( event ) {
+	  if(${counter}>0){
+		  alert("이미 결재가 진행되어 문서를 삭제할 수 없습니다.")
+		  event.preventDefault();
+		}
+	});
+</sec:authorize>
+
 //결재선 가로정렬
 $("#docLineTable").each(function() {
     var $this = $(this);
