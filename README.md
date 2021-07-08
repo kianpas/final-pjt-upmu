@@ -3,8 +3,7 @@
 
 
 [<img alt="spring" src="https://github.com/HSdover/final-pjt-upmu/blob/master/src/main/webapp/resources/images/logo1.png" width="200">](https://github.com/HSdover/final-pjt-upmu/)
-
-<br><br><br>
+<br><br>
 ## 목차
   - [프로젝트 명](#프로젝트-명)
   - [수행 기간](#수행-기간)
