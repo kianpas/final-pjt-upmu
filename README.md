@@ -1,7 +1,9 @@
 
 <h1 align="center">팀명 : KHluster (클러스터) </h1>
 
-<br><br><br>
+
+[<img alt="spring" src="https://github.com/HSdover/final-pjt-upmu/blob/master/src/main/webapp/resources/images/logo1.png" width="500" align="center">](https://github.com/HSdover/final-pjt-upmu/)
+<br><br>
 ## 목차
   - [프로젝트 명](#프로젝트-명)
   - [수행 기간](#수행-기간)
@@ -20,16 +22,17 @@
 * [Spring](https://spring.io/)(Spring, MVC, Spring Security, Mybatis)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
+* [JavaScript](https:#)
 <!-- * [**AWS** RDS](https://aws.amazon.com/ko/rds/)   -->
 
 ## Contributors
-[<img alt="HSdover" src="https://avatars.githubusercontent.com/u/80959194?v=4" width="117">](https://github.com/HSdover) 
-[<img alt="ksh940911" src="https://avatars.githubusercontent.com/u/74707834?v=4" width="117">](https://github.com/ksh940911) | 
+[<img alt="HSdover" src="https://avatars.githubusercontent.com/u/80959194?v=4" width="117">](https://github.com/HSdover) |
 [<img alt="SonSera" src="https://avatars.githubusercontent.com/u/80957989?v=4" width="117">](https://github.com/SonSera) |
 [<img alt="miiin_sseong" src="https://avatars.githubusercontent.com/u/70365399?v=4" width="117">](https://github.com/alstjd0051) | 
 [<img alt="kianpas" src="https://avatars.githubusercontent.com/u/74401597?v=4" width="117">](https://github.com/kianpas) |
 [<img alt="AlexanderFishcake" src="https://avatars.githubusercontent.com/u/76913650?v=4" width="117">](https://github.com/AlexanderFishcake) |
+[<img alt="ksh940911" src="https://avatars.githubusercontent.com/u/74707834?v=4" width="117">](https://github.com/ksh940911) 
 
 
 
-[최한성](https://github.com/HSdover) | [김상훈](https://github.com/ksh940911) | [손세라](https:/****/github.com/SonSera) | [송민성](https://github.com/alstjd0051) | [이운산](https://github.com/kianpas)  | [최민순](https://github.com/AlexanderFishcake) 
+[최한성](https://github.com/HSdover) | | [손세라](https:/****/github.com/SonSera) | [송민성](https://github.com/alstjd0051) | [이운산](https://github.com/kianpas)  | [최민순](https://github.com/AlexanderFishcake) | [김상훈](https://github.com/ksh940911) 
