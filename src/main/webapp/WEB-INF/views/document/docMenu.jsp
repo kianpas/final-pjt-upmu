@@ -7,7 +7,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 
 <!-- bootstrap css -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <style>
 .list-group-item {
@@ -22,7 +21,7 @@
     padding: 6px;
 }
 </style>
-<main class="responsive-wrapper">
+<div class="container">
 
 <div class="row justify-content-center">
 	<!-- <div class="col-xl-3"> -->
@@ -92,6 +91,8 @@
 
 		</div>
 	</div>
+
+
 <script>
 /* button activate */
 $( document ).ready(function() {

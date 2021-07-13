@@ -16,7 +16,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/sidebars.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/directMsg.css">
 <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/roomDetail.css"> --%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" /> 
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />  --%>
 <style>
 #chat-list-container li{
   border: 0 none;

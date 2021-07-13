@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" /> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chatRoomList.css" />
 <sec:authentication property="principal" var="principal"/>
     <div class="container" id="app">

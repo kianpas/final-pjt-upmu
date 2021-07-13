@@ -9,9 +9,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <style>
-body {
-	background-color: #f8f3eb;
-}
+
 /*글쓰기버튼*/
 input#btn-add {
 	float:right; 

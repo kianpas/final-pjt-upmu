@@ -6,13 +6,10 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="UPMU" name="title" />
 </jsp:include>
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
-<body style="width: 1280px; height: 768px; margin: auto;">
-	<main class="responsive-wrapper">
+	<div class="container col-12">
+	<div class="row justify-content-center">
 		<div class="magazine-layout">
-			<div class="magazine-column" style="width: 450px;">
+			<div class="magazine-column">
 				<article class="article">
 					<h2 class="article-title article-title--large">
 						<a href="#" class="article-link">
@@ -21,9 +18,9 @@
 					</h2>
 					<div class="article-excerpt"></div>
 					<div class="article-author">
-						<div class="article-author-img">
+						<!-- <div class="article-author-img">
 							<img src="./resources/images/logo.png" alt="logo" />
-						</div>
+						</div> -->
 						<div class="article-author-info">
 							<dl>
 								<dt style="font-size: 20px; color: skyblue;">팀원소개</dt>
@@ -42,7 +39,7 @@
 				<article class="article" style="height: 400px">
 					<div class="article-creditation">
 						<h6 class="m-0 fw-bold">공지사항</h6>
-						<div class="table-responsive m-3">
+						<div class="table-responsive">
 							<table class="table table-hover" id="boardList">
 							</table>
 						</div>
@@ -68,7 +65,8 @@
 				</article>
 			</div>
 		</div>
-	</main>
+	</div>
+	</div>
 	<script>
 function eListPop() {
 	var option = "width=500, height=600";

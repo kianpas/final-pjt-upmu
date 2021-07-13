@@ -1,14 +1,16 @@
 body{
-	margin:0;
+	/* margin:0; */
 	color:#6a6f8c;
-	background:#f8f3eb;
-	font:600 16px/18px 'Open Sans',sans-serif;
 
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
 .clearfix:after{clear:both;display:block}
 a{color:inherit;text-decoration:none}
+
+.login-html{
+	font:600 16px/18px 'Open Sans',sans-serif;
+}
 
 .login-wrap{
 	width:100%;
@@ -20,17 +22,17 @@ a{color:inherit;text-decoration:none}
 }
 .login-html{
 	width:100%;
-	height:800px;
-	position:absolute;
+	/* height:800px; */
+	/* position:absolute; */
 	padding:90px 70px 50px 70px;
 	background:#85b8cb;
 }
 .login-html .sign-in-htm{
-  top:200px;
+  /* top:200px; */
 	left:0;
 	right:0;
 	bottom:0;
-	position:absolute;
+	/* position:absolute; */
 	backface-visibility:hidden;
 	transition:all .4s linear;
 }

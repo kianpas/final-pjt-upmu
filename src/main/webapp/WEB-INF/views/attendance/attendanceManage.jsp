@@ -5,8 +5,6 @@
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"
 	integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ=="
@@ -60,10 +58,10 @@
 				<div class="card-header py-3">
 					<h6 class="m-0 font-weight-bold text-primary">주간 근무시간</h6>
 				</div>
-				<div class="card-body">
+				<div class="card-body" style="height:265px;">
 					<div id="week" class="d-flex justify-content-center"></div>
-					<div class="chart-area" style="max-height:240px;">
-						<canvas id="mybarChart" style="max-height:210px;"></canvas>
+					<div class="chart-area">
+						<canvas id="mybarChart"></canvas>
 					</div>
 					<!-- <hr> -->
 				</div>

@@ -1,52 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="ko">
-	<head >
-		<meta charset="UTF-8">
-		<meta name="_csrf" content="${_csrf.token}"/>
- 		<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<head>
+<meta charset="UTF-8">
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <title>${param.title}</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!-- bootstrap js: jquery load 이후에 작성할것.-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+
 
 <!-- 조직도 테이블 관련 -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 <!-- 폰트 -->
 <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300&display=swap"
+	rel="stylesheet">
 
 <!-- popper 추가 -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
 <!-- box-icon -->
 <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
-<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css'
+	rel='stylesheet'>
 <!-- 개인 챗용 css, stomp, moment -->
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/directMsg.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/directMsg.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js" integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>	
-	
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+	integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"
+	integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <!-- 사용자작성 css -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
-
-<!-- bootstrap -->
-<%-- <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script> --%>
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/index.css" />
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" /> --%>
 
 <%-- <c:if test="${not empty msg}">
 <script>
@@ -54,149 +75,181 @@
 </script> 
 </c:if>--%>
 </head>
-<body style="width: 1280px; height: 300px; margin: auto;">
+<body>
 	<header class="header responsive-wrapper">
-  <a class="header-left" href="${pageContext.request.contextPath}/index.jsp">
-  <img alt="logo" src="${pageContext.request.contextPath }/resources/images/logo1.png"  width="200" height="150">
-  </a>
-  <nav class="navbar navbar-expand-lg navbar-light bg-lig" style="display: flex; width: 50%; background-color: #f8f3eb;">
-    <div class="container-fluid" >
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item" style="margin-left: -22px;">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/board/boardList.do">게시판</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/document/docForm.do" style="width: 80px;">전자결재</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/attendance/attendanceManage.do" style="width: 90px;">근태관리</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/employeeList/eList.do">조직도</a>
-          </li>
-         <%--  <li class="nav-item dropdown" style="margin-left: -22px;">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              조직도
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/employeeList/eList.do">페이지이동</a>
-              </li>
-              <li><input value="새창으로이동" onclick="eListPop();" class="dropdown-item" /></li>
-            </ul>
-          </li> --%>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              메일함
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mail/sendMailList.do">보낸 메일함</a>
-              </li>
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은 메일함</a>
-              </li>
-            </ul>
-          </li>
-         <!--  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><box-icon name='book' type='solid' color='#ffffff' ></box-icon></button> -->
-       		<li class="nav-item">
-              <a class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-              href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
-          </li>
-          <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-	          <li class="nav-item">
-	            <a class="nav-link active" aria-current="page"
-	              href="${pageContext.request.contextPath}/admin/eListAdmin.do" style="width: 100px;">관리페이지</a>
-	          </li>
-          </sec:authorize>
-       		<button type="button" class="btn btn-primary" id="chat-btn" onclick="openChat();" style="border-radius: 50%; display: none; height: 38px;"><box-icon name='chat' type='solid' color='#ffffff' ></box-icon>
-			</button>	
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="header-right">
-    <nav class="header-nav">
-      <!-- 로그인이전 -->
-      <sec:authorize access="isAnonymous()">
-      <a href="${pageContext.request.contextPath}/employee/empLogin.do" class="header-link">Login</a>
-      <a href="${pageContext.request.contextPath}/employee/empEnroll.do" class="header-link header-link--button">Sign Up</a> 
-      </sec:authorize>
-      <!-- 로그인이후 -->
-       <sec:authorize access="isAuthenticated()"> 
-      
-       <sec:authentication property="principal" var="principal" />
-		    <a href="${pageContext.request.contextPath}/employee/myProfile.do?empNo=${principal.empNo}" style="text-decoration: none; font-weight: bold; color: black;" onclick="window.open(this.href, '_blank', 'width=770, height=835'); return false;">
-		   	<sec:authentication property="principal.empName"/></a>님, 안녕하세요.			    
+		<nav class="navbar navbar-expand-lg navbar-light"
+			style="display: flex; padding-right: 16px;">
+			<div class="container-fluid">
+				<a class="header-left" href="${pageContext.request.contextPath}">
+					<img alt="logo"
+					src="${pageContext.request.contextPath }/resources/images/logo1.png"
+					style="width: 100px;">
+				</a>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page"
+							href="${pageContext.request.contextPath}/board/boardList.do">게시판</a>
+						</li>
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page"
+							href="${pageContext.request.contextPath}/document/docForm.do">전자결재</a>
+						</li>
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page"
+							href="${pageContext.request.contextPath}/attendance/attendanceManage.do">근태관리</a>
+						</li>
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page"
+							href="${pageContext.request.contextPath}/chat/chatRoomList.do">채팅</a>
+						</li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+							role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								조직도 </a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item"
+									href="${pageContext.request.contextPath}/employeeList/eList.do">페이지이동</a>
+								</li>
+								<li><input value="새창으로이동" onclick="eListPop();"
+									class="dropdown-item" /></li>
+							</ul></li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+							role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								메일함 </a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item"
+									href="${pageContext.request.contextPath}/mail/sendMailList.do">보낸
+										메일함</a></li>
+								<li><a class="dropdown-item"
+									href="${pageContext.request.contextPath}/mail/receiveMailList.do">받은
+										메일함</a></li>
+							</ul></li>
+						<!--  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><box-icon name='book' type='solid' color='#ffffff' ></box-icon></button> -->
+						<li class="nav-item"><a class="nav-link active"
+							data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+							aria-controls="offcanvasScrolling" style="cursor: pointer">주소록</a>
+						</li>
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page"
+							href="${pageContext.request.contextPath}/schedule/schedule.do">일정</a>
+						</li>
+						<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+							<li class="nav-item"><a class="nav-link active"
+								aria-current="page"
+								href="${pageContext.request.contextPath}/admin/eListAdmin.do"
+								style="width: 100px;">관리페이지</a></li>
+						</sec:authorize>
+						<!-- 로그인이전 -->
+						<sec:authorize access="isAnonymous()">
+							<a href="${pageContext.request.contextPath}/employee/empLogin.do"
+								class="header-link">Login</a>
+							<a
+								href="${pageContext.request.contextPath}/employee/empEnroll.do"
+								class="header-link header-link--button">Sign Up</a>
+						</sec:authorize>
+						<!-- 로그인이후 -->
+						<sec:authorize access="isAuthenticated()">
+
+							<sec:authentication property="principal" var="principal" />
+							<li class="nav-item nav-link">
+							<a
+								href="${pageContext.request.contextPath}/employee/myProfile.do?empNo=${principal.empNo}"
+								style="text-decoration: none; font-weight: bold; color: black;"
+								onclick="window.open(this.href, '_blank', 'width=770, height=835'); return false;">
+								<sec:authentication property="principal.empName" />
+							</a>님, 안녕하세요.		
+							</li>	    
 		    		&nbsp;
-			   	<form:form class="d-inline" action="${pageContext.request.contextPath}/employee/empLogout.do" method="POST">
-			   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
-			   	</form:form>
-			   	<c:import url="/notice/noticeBtn"></c:import>
-    	</sec:authorize>
-    </nav>
-  </div>
-  <!-- 주소록 오프캔버스 -->
-	<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-	  <div class="offcanvas-header">
-	    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">주소록</h5>
-	    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-	  </div>
-	  <div class="offcanvas-body">
-	    <p></p>
-	    <div class="list-group list-group-flush border-bottom scrollarea" id="addrList">
-	      <div class="list-group-item list-group-item-action py-3 lh-tight" > 
-	        <div class="d-flex w-80 align-items-center justify-content-between">
-	          <strong class="mb-1"></strong>
-	          <i id="dropdwonIcon" class='bx bx-dots-vertical-rounded bx-sm' data-bs-toggle="dropdown"></i>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-			    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#updateModal" data-no="" data-title="" id="updateBtn">방 이름 변경</a></li>
-			      <li><hr class="dropdown-divider"></li>
-			    <li><a class="dropdown-item">주소록 삭제</a></li>
-			  </ul>
-	        </div>
-	     </div> 
-	    </div>
-	  </div>
-	</div>
-	 <!-- 개인채팅창 -->
-<div class="card card-bordered" id="chat-pop">
- 	<div class="card-header">
- 		<h4 class="card-title"><strong id="dmName"></strong></h4>
-	</div>
-	<div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">               
-		<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
-			<div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-        </div>
-        <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">
-            <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>
-        </div>
-    </div>
-    <div class="publisher bt-1 border-light" id="dm-input"> 
-    	<input class="publisher-input" type="text" placeholder="" id="directMsg"> 
-    	<span class="publisher-btn file-group"><i class='bx bxs-send' id="dmSend"></i></span>
-    </div>
-    <div class="publisher bt-1 border-light" id="dm-update" style="display:none;"> 
-    	<input class="publisher-input" type="text" placeholder="" id="updateDmInput" >
-    	<input type="hidden" name="messageNo" value="">
-    	<span class="publisher-btn file-group"><i class='bx bxs-send' onclick="updateDmReal()"></i></span>
-    </div>
-</div>
-	
-	
-<input type="hidden" id="receive_username"/>
-<script>
+			   	<form:form class="d-inline"
+								action="${pageContext.request.contextPath}/employee/empLogout.do"
+								method="POST">
+								<button class="btn btn-outline-success my-2 my-sm-0"
+									type="submit">로그아웃</button>
+							</form:form>
+							<c:import url="/notice/noticeBtn"></c:import>
+						</sec:authorize>
+						<button type="button" class="btn btn-primary" id="chat-btn"
+							onclick="openChat();"
+							style="border-radius: 50%; display: none; height: 38px;">
+							<box-icon name='chat' type='solid' color='#ffffff'></box-icon>
+						</button>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="header-right">
+			<nav class="header-nav"></nav>
+		</div>
+		<!-- 주소록 오프캔버스 -->
+		<div class="offcanvas offcanvas-end" data-bs-scroll="true"
+			data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling"
+			aria-labelledby="offcanvasScrollingLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="offcanvasScrollingLabel">주소록</h5>
+				<button type="button" class="btn-close text-reset"
+					data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+				<p></p>
+				<div class="list-group list-group-flush border-bottom scrollarea"
+					id="addrList">
+					<div class="list-group-item list-group-item-action py-3 lh-tight">
+						<div
+							class="d-flex w-80 align-items-center justify-content-between">
+							<strong class="mb-1"></strong> <i id="dropdwonIcon"
+								class='bx bx-dots-vertical-rounded bx-sm'
+								data-bs-toggle="dropdown"></i>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+								<li><a class="dropdown-item" data-bs-toggle="modal"
+									data-bs-target="#updateModal" data-no="" data-title=""
+									id="updateBtn">방 이름 변경</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item">주소록 삭제</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 개인채팅창 -->
+		<div class="card card-bordered" id="chat-pop">
+			<div class="card-header">
+				<h4 class="card-title">
+					<strong id="dmName"></strong>
+				</h4>
+			</div>
+			<div class="ps-container ps-theme-default ps-active-y"
+				id="chat-content"
+				style="overflow-y: scroll !important; height: 400px !important;">
+				<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+					<div class="ps-scrollbar-x" tabindex="0"
+						style="left: 0px; width: 0px;"></div>
+				</div>
+				<div class="ps-scrollbar-y-rail"
+					style="top: 0px; height: 0px; right: 2px;">
+					<div class="ps-scrollbar-y" tabindex="0"
+						style="top: 0px; height: 2px;"></div>
+				</div>
+			</div>
+			<div class="publisher bt-1 border-light" id="dm-input">
+				<input class="publisher-input" type="text" placeholder=""
+					id="directMsg"> <span class="publisher-btn file-group"><i
+					class='bx bxs-send' id="dmSend"></i></span>
+			</div>
+			<div class="publisher bt-1 border-light" id="dm-update"
+				style="display: none;">
+				<input class="publisher-input" type="text" placeholder=""
+					id="updateDmInput"> <input type="hidden" name="messageNo"
+					value=""> <span class="publisher-btn file-group"><i
+					class='bx bxs-send' onclick="updateDmReal()"></i></span>
+			</div>
+		</div>
+
+
+		<input type="hidden" id="receive_username" />
+		<script>
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -527,4 +580,4 @@ $(function(){
 
 showAddrList();
 </script>
-</header>
+	</header>
